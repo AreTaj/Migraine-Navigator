@@ -1,0 +1,13 @@
+# Ignore file types
+*.txt
+*.csv
+
+# Except specific files
+requirements.txt
+
+# Ignore specific files
+.venv
+__pycache__
+.DS_Store
+main.spec
+
