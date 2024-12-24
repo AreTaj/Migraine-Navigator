@@ -4,7 +4,17 @@ import pandas as pd
 import datetime
 import os
 import csv
+import geocoder
 
+def get_location_from_ip():
+    """ Gets approximate user location from the user IP address."""
+    g = geocoder.ip('me')
+    if g.ok:
+        return g.latlng, g.address
+    else:
+        print(f"Geocoding Error: {g.status_code}, {g.reason}")
+        return None, None
+    
 def get_local_timezone():
     """Gets the system's local timezone."""
     try:
@@ -84,7 +94,10 @@ class InputFrame(tk.Frame):
         dosage = self.dosage_entry.get()
         triggers = self.triggers_entry.get("1.0", "end-1c")
         notes = self.notes_entry.get("1.0", "end-1c")
-        location = self.location_entry.get()
+
+        #Instead of .get(), get location from system
+        latlng, address = get_location_from_ip()
+
         # Instead of .get(), get timezone from system
         local_tz = get_local_timezone()
         if local_tz is None:
@@ -103,7 +116,9 @@ class InputFrame(tk.Frame):
                 'Dosage': dosage, 
                 'Triggers': triggers, 
                 'Notes': notes, 
-                'Location': location, 
+                'Location': address if address else "Location not found", # Use address or message
+                'Latitude': latlng[0] if latlng else None, # Use latitude or None
+                'Longitude': latlng[1] if latlng else None, # Use longitude or None
                 'Timezone': timezone_name
             }
         print(f"Data to be written: {data}")  # Print data dictionary        

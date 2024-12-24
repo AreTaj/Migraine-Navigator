@@ -14,16 +14,16 @@ class ViewFrame(tk.Frame):
         self.entries_treeview = ttk.Treeview(self, columns=("Date", "Time", "Pain Level", "Medication", "Dosage", "Triggers", "Notes", "Location", "Timezone"))
 
         # Create columns
-        self.entries_treeview.column("#0", width=50)
-        self.entries_treeview.column("Date", width=100)
-        self.entries_treeview.column("Time", width=80)
+        self.entries_treeview.column("#0", width=30)
+        self.entries_treeview.column("Date", width=90)
+        self.entries_treeview.column("Time", width=60)
         self.entries_treeview.column("Pain Level", width=80)
-        self.entries_treeview.column("Medication", width=150)
+        self.entries_treeview.column("Medication", width=100)
         self.entries_treeview.column("Dosage", width=80)
         self.entries_treeview.column("Triggers", width=200)
         self.entries_treeview.column("Notes", width=300)
         self.entries_treeview.column("Location", width=150) 
-        self.entries_treeview.column("Timezone", width=100) 
+        self.entries_treeview.column("Timezone", width=120) 
 
         # Create headings
         self.entries_treeview.heading("#0", text="Entry")
