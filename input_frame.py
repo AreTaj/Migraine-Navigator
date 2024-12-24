@@ -3,6 +3,7 @@ from tkinter import ttk
 import pandas as pd
 import datetime
 import os
+import pytz
 
 class InputFrame(tk.Frame):
     def __init__(self, parent):
@@ -31,6 +32,16 @@ class InputFrame(tk.Frame):
         self.notes_label = tk.Label(self, text="Notes:")
         self.notes_entry = tk.Text(self, height=5, width=30)
 
+        # Location and Time Zone
+        self.location_label = tk.Label(self, text="Location:")
+        self.location_entry = tk.Entry(self)
+
+        self.timezone_label = tk.Label(self, text="Time Zone:")
+        self.timezone_entry = tk.Entry(self, state="readonly")
+        # Get current time zone
+        current_timezone = pytz.timezone('UTC').localize(datetime.datetime.utcnow())
+        self.timezone_entry.insert(0, current_timezone.tzinfo)
+
         self.save_button = tk.Button(self, text="Save Entry", command=self.save_entry)
 
         # Pack the widgets
@@ -55,6 +66,9 @@ class InputFrame(tk.Frame):
         self.save_button.pack()
 
     def save_entry(self,view_frame):
+        # Get location and timezone from input fields
+        location = self.location_entry.get()
+        timezone = self.timezone_entry.get() 
         date = self.date_entry.get()
         time = self.time_entry.get()
         pain_level = self.pain_level_scale.get()
@@ -63,7 +77,7 @@ class InputFrame(tk.Frame):
         triggers = self.triggers_entry.get("1.0", "end-1c")
         notes = self.notes_entry.get("1.0", "end-1c")
 
-        data = {'Date': date, 'Time': time, 'Pain Level': pain_level, 'Medication': medication, 'Dosage': dosage, 'Triggers': triggers, 'Notes': notes}
+        data = {'Date': date, 'Time': time, 'Pain Level': pain_level, 'Medication': medication, 'Dosage': dosage, 'Triggers': triggers, 'Notes': notes, 'Location': location, 'Timezone': timezone}
         df = pd.DataFrame([data])
         df.to_csv('migraine_log.csv', mode='a', header=False, index=False)
 

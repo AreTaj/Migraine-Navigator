@@ -11,7 +11,19 @@ class ViewFrame(tk.Frame):
         self.title_label.pack()
 
         # Create a Treeview widget
-        self.entries_treeview = ttk.Treeview(self, columns=("Date", "Time", "Pain Level", "Medication", "Dosage", "Triggers", "Notes"))
+        self.entries_treeview = ttk.Treeview(self, columns=("Date", "Time", "Pain Level", "Medication", "Dosage", "Triggers", "Notes", "Location", "Timezone"))
+
+        # Create columns
+        self.entries_treeview.column("#0", width=50)
+        self.entries_treeview.column("Date", width=100)
+        self.entries_treeview.column("Time", width=80)
+        self.entries_treeview.column("Pain Level", width=80)
+        self.entries_treeview.column("Medication", width=150)
+        self.entries_treeview.column("Dosage", width=80)
+        self.entries_treeview.column("Triggers", width=200)
+        self.entries_treeview.column("Notes", width=300)
+        self.entries_treeview.column("Location", width=150) 
+        self.entries_treeview.column("Timezone", width=100) 
 
         # Create headings
         self.entries_treeview.heading("#0", text="Entry")
@@ -22,16 +34,8 @@ class ViewFrame(tk.Frame):
         self.entries_treeview.heading("Dosage", text="Dosage")
         self.entries_treeview.heading("Triggers", text="Triggers")
         self.entries_treeview.heading("Notes", text="Notes")
-
-        # Create columns
-        self.entries_treeview.column("#0", width=50)
-        self.entries_treeview.column("Date", width=100)
-        self.entries_treeview.column("Time", width=80)
-        self.entries_treeview.column("Pain Level", width=50)
-        self.entries_treeview.column("Medication", width=150)
-        self.entries_treeview.column("Dosage", width=80)
-        self.entries_treeview.column("Triggers", width=200)
-        self.entries_treeview.column("Notes", width=300)
+        self.entries_treeview.heading("Timezone", text="Timezone")
+        self.entries_treeview.heading("Location", text="Location")
 
         self.entries_treeview.pack(fill="both", expand=True)
 
@@ -48,7 +52,7 @@ class ViewFrame(tk.Frame):
 
             # Insert each row into the Treeview
             for index, row in data.iterrows():
-                self.entries_treeview.insert("", tk.END, values=(row["Date"], row["Time"], row["Pain Level"], row["Medication"], row["Dosage"], row["Triggers"], row["Notes"]))
+                self.entries_treeview.insert("", tk.END, values=(row["Date"], row["Time"], row["Pain Level"], row["Medication"], row["Dosage"], row["Triggers"], row["Notes"], row["Location"], row["Timezone"]))
 
         except FileNotFoundError:
             # Handle case where CSV file doesn't exist
