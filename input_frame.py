@@ -3,7 +3,23 @@ from tkinter import ttk
 import pandas as pd
 import datetime
 import os
-import pytz
+import csv
+
+def get_local_timezone():
+    """Gets the system's local timezone."""
+    try:
+        # Preferred method (Python 3.9+): use zoneinfo
+        import zoneinfo
+        return zoneinfo.ZoneInfo(datetime.datetime.now().astimezone().tzinfo.key)
+    except (ImportError, AttributeError):
+        try:
+            # Fallback for older Python versions or systems without zoneinfo
+            import tzlocal
+            return tzlocal.get_localzone()
+        except ImportError:
+            # Last resort (less accurate, may return UTC):
+            print("Warning: tzlocal library not found.")
+            return None
 
 class InputFrame(tk.Frame):
     def __init__(self, parent):
@@ -36,12 +52,6 @@ class InputFrame(tk.Frame):
         self.location_label = tk.Label(self, text="Location:")
         self.location_entry = tk.Entry(self)
 
-        self.timezone_label = tk.Label(self, text="Time Zone:")
-        self.timezone_entry = tk.Entry(self, state="readonly")
-        # Get current time zone
-        current_timezone = pytz.timezone('UTC').localize(datetime.datetime.utcnow())
-        self.timezone_entry.insert(0, current_timezone.tzinfo)
-
         self.save_button = tk.Button(self, text="Save Entry", command=self.save_entry)
 
         # Pack the widgets
@@ -67,8 +77,6 @@ class InputFrame(tk.Frame):
 
     def save_entry(self,view_frame):
         # Get location and timezone from input fields
-        location = self.location_entry.get()
-        timezone = self.timezone_entry.get() 
         date = self.date_entry.get()
         time = self.time_entry.get()
         pain_level = self.pain_level_scale.get()
@@ -76,10 +84,42 @@ class InputFrame(tk.Frame):
         dosage = self.dosage_entry.get()
         triggers = self.triggers_entry.get("1.0", "end-1c")
         notes = self.notes_entry.get("1.0", "end-1c")
+        location = self.location_entry.get()
+        # Instead of .get(), get timezone from system
+        local_tz = get_local_timezone()
+        if local_tz is None:
+            timezone_name = "UTC"
+        else:
+            try:
+                timezone_name = local_tz.key
+            except AttributeError:
+                timezone_name = str(local_tz)        
 
-        data = {'Date': date, 'Time': time, 'Pain Level': pain_level, 'Medication': medication, 'Dosage': dosage, 'Triggers': triggers, 'Notes': notes, 'Location': location, 'Timezone': timezone}
-        df = pd.DataFrame([data])
-        df.to_csv('migraine_log.csv', mode='a', header=False, index=False)
+        data = {
+                'Date': date, 
+                'Time': time, 
+                'Pain Level': pain_level, 
+                'Medication': medication, 
+                'Dosage': dosage, 
+                'Triggers': triggers, 
+                'Notes': notes, 
+                'Location': location, 
+                'Timezone': timezone_name
+            }
+        print(f"Data to be written: {data}")  # Print data dictionary        
+        filename = 'migraine_log.csv' # store filename in variable for clarity
+        try:
+            with open(filename, 'r', newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                fieldnames = reader.fieldnames
+        except FileNotFoundError:
+            fieldnames = data.keys()
+
+        with open(filename, 'a', newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            if os.stat(filename).st_size == 0:
+                writer.writeheader()
+            writer.writerow(data)
 
         # After saving, update the view frame
         view_frame.update_entries()

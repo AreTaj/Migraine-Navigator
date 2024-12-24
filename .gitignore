@@ -10,4 +10,5 @@ requirements.txt
 __pycache__
 .DS_Store
 main.spec
+test.py
 
