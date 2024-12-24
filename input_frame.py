@@ -27,7 +27,7 @@ def get_local_timezone():
             import tzlocal
             return tzlocal.get_localzone()
         except ImportError:
-            # Last resort (less accurate, may return UTC):
+            # Last resort: return None if tzlocal is not available
             print("Warning: tzlocal library not found.")
             return None
 
@@ -58,9 +58,16 @@ class InputFrame(tk.Frame):
         self.notes_label = tk.Label(self, text="Notes:")
         self.notes_entry = tk.Text(self, height=5, width=30)
 
-        # Location and Time Zone
+        # Location
         self.location_label = tk.Label(self, text="Location:")
-        self.location_entry = tk.Entry(self)
+        self.location_var = tk.StringVar()
+        self.location_var.set("automatic")  # Default to automatic
+        self.location_var.trace_add("write", self.toggle_location_entry) # Add trace
+
+        self.location_automatic_radio = tk.Radiobutton(self, text="Automatic", variable=self.location_var, value="automatic")
+        self.location_manual_radio = tk.Radiobutton(self, text="Manual", variable=self.location_var, value="manual")
+
+        self.location_entry = tk.Entry(self, state=tk.DISABLED)  # Initially disabled
 
         self.save_button = tk.Button(self, text="Save Entry", command=self.save_entry)
 
@@ -83,7 +90,18 @@ class InputFrame(tk.Frame):
         self.triggers_entry.pack()
         self.notes_label.pack()
         self.notes_entry.pack()
+        self.location_label.pack()
+        self.location_automatic_radio.pack()
+        self.location_manual_radio.pack()
+        self.location_entry.pack() # Pack the entry regardless of state
         self.save_button.pack()
+
+    def toggle_location_entry(self, *args): # Toggle entry state
+        if self.location_var.get() == "manual":
+            self.location_entry.config(state=tk.NORMAL)
+        else:
+            self.location_entry.config(state=tk.DISABLED)
+            self.location_entry.delete(0, tk.END) # Clear field when switching to automatic
 
     def save_entry(self,view_frame):
         # Get location and timezone from input fields
@@ -95,10 +113,19 @@ class InputFrame(tk.Frame):
         triggers = self.triggers_entry.get("1.0", "end-1c")
         notes = self.notes_entry.get("1.0", "end-1c")
 
-        #Instead of .get(), get location from system
-        latlng, address = get_location_from_ip()
+        # Location: Instead of .get(), get location from system
+        #latlng, address = get_location_from_ip()   # replaced with the following code:
+        if self.location_var.get() == "automatic":
+            latlng, address = get_location_from_ip()
+            location_data = {
+                'Location': address if address else "Location not found",
+                'Latitude': latlng[0] if latlng else None,
+                'Longitude': latlng[1] if latlng else None,
+            }
+        else:
+            location_data = {'Location': self.location_entry.get(), 'Latitude': None, 'Longitude': None}
 
-        # Instead of .get(), get timezone from system
+        # Timezone: Instead of .get(), get timezone from system
         local_tz = get_local_timezone()
         if local_tz is None:
             timezone_name = "UTC"
@@ -116,9 +143,10 @@ class InputFrame(tk.Frame):
                 'Dosage': dosage, 
                 'Triggers': triggers, 
                 'Notes': notes, 
-                'Location': address if address else "Location not found", # Use address or message
-                'Latitude': latlng[0] if latlng else None, # Use latitude or None
-                'Longitude': latlng[1] if latlng else None, # Use longitude or None
+                **location_data,    # Use dictionary unpacking
+                # 'Location': address if address else "Location not found", # Use address or message
+                # 'Latitude': latlng[0] if latlng else None, # Use latitude or None
+                # 'Longitude': latlng[1] if latlng else None, # Use longitude or None
                 'Timezone': timezone_name
             }
         print(f"Data to be written: {data}")  # Print data dictionary        
