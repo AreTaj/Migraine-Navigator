@@ -204,6 +204,8 @@ class InputFrame(tk.Frame):
         self.notes_entry.delete("1.0", "end-1c")
 
     def fill_time_and_date(self):
+        self.date_entry.delete(0, tk.END)   # Clear existing date in entry field
+        self.time_entry.delete(0, tk.END)   # Clear existing time in entry field
         now = datetime.datetime.now()
         self.date_entry.insert(0, now.strftime("%Y-%m-%d"))
         self.time_entry.insert(0, now.strftime("%H:%M"))
