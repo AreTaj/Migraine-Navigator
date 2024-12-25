@@ -1,6 +1,9 @@
 # Ignore file types
 *.txt
 *.csv
+*.ico
+*.toc
+*.zip
 
 # Except specific files
 requirements.txt
@@ -11,4 +14,8 @@ __pycache__
 .DS_Store
 main.spec
 test.py
+
+# Ignore directories
+build/main/
+dist/
 
