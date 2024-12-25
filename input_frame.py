@@ -71,30 +71,57 @@ class InputFrame(tk.Frame):
 
         self.save_button = tk.Button(self, text="Save Entry", command=self.save_entry)
 
-        # Pack the widgets
-        self.pack_widgets()
+        # Grid the widgets
+        self.grid_widgets()
 
-    def pack_widgets(self):
-        self.date_label.pack()
-        self.date_entry.pack()
-        self.time_label.pack()
-        self.time_entry.pack()
-        self.fill_button.pack()
-        self.pain_level_label.pack()
-        self.pain_level_scale.pack()
-        self.medication_label.pack()
-        self.medication_entry.pack()
-        self.dosage_label.pack()
-        self.dosage_entry.pack()
-        self.triggers_label.pack()
-        self.triggers_entry.pack()
-        self.notes_label.pack()
-        self.notes_entry.pack()
-        self.location_label.pack()
-        self.location_automatic_radio.pack()
-        self.location_manual_radio.pack()
-        self.location_entry.pack() # Pack the entry regardless of state
-        self.save_button.pack()
+    def grid_widgets(self):
+        row = 0
+        pady = 2
+        sticky_w = tk.W
+        sticky_ew = tk.EW
+
+        self.date_label.grid(row=row, column=0, sticky=sticky_w, pady=pady)
+        self.date_entry.grid(row=row, column=1, sticky=sticky_ew, pady=pady)
+        row += 1
+
+        self.time_label.grid(row=row, column=0, sticky=sticky_w, pady=pady)
+        self.time_entry.grid(row=row, column=1, sticky=sticky_ew, pady=pady)
+        row += 1
+
+        self.fill_button.grid(row=row, column=0, columnspan=2, pady=(pady, 10))
+        row += 1
+
+        self.pain_level_label.grid(row=row, column=0, sticky=sticky_w, pady=pady)
+        self.pain_level_scale.grid(row=row, column=1, sticky=sticky_ew, pady=pady)
+        row += 1
+
+        self.medication_label.grid(row=row, column=0, sticky=sticky_w, pady=pady)
+        self.medication_entry.grid(row=row, column=1, sticky=sticky_ew, pady=pady)
+        row += 1
+
+        self.dosage_label.grid(row=row, column=0, sticky=sticky_w, pady=pady)
+        self.dosage_entry.grid(row=row, column=1, sticky=sticky_ew, pady=pady)
+        row += 1
+
+        self.triggers_label.grid(row=row, column=0, sticky=sticky_w, pady=pady)
+        self.triggers_entry.grid(row=row, column=1, sticky=sticky_ew, pady=pady)
+        row += 1
+
+        self.notes_label.grid(row=row, column=0, sticky=sticky_w, pady=pady)
+        self.notes_entry.grid(row=row, column=1, sticky=sticky_ew, pady=pady)
+        row += 1
+
+        self.location_label.grid(row=row, column=0, sticky=sticky_w, pady=pady)
+        row += 1
+        self.location_automatic_radio.grid(row=row, column=0, sticky=sticky_w, pady=pady)
+        self.location_manual_radio.grid(row=row, column=1, sticky=sticky_w, pady=pady)
+        row += 1
+        self.location_entry.grid(row=row, column=0, columnspan=2, sticky=sticky_ew, pady=pady)
+        row += 1
+
+        self.save_button.grid(row=row, column=0, columnspan=2, pady=(10, pady))
+
+        self.columnconfigure(1, weight=1) # Make column 1 expandable
 
     def toggle_location_entry(self, *args): # Toggle entry state
         if self.location_var.get() == "manual":
