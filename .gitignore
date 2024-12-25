@@ -4,6 +4,7 @@
 *.ico
 *.toc
 *.zip
+*.sh
 
 # Except specific files
 requirements.txt

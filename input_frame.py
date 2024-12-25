@@ -1,7 +1,7 @@
-import tkinter as tk
-from tkinter import ttk
-import pandas as pd
-import datetime
+from tkinter import (
+    Frame, Label, Entry, Button, Scale, StringVar, Text, Radiobutton,  NORMAL, DISABLED, W, EW, END, HORIZONTAL
+)
+from datetime import datetime
 import os
 import csv
 import geocoder
@@ -20,7 +20,7 @@ def get_local_timezone():
     try:
         # Preferred method (Python 3.9+): use zoneinfo
         import zoneinfo
-        return zoneinfo.ZoneInfo(datetime.datetime.now().astimezone().tzinfo.key)
+        return zoneinfo.ZoneInfo(datetime.now().astimezone().tzinfo.key)
     except (ImportError, AttributeError):
         try:
             # Fallback for older Python versions or systems without zoneinfo
@@ -31,45 +31,45 @@ def get_local_timezone():
             print("Warning: tzlocal library not found.")
             return None
 
-class InputFrame(tk.Frame):
+class InputFrame(Frame):
     def __init__(self, parent):
         super().__init__(parent)
         
         # Create input fields
-        self.date_label = tk.Label(self, text="Date:")
-        self.date_entry = tk.Entry(self)
+        self.date_label = Label(self, text="Date:")
+        self.date_entry = Entry(self)
 
-        self.time_label = tk.Label(self, text="Time:")
-        self.time_entry = tk.Entry(self)
+        self.time_label = Label(self, text="Time:")
+        self.time_entry = Entry(self)
 
-        self.fill_button = tk.Button(self, text="Fill Time/Date", command=self.fill_time_and_date)
+        self.fill_button = Button(self, text="Fill Time/Date", command=self.fill_time_and_date)
 
-        self.pain_level_label = tk.Label(self, text="Pain Level (1-10):")
-        self.pain_level_scale = tk.Scale(self, from_=1, to=10, orient=tk.HORIZONTAL)
+        self.pain_level_label = Label(self, text="Pain Level (1-10):")
+        self.pain_level_scale = Scale(self, from_=1, to=10, orient=HORIZONTAL)
 
-        self.medication_label = tk.Label(self, text="Medication:")
-        self.medication_entry = tk.Entry(self)
-        self.dosage_label = tk.Label(self, text="Dosage:")
-        self.dosage_entry = tk.Entry(self)
+        self.medication_label = Label(self, text="Medication:")
+        self.medication_entry = Entry(self)
+        self.dosage_label = Label(self, text="Dosage:")
+        self.dosage_entry = Entry(self)
 
-        self.triggers_label = tk.Label(self, text="Triggers:")
-        self.triggers_entry = tk.Text(self, height=5, width=30)
+        self.triggers_label = Label(self, text="Triggers:")
+        self.triggers_entry = Text(self, height=5, width=30)
 
-        self.notes_label = tk.Label(self, text="Notes:")
-        self.notes_entry = tk.Text(self, height=5, width=30)
+        self.notes_label = Label(self, text="Notes:")
+        self.notes_entry = Text(self, height=5, width=30)
 
         # Location
-        self.location_label = tk.Label(self, text="Location:")
-        self.location_var = tk.StringVar()
+        self.location_label = Label(self, text="Location:")
+        self.location_var = StringVar()
         self.location_var.set("automatic")  # Default to automatic
         self.location_var.trace_add("write", self.toggle_location_entry) # Add trace
 
-        self.location_automatic_radio = tk.Radiobutton(self, text="Automatic", variable=self.location_var, value="automatic")
-        self.location_manual_radio = tk.Radiobutton(self, text="Manual", variable=self.location_var, value="manual")
+        self.location_automatic_radio = Radiobutton(self, text="Automatic", variable=self.location_var, value="automatic")
+        self.location_manual_radio = Radiobutton(self, text="Manual", variable=self.location_var, value="manual")
 
-        self.location_entry = tk.Entry(self, state=tk.DISABLED)  # Initially disabled
+        self.location_entry = Entry(self, state=DISABLED)  # Initially disabled
 
-        self.save_button = tk.Button(self, text="Save Entry", command=self.save_entry)
+        self.save_button = Button(self, text="Save Entry", command=self.save_entry)
 
         # Grid the widgets
         self.grid_widgets()
@@ -77,8 +77,8 @@ class InputFrame(tk.Frame):
     def grid_widgets(self):
         row = 0
         pady = 2
-        sticky_w = tk.W
-        sticky_ew = tk.EW
+        sticky_w = W
+        sticky_ew = EW
 
         self.date_label.grid(row=row, column=0, sticky=sticky_w, pady=pady)
         self.date_entry.grid(row=row, column=1, sticky=sticky_ew, pady=pady)
@@ -125,10 +125,10 @@ class InputFrame(tk.Frame):
 
     def toggle_location_entry(self, *args): # Toggle entry state
         if self.location_var.get() == "manual":
-            self.location_entry.config(state=tk.NORMAL)
+            self.location_entry.config(state=NORMAL)
         else:
-            self.location_entry.config(state=tk.DISABLED)
-            self.location_entry.delete(0, tk.END) # Clear field when switching to automatic
+            self.location_entry.config(state=DISABLED)
+            self.location_entry.delete(0, END) # Clear field when switching to automatic
 
     def save_entry(self,view_frame):
         # Get location and timezone from input fields
@@ -195,17 +195,17 @@ class InputFrame(tk.Frame):
         view_frame.update_entries()
 
         # Clear the form
-        self.date_entry.delete(0, tk.END)
-        self.time_entry.delete(0, tk.END)
+        self.date_entry.delete(0, END)
+        self.time_entry.delete(0, END)
         self.pain_level_scale.set(1)
-        self.medication_entry.delete(0, tk.END)
-        self.dosage_entry.delete(0, tk.END)
+        self.medication_entry.delete(0, END)
+        self.dosage_entry.delete(0, END)
         self.triggers_entry.delete("1.0", "end-1c")
         self.notes_entry.delete("1.0", "end-1c")
 
     def fill_time_and_date(self):
-        self.date_entry.delete(0, tk.END)   # Clear existing date in entry field
-        self.time_entry.delete(0, tk.END)   # Clear existing time in entry field
-        now = datetime.datetime.now()
+        self.date_entry.delete(0, END)   # Clear existing date in entry field
+        self.time_entry.delete(0, END)   # Clear existing time in entry field
+        now = datetime.now()
         self.date_entry.insert(0, now.strftime("%Y-%m-%d"))
         self.time_entry.insert(0, now.strftime("%H:%M"))
