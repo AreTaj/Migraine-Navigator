@@ -57,7 +57,7 @@ class AnalysisFrame(tk.Frame):
             self.analysis_content.config(text="Invalid date format in data. Please use YYYY-MM-DD.")
             return
 
-        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(6, 6))
+        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(6, 6))
         width = 0.5 # Bar width
 
         # Filter out entries with pain level 0
@@ -105,6 +105,23 @@ class AnalysisFrame(tk.Frame):
         else:
             ax2.text(0.5, 0.5, "No yearly data available", ha='center', va='center', transform=ax2.transAxes)
 
+        # Medication Usage Analysis (Example)
+        # Assuming a 'Medication' column exists in your data
+        medication_counts = self.data['Medication'].value_counts()  # Count occurrences of each medication
+        if not medication_counts.empty:  # Check if data exists
+            #fig, ax3 = plt.subplots()  # Create a new subplot for medication usage
+            ax3.bar(medication_counts.index, medication_counts.values)
+            ax3.set_xlabel("Medication Name")
+            ax3.set_ylabel("Number of Uses")
+            ax3.set_title("Medication Usage")
+            ax3.set_xticks(medication_counts.index)  # Set x-axis positions for labels
+            ax3.set_xticklabels(medication_counts.index, rotation=45, ha='right')  # Rotate and align labels
+        else:
+            ax3.axis('off')
+            ax3.text(0.5, 0.5, "No medication data available", ha='center', va='center', transform=ax3.transAxes)
+
+        # Combine all subplots into a single figure
+        fig.subplots_adjust(bottom=0.15)  # Adjust spacing between subplots
         plt.tight_layout()
 
         if self.analysis_result:
