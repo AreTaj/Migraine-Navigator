@@ -13,53 +13,109 @@ import tkinter as tk
 from tkinter import ttk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import os
+import pandas as pd
+from datetime import datetime
 
 class AnalysisFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
 
-        # Label for title
-        self.title_label = tk.Label(self, text="Analysis")
-        self.title_label.pack(pady=10)
+        self.title_label = tk.Label(self, text="Migraine Analysis", font=("Arial", 16))
+        self.title_label.pack(pady=(10, 0))  # Add top padding
 
-        # Placeholder for analysis content
-        self.analysis_content = tk.Label(self, text="Select data and analysis type")
-        self.analysis_content.pack()
+        self.analysis_content = tk.Label(self, text="Click 'Analyze' to generate charts.", wraplength=400) # Added wraplength
+        self.analysis_content.pack(pady=(0, 10))  # Add bottom padding
 
-        # Button to trigger analysis (initially disabled)
-        self.analyze_button = tk.Button(self, text="Analyze", state=tk.DISABLED, command=self.perform_analysis)
-        self.analyze_button.pack(pady=10)
+        self.analyze_button = tk.Button(self, text="Analyze", command=self.perform_analysis)
+        self.analyze_button.pack(pady=(0, 10))
 
-        # Placeholder for displaying analysis results (could be a figure or text)
+        self.canvas_frame = tk.Frame(self) # Frame to hold the canvas
+        self.canvas_frame.pack(fill=tk.BOTH, expand=True)
+
         self.analysis_result = None
+        self.data = None
 
     def perform_analysis(self):
-        # This function will be filled later with specific analysis logic
-        # Based on user selection (dropdown, radio buttons etc.)
-        # it will process data and generate results
+        filename = 'migraine_log.csv'
+        if not os.path.exists(filename):
+            self.analysis_content.config(text=f"Data file '{filename}' not found.")
+            return
 
-        # Example: Generate a sample plot
-        x = [1, 2, 3, 4, 5]
-        y = [2, 5, 7, 1, 3]
-        fig, ax = plt.subplots()
-        ax.plot(x, y)
-        ax.set(xlabel='X', ylabel='Y', title='Sample Plot')
+        try:
+            self.data = pd.read_csv(filename)
+            if self.data.empty:
+                self.analysis_content.config(text="No data found in the CSV file.")
+                return
+        except pd.errors.ParserError:
+            self.analysis_content.config(text=f"Error parsing '{filename}'. Check the file format.")
+            return
 
-        # Create a canvas to display the plot within the frame
-        self.analysis_result = FigureCanvasTkAgg(fig, self)
-        self.analysis_result.get_tk_widget().pack()
+        try:
+            self.data['Date'] = pd.to_datetime(self.data['Date'], format='%Y-%m-%d')
+        except (ValueError, TypeError):
+            self.analysis_content.config(text="Invalid date format in data. Please use YYYY-MM-DD.")
+            return
 
-        # (Optional) Update the analysis content label with summary text
-        self.analysis_content.config(text="Sample plot generated. More analysis options coming soon!")
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(6, 6))
+        width = 0.5 # Bar width
 
-# This allows for data exchange between frames (details later)
-    def update_data(self, data):
-        # This function will be called from other frames (e.g., ViewFrame)
-        # to provide the analysis frame with data for processing
-        self.data = data
-        self.analyze_button.config(state=tk.NORMAL)  # Enable analysis button if data is received
+        # Filter out entries with pain level 0
+        try:
+            self.data['Pain Level'] = pd.to_numeric(self.data['Pain Level'], errors='coerce')  # Try conversion with coerce for non-numeric values
+        except:
+            # Handle non-numeric values (optional)
+            pass
+        migraines_with_pain = self.data[self.data['Pain Level'] > 0]
+
+        # Migraines per month for current year only
+        current_year = datetime.now().year
+        monthly_counts = migraines_with_pain[migraines_with_pain['Date'].dt.year == current_year].groupby(migraines_with_pain['Date'].dt.to_period('M')).size()
+        if not monthly_counts.empty: # Check if there is data to avoid errors
+            monthly_counts.index = monthly_counts.index.strftime('%Y-%m')
+            ax1.bar(monthly_counts.index, monthly_counts.values, width=width, align='center')
+            ax1.set_xlabel("Month")
+            ax1.set_ylabel("Number of Migraines")
+            ax1.set_title(f"Migraines per Month for Year {current_year}")
+            ax1.tick_params(axis='x', rotation=45)#, ha='right') # ha for horizontal alignment
+            labels = ax1.get_xticklabels()
+            for label in labels:
+                label.set_ha('right')  # Set horizontal alignment for each label separately
+            #ax1.set_xlim([monthly_counts.index[0], monthly_counts.index[-1]]) #Setting x-axis limits
+
+        else:
+            ax1.text(0.5, 0.5, "No data for current year", ha='center', va='center', transform=ax1.transAxes)
+
+        # Migraines per year
+        yearly_counts = migraines_with_pain.groupby(migraines_with_pain['Date'].dt.year).size()
+        if not yearly_counts.empty: # Check if there is data to avoid errors
+            ax2.bar(yearly_counts.index, yearly_counts.values, width=width)
+            ax2.set_xlabel("Year")
+            ax2.set_ylabel("Number of Migraines")
+            ax2.set_title("Migraines per Year")
+            min_year = yearly_counts.index.min() # Get min and max years from data
+            max_year = yearly_counts.index.max()
+            if min_year != max_year:
+                ax2.set_xlim([min_year - 0.5, max_year + 0.5])  # Set x-axis limits with padding (existing code)
+            else:
+                # Handle case with only one year of data (e.g., set a small range around the year)
+                ax2.set_xlim([min_year - 0.25, min_year + 0.25])            
+            #ax2.set_xlim([yearly_counts.index[0], yearly_counts.index[-1]]) #Setting x-axis limits
+            ax2.set_xticks(range(min_year, max_year + 1)) # Ensure integer ticks
+        else:
+            ax2.text(0.5, 0.5, "No yearly data available", ha='center', va='center', transform=ax2.transAxes)
+
+        plt.tight_layout()
+
+        if self.analysis_result:
+            self.analysis_result.get_tk_widget().destroy()
+
+        self.analysis_result = FigureCanvasTkAgg(fig, self.canvas_frame) # Put canvas in the frame
+        self.analysis_result.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+
+        self.analysis_content.config(text="Monthly and yearly migraine counts displayed.")
 
 if __name__ == "__main__":
     root = tk.Tk()
-    AnalysisFrame(root).pack()
+    AnalysisFrame(root).pack(fill=tk.BOTH, expand=True) # Make the frame expandable
     root.mainloop()

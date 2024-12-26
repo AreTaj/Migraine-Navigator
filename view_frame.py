@@ -11,7 +11,7 @@ class ViewFrame(tk.Frame):
         self.title_label.pack()
 
         # Create a Treeview widget
-        self.entries_treeview = ttk.Treeview(self, columns=("Date", "Time", "Pain Level", "Medication", "Dosage", "Triggers", "Notes", "Location", "Timezone"))
+        self.entries_treeview = ttk.Treeview(self, columns=("Date", "Time", "Pain Level", "Medication", "Dosage", "Triggers", "Notes", "Location"))#, "Timezone"))
 
         # Create columns
         self.entries_treeview.column("#0", width=30)
@@ -23,7 +23,7 @@ class ViewFrame(tk.Frame):
         self.entries_treeview.column("Triggers", width=200)
         self.entries_treeview.column("Notes", width=300)
         self.entries_treeview.column("Location", width=150) 
-        self.entries_treeview.column("Timezone", width=120) 
+        #self.entries_treeview.column("Timezone", width=120) 
 
         # Create headings
         self.entries_treeview.heading("#0", text="Entry")
@@ -34,7 +34,7 @@ class ViewFrame(tk.Frame):
         self.entries_treeview.heading("Dosage", text="Dosage")
         self.entries_treeview.heading("Triggers", text="Triggers")
         self.entries_treeview.heading("Notes", text="Notes")
-        self.entries_treeview.heading("Timezone", text="Timezone")
+        #self.entries_treeview.heading("Timezone", text="Timezone")
         self.entries_treeview.heading("Location", text="Location")
 
         self.entries_treeview.pack(fill="both", expand=True)
@@ -45,14 +45,15 @@ class ViewFrame(tk.Frame):
     def load_entries(self):
         try:
             # Read data from CSV file
-            data = pd.read_csv("migraine_log.csv")
+            data = pd.read_csv("migraine_log.csv").fillna("")
 
             # Clear the Treeview
             self.entries_treeview.delete(*self.entries_treeview.get_children())
 
             # Insert each row into the Treeview
             for index, row in data.iterrows():
-                self.entries_treeview.insert("", tk.END, values=(row["Date"], row["Time"], row["Pain Level"], row["Medication"], row["Dosage"], row["Triggers"], row["Notes"], row["Location"], row["Timezone"]))
+                self.entries_treeview.insert("", tk.END, values=row.to_list())
+                #self.entries_treeview.insert("", tk.END, values=(row["Date"], row["Time"], row["Pain Level"], row["Medication"], row["Dosage"], row["Triggers"], row["Notes"], row["Location"], row["Timezone"]))
 
         except FileNotFoundError:
             # Handle case where CSV file doesn't exist
