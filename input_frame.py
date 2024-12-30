@@ -44,8 +44,8 @@ class InputFrame(Frame):
 
         self.fill_button = Button(self, text="Fill Time/Date", command=self.fill_time_and_date)
 
-        self.pain_level_label = Label(self, text="Pain Level (1-10):")
-        self.pain_level_scale = Scale(self, from_=1, to=10, orient=HORIZONTAL)
+        self.pain_level_label = Label(self, text="Pain Level (0-10):")
+        self.pain_level_scale = Scale(self, from_=0, to=10, orient=HORIZONTAL)
 
         self.medication_label = Label(self, text="Medication:")
         self.medication_entry = Entry(self)
@@ -141,7 +141,6 @@ class InputFrame(Frame):
         notes = self.notes_entry.get("1.0", "end-1c")
 
         # Location: Instead of .get(), get location from system
-        #latlng, address = get_location_from_ip()   # replaced with the following code:
         if self.location_var.get() == "automatic":
             latlng, address = get_location_from_ip()
             location_data = {
@@ -170,10 +169,7 @@ class InputFrame(Frame):
                 'Dosage': dosage, 
                 'Triggers': triggers, 
                 'Notes': notes, 
-                **location_data,    # Use dictionary unpacking
-                # 'Location': address if address else "Location not found", # Use address or message
-                # 'Latitude': latlng[0] if latlng else None, # Use latitude or None
-                # 'Longitude': latlng[1] if latlng else None, # Use longitude or None
+                **location_data,    # Use dictionary unpacking to add location data
                 'Timezone': timezone_name
             }
         print(f"Data to be written: {data}")  # Print data dictionary        

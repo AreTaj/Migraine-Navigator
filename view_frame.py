@@ -46,6 +46,9 @@ class ViewFrame(tk.Frame):
         try:
             # Read data from CSV file
             data = pd.read_csv("migraine_log.csv").fillna("")
+            
+            # Sort the DataFrame by 'Date' and 'Time' in descending order
+            data = data.sort_values(by=['Date', 'Time'], ascending=False)
 
             # Clear the Treeview
             self.entries_treeview.delete(*self.entries_treeview.get_children())
