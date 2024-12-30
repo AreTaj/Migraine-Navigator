@@ -1,17 +1,10 @@
-""" 
-Ideas:
-
-- bar charts for migraines per month, year
-- medication usage
-
-"""
-
 import tkinter as tk
 # from tkinter import (
 #     Frame, Label, Entry, Button, Scale, StringVar, Text, Radiobutton,  NORMAL, DISABLED, W, EW, END, HORIZONTAL
 # )
 from tkinter import ttk
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import os
 import pandas as pd
@@ -36,6 +29,56 @@ class AnalysisFrame(tk.Frame):
         self.analysis_result = None
         self.data = None
 
+    def plot_migraines_per_month(self, ax, data, year):
+        width = 0.5
+
+        monthly_counts = data[data['Date'].dt.year == year].groupby(data['Date'].dt.to_period('M')).size()
+        if not monthly_counts.empty:
+            monthly_counts.index = monthly_counts.index.strftime('%B')
+            ax.bar(monthly_counts.index, monthly_counts.values, width=width, align='center')
+            ax.set_ylabel("Count")
+            ax.set_title(f"Migraines per Month for Year {year}")
+            ax.tick_params(axis='x', rotation=30)
+            for label in ax.get_xticklabels():
+                label.set_ha('right')
+            for i, v in enumerate(monthly_counts.values):
+                ax.text(i, v, str(v), ha='center', va='bottom')
+            # ax.set_xlim([monthly_counts.index[0], monthly_counts.index[-1]])
+        else:
+            ax.text(0.5, 0.5, "No data for current year", ha='center', va='center', transform=ax.transAxes)
+        
+    def plot_migraines_per_year(self, ax, data):
+        width = 0.5
+
+        if not data.empty:
+            ax.bar(data.index, data.values, width=width)
+            ax.set_ylabel("Count")
+            ax.set_title("Migraines per Year")
+            min_year = data.index.min()
+            max_year = data.index.max()
+            if min_year != max_year:
+                ax.set_xlim([min_year - 0.5, max_year + 0.5])
+            else:
+                ax.set_xlim([min_year - 0.25, min_year + 0.25])
+            ax.set_xticks(range(min_year, max_year + 1))
+            for i, v in enumerate(data.values):
+                ax.text(i, v, str(v), ha='center', va='bottom')
+        else:
+            ax.text(0.5, 0.5, "No yearly data available", ha='center', va='center', transform=ax.transAxes)
+
+    def plot_medication_usage(self, ax, data):
+        if not data.empty:
+            ax.bar(data.index, data.values)
+            ax.set_ylabel("Count")
+            ax.set_title("Medication Usage")
+            ax.set_xticks(data.index)
+            ax.set_xticklabels(data.index, rotation=30)
+            for i, v in enumerate(data.values):
+                ax.text(i, v, str(v), ha='center', va='bottom')
+        else:
+            ax.axis('off')  # Hide the axes if no data
+            ax.text(0.5, 0.5, "No medication data available", ha='center', va='center', transform=ax.transAxes)
+
     def perform_analysis(self):
         filename = 'migraine_log.csv'
         if not os.path.exists(filename):
@@ -57,77 +100,33 @@ class AnalysisFrame(tk.Frame):
             self.analysis_content.config(text="Invalid date format in data. Please use YYYY-MM-DD.")
             return
 
-        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(6, 6))
-        width = 0.5 # Bar width
+        fig = plt.figure(figsize=(8, 12))  # Create the figure with desired size
+        gs = gridspec.GridSpec(3, 1, height_ratios=[2, 2, 1],hspace=1)  # Create a 3-row, 1-column gridspec
 
-        # Filter out entries with pain level 0
+        ax1 = plt.subplot(gs[0])
+        ax2 = plt.subplot(gs[1])
+        ax3 = plt.subplot(gs[2])
+
         try:
-            self.data['Pain Level'] = pd.to_numeric(self.data['Pain Level'], errors='coerce')  # Try conversion with coerce for non-numeric values
+            self.data['Pain Level'] = pd.to_numeric(self.data['Pain Level'], errors='coerce')
         except:
-            # Handle non-numeric values (optional)
             pass
         migraines_with_pain = self.data[self.data['Pain Level'] > 0]
 
-        # Migraines per month for current year only
         current_year = datetime.now().year
-        monthly_counts = migraines_with_pain[migraines_with_pain['Date'].dt.year == current_year].groupby(migraines_with_pain['Date'].dt.to_period('M')).size()
-        if not monthly_counts.empty: # Check if there is data to avoid errors
-            monthly_counts.index = monthly_counts.index.strftime('%Y-%m')
-            ax1.bar(monthly_counts.index, monthly_counts.values, width=width, align='center')
-            ax1.set_xlabel("Month")
-            ax1.set_ylabel("Number of Migraines")
-            ax1.set_title(f"Migraines per Month for Year {current_year}")
-            ax1.tick_params(axis='x', rotation=45)#, ha='right') # ha for horizontal alignment
-            labels = ax1.get_xticklabels()
-            for label in labels:
-                label.set_ha('right')  # Set horizontal alignment for each label separately
-            #ax1.set_xlim([monthly_counts.index[0], monthly_counts.index[-1]]) #Setting x-axis limits
-
-        else:
-            ax1.text(0.5, 0.5, "No data for current year", ha='center', va='center', transform=ax1.transAxes)
-
-        # Migraines per year
         yearly_counts = migraines_with_pain.groupby(migraines_with_pain['Date'].dt.year).size()
-        if not yearly_counts.empty: # Check if there is data to avoid errors
-            ax2.bar(yearly_counts.index, yearly_counts.values, width=width)
-            ax2.set_xlabel("Year")
-            ax2.set_ylabel("Number of Migraines")
-            ax2.set_title("Migraines per Year")
-            min_year = yearly_counts.index.min() # Get min and max years from data
-            max_year = yearly_counts.index.max()
-            if min_year != max_year:
-                ax2.set_xlim([min_year - 0.5, max_year + 0.5])  # Set x-axis limits with padding (existing code)
-            else:
-                # Handle case with only one year of data (e.g., set a small range around the year)
-                ax2.set_xlim([min_year - 0.25, min_year + 0.25])            
-            #ax2.set_xlim([yearly_counts.index[0], yearly_counts.index[-1]]) #Setting x-axis limits
-            ax2.set_xticks(range(min_year, max_year + 1)) # Ensure integer ticks
-        else:
-            ax2.text(0.5, 0.5, "No yearly data available", ha='center', va='center', transform=ax2.transAxes)
+        medication_counts = self.data['Medication'].value_counts()
 
-        # Medication Usage Analysis (Example)
-        # Assuming a 'Medication' column exists in your data
-        medication_counts = self.data['Medication'].value_counts()  # Count occurrences of each medication
-        if not medication_counts.empty:  # Check if data exists
-            #fig, ax3 = plt.subplots()  # Create a new subplot for medication usage
-            ax3.bar(medication_counts.index, medication_counts.values)
-            ax3.set_xlabel("Medication Name")
-            ax3.set_ylabel("Number of Uses")
-            ax3.set_title("Medication Usage")
-            ax3.set_xticks(medication_counts.index)  # Set x-axis positions for labels
-            ax3.set_xticklabels(medication_counts.index, rotation=45, ha='right')  # Rotate and align labels
-        else:
-            ax3.axis('off')
-            ax3.text(0.5, 0.5, "No medication data available", ha='center', va='center', transform=ax3.transAxes)
+        self.plot_migraines_per_month(ax1, migraines_with_pain, current_year)
+        self.plot_migraines_per_year(ax2, yearly_counts)
+        self.plot_medication_usage(ax3, medication_counts)
 
-        # Combine all subplots into a single figure
-        fig.subplots_adjust(bottom=0.15)  # Adjust spacing between subplots
-        plt.tight_layout()
+        fig.subplots_adjust(left=0.1, bottom=0.15, right=0.9, top=0.9)  # Adjust spacing manually
 
         if self.analysis_result:
             self.analysis_result.get_tk_widget().destroy()
 
-        self.analysis_result = FigureCanvasTkAgg(fig, self.canvas_frame) # Put canvas in the frame
+        self.analysis_result = FigureCanvasTkAgg(fig, self.canvas_frame)
         self.analysis_result.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
         self.analysis_content.config(text="Monthly and yearly migraine counts displayed.")

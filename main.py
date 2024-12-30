@@ -15,7 +15,7 @@ notebook.pack(fill="both", expand=True)
 # Create instances of the screen classes
 input_frame_instance = InputFrame(notebook)
 view_frame_instance = ViewFrame(notebook)
-analysis_frame_instance = AnalysisFrame(notebook)       #temporarily disabled
+analysis_frame_instance = AnalysisFrame(notebook)
 
 # Add frames (instances) to the notebook
 notebook.add(input_frame_instance, text="Input")
