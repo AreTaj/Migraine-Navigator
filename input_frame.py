@@ -1,7 +1,8 @@
 from tkinter import (
-    Frame, Label, Entry, Button, Scale, StringVar, Text, Radiobutton,  NORMAL, DISABLED, W, EW, END, HORIZONTAL
+    Frame, Label, Entry, Button, Scale, StringVar, Text, Radiobutton,  NORMAL, DISABLED, W, EW, END, HORIZONTAL, messagebox
 )
 from datetime import datetime
+import re
 import os
 import csv
 import geocoder
@@ -159,8 +160,32 @@ class InputFrame(Frame):
             try:
                 timezone_name = local_tz.key
             except AttributeError:
-                timezone_name = str(local_tz)        
+                timezone_name = str(local_tz)   
 
+        # --- Date validation ---
+        date_regex = r"^\d{4}-\d{2}-\d{2}$"
+        if not re.match(date_regex, date):
+            messagebox.showerror("Error", "Invalid date format. Please use YYYY-MM-DD.")
+            return
+
+        try: # additional validation; checks if date is valid calendar date.
+            datetime.strptime(date, "%Y-%m-%d")
+        except ValueError:
+            messagebox.showerror("Error", "Invalid date. Please enter a valid calendar date.")
+            return
+
+        # --- Time validation ---
+        time_regex = r"^\d{2}:\d{2}$"
+        if not re.match(time_regex, time):
+            messagebox.showerror("Error", "Invalid time format. Please use HH:MM (24 hour time).")
+            return
+        
+        try: # additional validation; checks if time is valid time.
+            datetime.strptime(time, "%H:%M")
+        except ValueError:
+            messagebox.showerror("Error", "Invalid time. Please enter a valid time.")
+            return
+        
         data = {
                 'Date': date, 
                 'Time': time, 

@@ -85,7 +85,8 @@ class AnalysisFrame(tk.Frame):
         width = 0.5
 
         if not data.empty:
-            ax.bar(data.index, data.values, width=width)
+            bars = ax.bar(data.index, data.values, width=width)  # Create bars
+            #ax.bar(data.index, data.values, width=width)
             ax.set_ylabel("Count")
             ax.set_title("Migraine Days per Year")
             min_year = data.index.min()
@@ -94,9 +95,16 @@ class AnalysisFrame(tk.Frame):
                 ax.set_xlim([min_year - 0.5, max_year + 0.5])
             else:
                 ax.set_xlim([min_year - 0.25, min_year + 0.25])
+
+            # Set ticks to a reasonable range
             ax.set_xticks(range(min_year, max_year + 1))
             for i, v in enumerate(data.values):
                 ax.text(i, v, str(v), ha='center', va='bottom')
+            
+            # Add count labels on top of bars with auto-alignment
+            for rect, label in zip(bars, data.values):
+                y_pos = rect.get_height()  # Get bar height
+                ax.text(rect.get_x() + rect.get_width() / 2, y_pos + 0.1, str(label), ha='center', va='bottom')
         else:
             ax.text(0.5, 0.5, "No yearly data available", ha='center', va='center', transform=ax.transAxes)
 
@@ -140,6 +148,7 @@ class AnalysisFrame(tk.Frame):
             pass
 
         migraines_with_pain = self.data[self.data['Pain Level'] > 0]    # Filter out entries with no pain level
+        migraines_with_pain = migraines_with_pain.drop_duplicates(subset='Date', keep='first')  # Keep only one entry per day
 
         current_year = datetime.now().year
         yearly_counts = migraines_with_pain.groupby(migraines_with_pain['Date'].dt.year).size()
