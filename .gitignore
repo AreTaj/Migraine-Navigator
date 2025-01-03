@@ -6,6 +6,10 @@
 *.zip
 *.sh
 *.xlsx
+*.spec
+*.png
+*.ipynb
+*.pkl
 
 # Except specific files
 requirements.txt
@@ -16,11 +20,14 @@ __pycache__
 .DS_Store
 main.spec
 test.py
+setup.py
 
 # For internal use only
 transfer_data.py
 
 # Ignore directories
 build/main/
+build/Migraine Log/
+build/
 dist/
 
