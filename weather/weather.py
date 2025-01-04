@@ -1,8 +1,15 @@
 from meteostat import Point, Daily, Hourly
 import pandas as pd
 import csv
+import os
 
+# Ignore FutureWarnings
 #warnings.simplefilter(action='ignore', category=FutureWarning)
+
+# Define the filename variable
+weather_data_filename = os.path.join(os.path.dirname(__file__), '..', 'data', 'weather_data.csv')
+migraine_data_filename = os.path.join(os.path.dirname(__file__), '..', 'data', 'migraine_log.csv')
+combined_data_filename = os.path.join(os.path.dirname(__file__), '..', 'data', 'combined_data.csv')
 
 def get_hourly_weather(lat, lon, date):
     """Fetches hourly weather data, handles missing data gracefully."""
@@ -62,7 +69,7 @@ def get_historical_weather(lat, lon, start_date, end_date):
 
     return all_weather_data
 
-def save_weather_data_to_csv(weather_data, filename='weather_data.csv'):
+def save_weather_data_to_csv(weather_data, filename=weather_data_filename):
     fieldnames = ['date', 'tavg', 'tmin', 'tmax', 'pres', 'prcp', 'wspd', 'tsun', 'average_humidity', 'midday_humidity', 'Latitude', 'Longitude']
     with open(filename, 'w', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -72,7 +79,7 @@ def save_weather_data_to_csv(weather_data, filename='weather_data.csv'):
             del data['key']
             writer.writerow(data)
 
-def fetch_weather_data(migraine_log_file='migraine_log.csv', weather_data_file='weather_data.csv'):
+def fetch_weather_data(migraine_log_file=migraine_data_filename, weather_data_file=weather_data_filename):
     migraine_data = pd.read_csv(migraine_log_file)
     # Ensure correct data types for comparisons
     migraine_data['Date'] = pd.to_datetime(migraine_data['Date'])
@@ -80,10 +87,13 @@ def fetch_weather_data(migraine_log_file='migraine_log.csv', weather_data_file='
     # Create keys for migraine data
     migraine_data['key'] = migraine_data.apply(lambda row: (row['Date'], row['Latitude'], row['Longitude']), axis=1)
 
+    data_path = os.path.join(os.path.dirname(__file__), '..', 'data', weather_data_file)
+
     # Load existing weather data
     try:
-        existing_weather_data = pd.read_csv(weather_data_file)#, parse_dates=['date']) # Parse dates in existing data
-        existing_weather_data['date'] = pd.to_datetime(existing_weather_data['date']) #Parse date after reading csv
+        existing_weather_data = pd.read_csv(data_path) # Parse dates in existing data
+        existing_weather_data['date'] = pd.to_datetime(existing_weather_data['date'], format='mixed') #Parse date after reading csv
+        #existing_weather_data = pd.read_csv(data_path, parse_dates=['date'])   # this line may raise FutureWarning
         # Check if 'Latitude' and 'Longitude' columns exist before creating the key column
         if not existing_weather_data.empty and 'Latitude' in existing_weather_data.columns and 'Longitude' in existing_weather_data.columns:
             existing_weather_data['key'] = existing_weather_data.apply(lambda row: (row['date'], row['Latitude'], row['Longitude']), axis=1)
@@ -112,7 +122,7 @@ def fetch_weather_data(migraine_log_file='migraine_log.csv', weather_data_file='
 
         if all_weather_data:
             combined_weather_data = pd.concat([existing_weather_data, pd.DataFrame(all_weather_data)], ignore_index=True)
-            save_weather_data_to_csv(combined_weather_data.to_dict('records'), weather_data_file)
+            save_weather_data_to_csv(combined_weather_data.to_dict('records'), data_path)
         else:
             print("No weather data to add.")
     else:

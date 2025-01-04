@@ -3,9 +3,16 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import accuracy_score, f1_score, r2_score, mean_absolute_error, mean_squared_error
 import pandas as pd
 import numpy as np
+import os
+
+# Define the file paths using relative pathing
+weather_data_filename = os.path.join(os.path.dirname(__file__), '..', 'data', 'weather_data.csv')
+migraine_data_filename = os.path.join(os.path.dirname(__file__), '..', 'data', 'migraine_log.csv')
+combined_data_filename = os.path.join(os.path.dirname(__file__), '..', 'data', 'combined_data.csv')
+model_path = os.path.join(os.path.dirname(__file__), '..', 'models', 'rf_model.pkl')
 
 # Merge migraine and weather data
-def merge_migraine_and_weather_data(migraine_log_file='migraine_log.csv', weather_data_file='weather_data.csv', output_file='combined_data.csv'):
+def merge_migraine_and_weather_data(migraine_log_file=migraine_data_filename, weather_data_file=weather_data_filename, output_file=combined_data_filename):
     migraine_data = pd.read_csv(migraine_log_file)
     weather_data = pd.read_csv(weather_data_file)
 
@@ -16,7 +23,7 @@ def merge_migraine_and_weather_data(migraine_log_file='migraine_log.csv', weathe
 merge_migraine_and_weather_data()
 
 # Load combined data
-combined_data = pd.read_csv('combined_data.csv')
+combined_data = pd.read_csv(combined_data_filename)
 
 # Convert 'Time' column to minutes since midnight
 def convert_time_to_minutes(time_str):
@@ -64,8 +71,10 @@ features = combined_data.drop(columns=[
     'Timezone', 
     'Pain Level',
     'Pain_Level_Binary',
-    'Longitude',
-    'Latitude',
+    'Longitude_x',
+    'Latitude_x',
+    'Longitude_y',
+    'Latitude_y',
     'Time',
     ])  # Drop non-feature columns
 target_binary = combined_data['Pain_Level_Binary']
@@ -79,7 +88,7 @@ clf.fit(X_train_bin, y_train_bin)
 
 import joblib
 # Save the trained model
-joblib.dump(clf, 'rf_model.pkl')
+joblib.dump(clf, model_path)
 
 # Make predictions
 y_pred_bin = clf.predict(X_test_bin)
@@ -106,8 +115,10 @@ features_non_zero = non_zero_data.drop(columns=[
     'Timezone', 
     'Pain Level',
     'Pain_Level_Binary',
-    'Longitude',
-    'Latitude',
+    'Longitude_x',
+    'Latitude_x',
+    'Longitude_y',
+    'Latitude_y',
     'Time'
 ])  # Drop non-feature columns
 target_non_zero = np.log1p(non_zero_data['Pain Level'])  # Apply logarithmic transformation

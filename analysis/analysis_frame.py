@@ -11,8 +11,10 @@ import pandas as pd
 from datetime import datetime
 
 class AnalysisFrame(tk.Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, data_file_path):
         super().__init__(parent)
+        self.data_file_path = data_file_path  # Store data_file_path as an instance variable
+        self.filename = self.data_file_path  # Define filename here
 
         self.title_label = tk.Label(self, text="Migraine Analysis", font=("Arial", 16))
         self.title_label.pack(pady=(10, 0))  # Add top padding
@@ -122,18 +124,18 @@ class AnalysisFrame(tk.Frame):
             ax.text(0.5, 0.5, "No medication data available", ha='center', va='center', transform=ax.transAxes)
 
     def perform_analysis(self):
-        filename = 'migraine_log.csv'
-        if not os.path.exists(filename):
-            self.analysis_content.config(text=f"Data file '{filename}' not found.")
+        #filename = 'migraine_log.csv'
+        if not os.path.exists(self.filename):
+            self.analysis_content.config(text=f"Data file '{self.filename}' not found.")
             return
 
         try:
-            self.data = pd.read_csv(filename)
+            self.data = pd.read_csv(self.filename)
             if self.data.empty:
                 self.analysis_content.config(text="No data found in the CSV file.")
                 return
         except pd.errors.ParserError:
-            self.analysis_content.config(text=f"Error parsing '{filename}'. Check the file format.")
+            self.analysis_content.config(text=f"Error parsing '{self.filename}'. Check the file format.")
             return
 
         try:
