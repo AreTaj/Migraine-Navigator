@@ -33,9 +33,9 @@ def get_local_timezone():
             return None
 
 class InputFrame(Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, data_file_path):
         super().__init__(parent)
-        
+        self.data_file_path = data_file_path # Store data_file_path as an instance variable        
         # Create input fields
         self.date_label = Label(self, text="Date:")
         self.date_entry = Entry(self)
@@ -197,8 +197,11 @@ class InputFrame(Frame):
                 **location_data,    # Use dictionary unpacking to add location data
                 'Timezone': timezone_name
             }
-        print(f"Data to be written: {data}")  # Print data dictionary        
-        filename = 'migraine_log.csv' # store filename in variable for clarity
+        print(f"Data to be written: {data}")  # Print data dictionary    
+
+        # Get the data file path from the instance variable
+        filename = self.data_file_path # Use instance variable    
+        #filename = 'migraine_log.csv' # store filename in variable for clarity
         try:
             with open(filename, 'r', newline='') as csvfile:
                 reader = csv.DictReader(csvfile)

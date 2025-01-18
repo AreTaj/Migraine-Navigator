@@ -9,7 +9,6 @@
 *.spec
 *.png
 *.ipynb
-*.pkl
 
 # Except specific files
 requirements.txt
@@ -25,9 +24,12 @@ setup.py
 # For internal use only
 transfer_data.py
 
-# Ignore directories
+# Ignore build and dist directories
 build/main/
 build/Migraine Log/
 build/
 dist/
+
+# Ignore other directories
+data/
 

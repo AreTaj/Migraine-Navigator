@@ -5,13 +5,18 @@ import re
 import joblib
 import pandas as pd
 import geocoder
+import os
 
 class PredictionFrame(tk.Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, data_file_path):
         super().__init__(parent)
+        # TODO: Use this for actual predictions
+        self.data_file_path = data_file_path  # Store data_file_path as an instance variable
+        self.filename = self.data_file_path  # Define filename here
         
         # Load the trained model
-        self.model = joblib.load('rf_model.pkl')
+        model_path = os.path.join(os.path.dirname(__file__), '..', 'models', 'rf_model.pkl')
+        self.model = joblib.load(model_path)
 
         # Create input fields
         self.date_label = tk.Label(self, text="Date:")

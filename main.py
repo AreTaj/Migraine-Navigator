@@ -1,24 +1,37 @@
 import tkinter as tk
 from tkinter import ttk
-from input_frame import InputFrame
-from view_frame import ViewFrame
-from analysis_frame import AnalysisFrame
-from prediction_frame import PredictionFrame
+import os
+from input import InputFrame
+from view import ViewFrame
+from analysis import AnalysisFrame
+from prediction import PredictionFrame
 from weather import fetch_weather_data
 
+# Data file management functions
+def get_data_file_path(filename):
+    data_dir = "data"  # Assuming 'data' directory is on the same level as main.py 
+    os.makedirs(data_dir, exist_ok=True)  # Create directory if it doesn't exist
+    return os.path.join(data_dir, filename)
+                        
 # Create the main window
 window = tk.Tk()
 window.title("Migraine Log")
+
+# Define specific data file paths using relative paths
+migraine_log_path = get_data_file_path("migraine_log.csv")      # Path for migraine data
+weather_data_path = get_data_file_path("weather_data.csv")      # Path for weather data
+combined_data_path = get_data_file_path("combined_data.csv")    # Path for combined data
+# (Add paths for other data files as needed)
 
 # Create a Notebook widget for different screens
 notebook = ttk.Notebook(window)
 notebook.pack(fill="both", expand=True)
 
 # Create instances of the screen classes
-input_frame_instance = InputFrame(notebook)
-view_frame_instance = ViewFrame(notebook)
-analysis_frame_instance = AnalysisFrame(notebook)
-prediction_frame_instance = PredictionFrame(notebook)
+input_frame_instance = InputFrame(notebook, migraine_log_path)
+view_frame_instance = ViewFrame(notebook, migraine_log_path)
+analysis_frame_instance = AnalysisFrame(notebook, migraine_log_path)
+prediction_frame_instance = PredictionFrame(notebook, combined_data_path)
 
 # Add frames (instances) to the notebook
 notebook.add(input_frame_instance, text="Input")
@@ -33,40 +46,3 @@ input_frame_instance.save_button.config(command=lambda: input_frame_instance.sav
 fetch_weather_data()
 
 window.mainloop()
-
-
-
-""" import os
-import csv
-
-APPNAME = "MigraineTracker"  # Use your application's name
-
-def get_data_file_path():
-    #Returns the path to the migraine log CSV file.
-    data_dir = os.path.join(os.path.expanduser("~"), "Library", "Application Support", APPNAME)
-    os.makedirs(data_dir, exist_ok=True)  # Create directory if it doesn't exist
-    return os.path.join(data_dir, "migraine_log.csv")
-
-def create_csv_if_not_exists(filepath):
-    #Creates the CSV file with headers if it doesn't exist.
-    if not os.path.exists(filepath):
-        with open(filepath, 'w', newline='') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow(["Date", "Time", "Duration", "Severity", "Symptoms", "Triggers", "Medications", "Notes"])  # Example headers
-
-# Example usage:
-file_path = get_data_file_path()
-create_csv_if_not_exists(file_path)
-
-# Now use 'file_path' for all your CSV operations
-# Example to write data:
-with open(file_path, 'a', newline='') as csvfile:
-    writer = csv.writer(csvfile)
-    writer.writerow(["2024-07-27", "10:00", "2", "7", "Nausea, Visual Aura", "Stress", "Ibuprofen", "Felt better after resting."])
-
-# Example to read data:
-with open(file_path, 'r', newline='') as csvfile:
-    reader = csv.reader(csvfile)
-    for row in reader:
-        print(row) 
-"""

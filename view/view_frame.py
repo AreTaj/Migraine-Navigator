@@ -3,8 +3,10 @@ from tkinter import ttk
 import pandas as pd
 
 class ViewFrame(tk.Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, data_file_path):
         super().__init__(parent)
+        self.data_file_path = data_file_path # Store data_file_path as an instance variable        
+        self.filename = self.data_file_path # Use instance variable    
 
         # Create a label for the title
         self.title_label = tk.Label(self, text="View Migraine Entries")
@@ -45,7 +47,7 @@ class ViewFrame(tk.Frame):
     def load_entries(self):
         try:
             # Read data from CSV file
-            data = pd.read_csv("migraine_log.csv").fillna("")
+            data = pd.read_csv(self.filename).fillna("")
             
             # Sort the DataFrame by 'Date' and 'Time' in descending order
             data = data.sort_values(by=['Date', 'Time'], ascending=False)
