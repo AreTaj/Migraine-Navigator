@@ -129,4 +129,4 @@ def fetch_weather_data(migraine_log_file=migraine_data_filename, weather_data_fi
         print("No new data to fetch")
             
 # Do the thing
-fetch_weather_data()
+#fetch_weather_data()

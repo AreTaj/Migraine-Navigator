@@ -58,18 +58,18 @@ class InputFrame(Frame):
         self.sleep_var = StringVar()
         self.sleep_var.set("fair")  # Default to 'fair'
         self.sleep_radio_frame = Frame(self)  # Create a frame for the radio buttons
-        self.sleep_radio_poor = Radiobutton(self.sleep_radio_frame, text="Poor", variable=self.sleep_var, value="poor")
-        self.sleep_radio_fair = Radiobutton(self.sleep_radio_frame, text="Fair", variable=self.sleep_var, value="fair")
-        self.sleep_radio_good = Radiobutton(self.sleep_radio_frame, text="Good", variable=self.sleep_var, value="good")
+        self.sleep_radio_poor = Radiobutton(self.sleep_radio_frame, text="Poor", variable=self.sleep_var, value=0)
+        self.sleep_radio_fair = Radiobutton(self.sleep_radio_frame, text="Fair", variable=self.sleep_var, value=1)
+        self.sleep_radio_good = Radiobutton(self.sleep_radio_frame, text="Good", variable=self.sleep_var, value=2)
 
         # Physical activity
         self.physical_activity_label = Label(self, text="Physical Activity:")
         self.physical_activity_var = StringVar()
         self.physical_activity_var.set("moderate")  # Default to 'moderate'
         self.physical_activity_frame = Frame(self)  # Create a frame
-        self.physical_activity_radio_low = Radiobutton(self.physical_activity_frame, text="Low", variable=self.physical_activity_var, value="low")
-        self.physical_activity_radio_moderate = Radiobutton(self.physical_activity_frame, text="Moderate", variable=self.physical_activity_var, value="moderate")
-        self.physical_activity_radio_heavy = Radiobutton(self.physical_activity_frame, text="Heavy", variable=self.physical_activity_var, value="heavy")
+        self.physical_activity_radio_low = Radiobutton(self.physical_activity_frame, text="Low", variable=self.physical_activity_var, value=0)
+        self.physical_activity_radio_moderate = Radiobutton(self.physical_activity_frame, text="Moderate", variable=self.physical_activity_var, value=1)
+        self.physical_activity_radio_heavy = Radiobutton(self.physical_activity_frame, text="Heavy", variable=self.physical_activity_var, value=2)
         self.triggers_label = Label(self, text="Triggers:")
         self.triggers_entry = Text(self, height=5, width=30)
 

@@ -26,6 +26,7 @@ class AnalysisFrame(tk.Frame):
         self.graph_options = [
             "Migraine Days per Month",
             "Migraine Days per Year",
+            "Migraine Days Past 12 Months",
             "Medication Usage"
         ]
         self.selected_graph = tk.StringVar(self)
@@ -109,6 +110,26 @@ class AnalysisFrame(tk.Frame):
                 ax.text(rect.get_x() + rect.get_width() / 2, y_pos + 0.1, str(label), ha='center', va='bottom')
         else:
             ax.text(0.5, 0.5, "No yearly data available", ha='center', va='center', transform=ax.transAxes)
+    
+    def plot_migraines_past_12_months(self, ax, data):
+        width = 0.5
+        end_date = data['Date'].max()
+        start_date = end_date - pd.DateOffset(months=12)
+        past_12_months_data = data[(data['Date'] >= start_date) & (data['Date'] <= end_date)]
+        monthly_counts = past_12_months_data.groupby(past_12_months_data['Date'].dt.to_period('M')).size()
+
+        if not monthly_counts.empty:
+            monthly_counts.index = monthly_counts.index.strftime('%B %Y')
+            ax.bar(monthly_counts.index, monthly_counts.values, width=width, align='center')
+            ax.set_ylabel("Count")
+            ax.set_title("Migraine Days Past 12 Months")
+            ax.tick_params(axis='x', rotation=30)
+            for label in ax.get_xticklabels():
+                label.set_ha('right')
+            for i, v in enumerate(monthly_counts.values):
+                ax.text(i, v, str(v), ha='center', va='bottom')
+        else:
+            ax.text(0.5, 0.5, "No data for past 12 months", ha='center', va='center', transform=ax.transAxes)
 
     def plot_medication_usage(self, ax, data):
         if not data.empty:
@@ -159,6 +180,7 @@ class AnalysisFrame(tk.Frame):
         graph_functions = {
             "Migraine Days per Month": (self.plot_migraines_monthly, migraines_with_pain, current_year),
             "Migraine Days per Year": (self.plot_migraines_yearly, yearly_counts),
+            "Migraine Days Past 12 Months": (self.plot_migraines_past_12_months, migraines_with_pain),
             "Medication Usage": (self.plot_medication_usage, medication_counts),
             # Add more graphs here: "Graph Name": (self.plot_function, data, *args)
         }

@@ -12,37 +12,38 @@ def get_data_file_path(filename):
     data_dir = "data"  # Assuming 'data' directory is on the same level as main.py 
     os.makedirs(data_dir, exist_ok=True)  # Create directory if it doesn't exist
     return os.path.join(data_dir, filename)
-                        
-# Create the main window
-window = tk.Tk()
-window.title("Migraine Log")
 
-# Define specific data file paths using relative paths
-migraine_log_path = get_data_file_path("migraine_log.csv")      # Path for migraine data
-weather_data_path = get_data_file_path("weather_data.csv")      # Path for weather data
-combined_data_path = get_data_file_path("combined_data.csv")    # Path for combined data
-# (Add paths for other data files as needed)
+if __name__ == "__main__":      # Facilitates unit testing; prevents code from running when imported as a module        
+    # Create the main window
+    window = tk.Tk()
+    window.title("Migraine Log")
 
-# Create a Notebook widget for different screens
-notebook = ttk.Notebook(window)
-notebook.pack(fill="both", expand=True)
+    # Define specific data file paths using relative paths
+    migraine_log_path = get_data_file_path("migraine_log.csv")      # Path for migraine data
+    weather_data_path = get_data_file_path("weather_data.csv")      # Path for weather data
+    combined_data_path = get_data_file_path("combined_data.csv")    # Path for combined data
+    # (Add paths for other data files as needed)
 
-# Create instances of the screen classes
-input_frame_instance = InputFrame(notebook, migraine_log_path)
-view_frame_instance = ViewFrame(notebook, migraine_log_path)
-analysis_frame_instance = AnalysisFrame(notebook, migraine_log_path)
-prediction_frame_instance = PredictionFrame(notebook, combined_data_path)
+    # Create a Notebook widget for different screens
+    notebook = ttk.Notebook(window)
+    notebook.pack(fill="both", expand=True)
 
-# Add frames (instances) to the notebook
-notebook.add(input_frame_instance, text="Input")
-notebook.add(view_frame_instance, text="View Entries")
-notebook.add(analysis_frame_instance, text="Analysis")
-notebook.add(prediction_frame_instance, text="Prediction")
+    # Create instances of the screen classes
+    input_frame_instance = InputFrame(notebook, migraine_log_path)
+    view_frame_instance = ViewFrame(notebook, migraine_log_path)
+    analysis_frame_instance = AnalysisFrame(notebook, migraine_log_path)
+    prediction_frame_instance = PredictionFrame(notebook, combined_data_path)
 
-# Connect the save_entry function to the save button
-input_frame_instance.save_button.config(command=lambda: input_frame_instance.save_entry(view_frame_instance))
+    # Add frames (instances) to the notebook
+    notebook.add(input_frame_instance, text="Input")
+    notebook.add(view_frame_instance, text="View Entries")
+    notebook.add(analysis_frame_instance, text="Analysis")
+    notebook.add(prediction_frame_instance, text="Prediction")
 
-# Fetch and save weather data
-fetch_weather_data()
+    # Connect the save_entry function to the save button
+    input_frame_instance.save_button.config(command=lambda: input_frame_instance.save_entry(view_frame_instance))
 
-window.mainloop()
+    # Fetch and save weather data
+    fetch_weather_data()
+
+    window.mainloop()
