@@ -23,7 +23,7 @@ test.py
 setup.py
 
 # For internal use only
-transfer_data.py
+data_import_helpers/
 
 # Ignore directories
 build/main/

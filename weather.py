@@ -38,6 +38,11 @@ def get_daily_humidity(lat, lon, date):
     return humidity_info
     
 def get_historical_weather(lat, lon, start_date, end_date):
+    """Fetches historical weather data for a given location and date range."""
+    # Ensure lat and lon are floats
+    lat = float(lat)
+    lon = float(lon)
+    
     # Define the location and date range
     location = Point(lat, lon)
     start = pd.to_datetime(start_date)
