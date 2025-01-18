@@ -1,0 +1,12 @@
+# pip install -r requirements.txt
+
+pandas
+geocoder
+matplotlib
+pytz
+meteostat
+
+# Below are for creating executables
+#pyinstaller    # Use with pyinstaller --onefile main.py
+#PyOxidizer
+#cx_Freeze

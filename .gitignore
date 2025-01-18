@@ -11,7 +11,7 @@
 *.ipynb
 
 # Except specific files
-requirements.txt
+!requirements.txt
 
 # Ignore specific files
 .venv
