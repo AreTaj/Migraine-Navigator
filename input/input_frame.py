@@ -53,6 +53,23 @@ class InputFrame(Frame):
         self.dosage_label = Label(self, text="Dosage:")
         self.dosage_entry = Entry(self)
 
+        # Sleep quality
+        self.sleep_label = Label(self, text="Sleep Quality:")
+        self.sleep_var = StringVar()
+        self.sleep_var.set("fair")  # Default to 'fair'
+        self.sleep_radio_frame = Frame(self)  # Create a frame for the radio buttons
+        self.sleep_radio_poor = Radiobutton(self.sleep_radio_frame, text="Poor", variable=self.sleep_var, value="poor")
+        self.sleep_radio_fair = Radiobutton(self.sleep_radio_frame, text="Fair", variable=self.sleep_var, value="fair")
+        self.sleep_radio_good = Radiobutton(self.sleep_radio_frame, text="Good", variable=self.sleep_var, value="good")
+
+        # Physical activity
+        self.physical_activity_label = Label(self, text="Physical Activity:")
+        self.physical_activity_var = StringVar()
+        self.physical_activity_var.set("moderate")  # Default to 'moderate'
+        self.physical_activity_frame = Frame(self)  # Create a frame
+        self.physical_activity_radio_low = Radiobutton(self.physical_activity_frame, text="Low", variable=self.physical_activity_var, value="low")
+        self.physical_activity_radio_moderate = Radiobutton(self.physical_activity_frame, text="Moderate", variable=self.physical_activity_var, value="moderate")
+        self.physical_activity_radio_heavy = Radiobutton(self.physical_activity_frame, text="Heavy", variable=self.physical_activity_var, value="heavy")
         self.triggers_label = Label(self, text="Triggers:")
         self.triggers_entry = Text(self, height=5, width=30)
 
@@ -61,12 +78,13 @@ class InputFrame(Frame):
 
         # Location
         self.location_label = Label(self, text="Location:")
+        self.location_radio_frame = Frame(self)  # Create a frame for the radio buttons
         self.location_var = StringVar()
         self.location_var.set("automatic")  # Default to automatic
         self.location_var.trace_add("write", self.toggle_location_entry) # Add trace
 
-        self.location_automatic_radio = Radiobutton(self, text="Automatic", variable=self.location_var, value="automatic")
-        self.location_manual_radio = Radiobutton(self, text="Manual", variable=self.location_var, value="manual")
+        self.location_automatic_radio = Radiobutton(self.location_radio_frame, text="Automatic", variable=self.location_var, value="automatic")
+        self.location_manual_radio = Radiobutton(self.location_radio_frame, text="Manual", variable=self.location_var, value="manual")
 
         self.location_entry = Entry(self, state=DISABLED)  # Initially disabled
 
@@ -104,6 +122,22 @@ class InputFrame(Frame):
         self.dosage_entry.grid(row=row, column=1, sticky=sticky_ew, pady=pady)
         row += 1
 
+        # Sleep
+        self.sleep_label.grid(row=row, column=0, sticky=sticky_w, pady=pady)
+        self.sleep_radio_frame.grid(row=row, column=1, columnspan=3, sticky=sticky_ew, pady=pady) # Occupy 3 columns
+        self.sleep_radio_poor.grid(row=row, column=1, sticky=sticky_w, pady=pady)
+        self.sleep_radio_fair.grid(row=row, column=2, sticky=sticky_w, pady=pady)
+        self.sleep_radio_good.grid(row=row, column=3, sticky=sticky_w, pady=pady)
+        row += 1
+
+        # Physical activity
+        self.physical_activity_label.grid(row=row, column=0, sticky=sticky_w, pady=pady)
+        self.physical_activity_frame.grid(row=row, column=1, columnspan=3, sticky=sticky_ew, pady=pady) # Occupy 3 columns
+        self.physical_activity_radio_low.grid(row=row, column=1, sticky=sticky_w, pady=pady)
+        self.physical_activity_radio_moderate.grid(row=row, column=2, sticky=sticky_w, pady=pady)
+        self.physical_activity_radio_heavy.grid(row=row, column=3, sticky=sticky_w, pady=pady)
+        row += 1
+
         self.triggers_label.grid(row=row, column=0, sticky=sticky_w, pady=pady)
         self.triggers_entry.grid(row=row, column=1, sticky=sticky_ew, pady=pady)
         row += 1
@@ -113,10 +147,11 @@ class InputFrame(Frame):
         row += 1
 
         self.location_label.grid(row=row, column=0, sticky=sticky_w, pady=pady)
+        self.location_radio_frame.grid(row=row, column=1, columnspan=2, sticky=sticky_ew, pady=pady) # Occupy 2 columns
+        self.location_automatic_radio.grid(row=row, column=1, sticky=sticky_w, pady=pady)
+        self.location_manual_radio.grid(row=row, column=2, sticky=sticky_w, pady=pady)
         row += 1
-        self.location_automatic_radio.grid(row=row, column=0, sticky=sticky_w, pady=pady)
-        self.location_manual_radio.grid(row=row, column=1, sticky=sticky_w, pady=pady)
-        row += 1
+
         self.location_entry.grid(row=row, column=0, columnspan=2, sticky=sticky_ew, pady=pady)
         row += 1
 
@@ -138,6 +173,8 @@ class InputFrame(Frame):
         pain_level = self.pain_level_scale.get()
         medication = self.medication_entry.get()
         dosage = self.dosage_entry.get()
+        sleep = self.sleep_var.get()
+        physical_activity = self.physical_activity_var.get()        
         triggers = self.triggers_entry.get("1.0", "end-1c")
         notes = self.notes_entry.get("1.0", "end-1c")
 
@@ -192,6 +229,8 @@ class InputFrame(Frame):
                 'Pain Level': pain_level, 
                 'Medication': medication, 
                 'Dosage': dosage, 
+                'Sleep': sleep,
+                'Physical Activity': physical_activity,                
                 'Triggers': triggers, 
                 'Notes': notes, 
                 **location_data,    # Use dictionary unpacking to add location data
@@ -224,6 +263,8 @@ class InputFrame(Frame):
         self.pain_level_scale.set(1)
         self.medication_entry.delete(0, END)
         self.dosage_entry.delete(0, END)
+        self.sleep_var.set("fair")
+        self.physical_activity_var.set("moderate")           
         self.triggers_entry.delete("1.0", "end-1c")
         self.notes_entry.delete("1.0", "end-1c")
 
