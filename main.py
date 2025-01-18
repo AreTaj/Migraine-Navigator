@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
-from input_frame import InputFrame
-from view_frame import ViewFrame
-from analysis_frame import AnalysisFrame
-from prediction_frame import PredictionFrame
+from input.input_frame import InputFrame
+from view.view_frame import ViewFrame
+from analysis.analysis_frame import AnalysisFrame
+from prediction.prediction_frame import PredictionFrame
 from weather import fetch_weather_data
 
 # Create the main window

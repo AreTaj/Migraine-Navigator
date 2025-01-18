@@ -1,6 +1,6 @@
 """ Hyperparameter tuning using GridSearchCV """
 
-from rf_model import X_train_reg, y_train_reg, reg
+from prediction.rf_model import X_train_reg, y_train_reg, reg
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 
 # Define the parameter grid
