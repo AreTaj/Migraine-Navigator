@@ -13,7 +13,7 @@ class ViewFrame(tk.Frame):
         self.title_label.pack()
 
         # Create a Treeview widget
-        self.entries_treeview = ttk.Treeview(self, columns=("Date", "Time", "Pain Level", "Medication", "Dosage", "Triggers", "Notes", "Location"))#, "Timezone"))
+        self.entries_treeview = ttk.Treeview(self, columns=("Date", "Time", "Pain Level", "Medication", "Dosage", "Sleep", "Physical Activity", "Triggers", "Notes", "Location"))#, "Timezone"))
 
         # Create columns
         self.entries_treeview.column("#0", width=30)
@@ -22,6 +22,8 @@ class ViewFrame(tk.Frame):
         self.entries_treeview.column("Pain Level", width=80)
         self.entries_treeview.column("Medication", width=100)
         self.entries_treeview.column("Dosage", width=80)
+        self.entries_treeview.column("Sleep", width=80)
+        self.entries_treeview.column("Physical Activity", width=120)        
         self.entries_treeview.column("Triggers", width=200)
         self.entries_treeview.column("Notes", width=300)
         self.entries_treeview.column("Location", width=150) 
@@ -34,6 +36,8 @@ class ViewFrame(tk.Frame):
         self.entries_treeview.heading("Pain Level", text="Pain Level")
         self.entries_treeview.heading("Medication", text="Medication")
         self.entries_treeview.heading("Dosage", text="Dosage")
+        self.entries_treeview.heading("Sleep", text="Sleep")
+        self.entries_treeview.heading("Physical Activity", text="Physical Activity")          
         self.entries_treeview.heading("Triggers", text="Triggers")
         self.entries_treeview.heading("Notes", text="Notes")
         #self.entries_treeview.heading("Timezone", text="Timezone")
