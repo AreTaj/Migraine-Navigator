@@ -41,6 +41,9 @@ combined_data['Month'] = combined_data['Date'].dt.month
 # One-hot encode 'DayOfWeek' and 'Month' columns
 combined_data = pd.get_dummies(combined_data, columns=['DayOfWeek', 'Month'])
 
+# One-hot encode 'Sleep' and 'Physical Activity' columns
+combined_data = pd.get_dummies(combined_data, columns=['Sleep', 'Physical Activity'])
+
 # Create new features
 combined_data['tdiff'] = combined_data['tmax']-combined_data['tmin']
 combined_data['tavg'] = (combined_data['tmax']+combined_data['tmin'])/2

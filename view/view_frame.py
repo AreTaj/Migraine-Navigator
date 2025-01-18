@@ -56,6 +56,14 @@ class ViewFrame(tk.Frame):
             # Sort the DataFrame by 'Date' and 'Time' in descending order
             data = data.sort_values(by=['Date', 'Time'], ascending=False)
 
+            # Map sleep values to descriptive labels
+            sleep_mapping = {0: "Poor", 1: "Fair", 2: "Good"}
+            data['Sleep'] = data['Sleep'].map(sleep_mapping) 
+
+            # Map physical activity values to descriptive labels
+            physical_activity_mapping = {0: "Low", 1: "Moderate", 2: "Heavy"}
+            data['Physical Activity'] = data['Physical Activity'].map(physical_activity_mapping) 
+
             # Clear the Treeview
             self.entries_treeview.delete(*self.entries_treeview.get_children())
 
