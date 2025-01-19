@@ -31,9 +31,9 @@ pip install -r requirements.txt
 
 1. **Run the Application**: Execute the `main.py` file to start the application.
 
-    ```sh
-    python main.py
-    ```
+```sh
+python main.py
+```
 
 2. **Input Data**: Use the "Input" tab to enter migraine instance details. Click the "Save Entry" button to save the data.
 
@@ -72,16 +72,15 @@ Cannot be shown for reasons of data privacy.
 
 ## Testing
 To run the tests, use the following commad:
-
-    ```sh
-    python -m unittest discover tests
-    ```
+```sh
+python -m unittest discover tests
+```
 
 To run a specific test file, use the following command:
-    ```sh
-    python -m unittest tests.test_input
-    ```
-    Modify tests.test_{x} for each file in tests/
+```sh
+python -m unittest tests.test_input
+```
+Modify tests.test_{x} for each file in tests/
 
 ## License
 
