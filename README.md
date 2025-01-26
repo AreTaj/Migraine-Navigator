@@ -1,4 +1,4 @@
-# Migraine Log
+# Migraine Navigator
 
 This project is a Tkinter-based GUI application for logging and analyzing migraine occurrences. It allows users to input migraine instance details, view logged entries, and perform analysis and predict future migraines based on machine learning algorithms.
 
