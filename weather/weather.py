@@ -60,6 +60,13 @@ def get_historical_weather(lat, lon, start_date, end_date):
         if not daily_data.empty:
             for col in ['tavg', 'tmin', 'tmax', 'pres', 'prcp', 'wspd', 'tsun']:
                 weather_info[col] = daily_data[col].iloc[0] if col in daily_data else None
+            # Calculate air pressure change
+            current_pres = weather_info.get('pres')
+            if prev_pres is not None and current_pres is not None:
+                weather_info['pres_change'] = current_pres - prev_pres
+            else:
+                weather_info['pres_change'] = None
+            prev_pres = current_pres
         else:
             print(f"Warning: No daily data available for {date}.")
             for col in ['tavg', 'tmin', 'tmax', 'pres', 'prcp', 'wspd', 'tsun']:
@@ -70,7 +77,7 @@ def get_historical_weather(lat, lon, start_date, end_date):
     return all_weather_data
 
 def save_weather_data_to_csv(weather_data, filename=weather_data_filename):
-    fieldnames = ['date', 'tavg', 'tmin', 'tmax', 'pres', 'prcp', 'wspd', 'tsun', 'average_humidity', 'midday_humidity', 'Latitude', 'Longitude']
+    fieldnames = ['date', 'tavg', 'tmin', 'tmax', 'pres', 'pres_change', 'prcp', 'wspd', 'tsun', 'average_humidity', 'midday_humidity', 'Latitude', 'Longitude']
     with open(filename, 'w', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()

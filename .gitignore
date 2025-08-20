@@ -9,6 +9,7 @@
 *.spec
 *.png
 *.ipynb
+*.pkl
 
 # Except specific files
 !requirements.txt
@@ -36,4 +37,6 @@ dist/
 
 # Ignore other directories
 data/
+models/
+notebooks/
 
