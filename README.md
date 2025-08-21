@@ -1,31 +1,38 @@
 # Migraine Navigator
 
-This project is a Tkinter-based GUI application for logging and analyzing migraine occurrences. It allows users to input migraine instance details, view logged entries, and perform analysis and predict future migraines based on machine learning algorithms.
+Migraine Navigator is a comprehensive tool designed to help users both **track** and **predict** migraine occurrences. By combining detailed logging of migraine episodes with advanced machine learning models, this project empowers users to better understand their migraine patterns and anticipate future episodes.
 
 ## Features
 
-- **Input Frame**: Allows users to input details about their migraines, including date, time, pain level, medication, dosage, triggers, notes, and location.
-- **View Frame**: Displays the logged migraine entries in a tabular format.
-- **Analysis Frame**: Provides graphical analysis of the migraine data, including migraine days per month, migraine days per year, and medication usage.
-- **Prediction Frame**: Predicts the likelihood of a migraine based on the user's accumulated migraine frequency data, as well as current and historical weather data using a trained machine learning model.
+- **Migraine Tracking:** Log migraine events, symptoms, triggers, medications, and weather data.
+- **Migraine Prediction:** Predict the likelihood of future migraine episodes using state-of-the-art machine learning and ensemble models.
+- **Data Visualization:** Visualize trends and patterns in your migraine history.
+- **Customizable Analysis:** Integrate your own data and adjust model parameters for personalized insights.
 
 ## Requirements
 
-The project requires the following Python packages:
+Install dependencies with:
 
-- `pandas`
-- `geocoder`
-- `matplotlib`
-- `pytz`
-- `meteostat`
-- `scikit-learn`
-- `joblib`
-
-These dependencies may be installed using the following command:
-
-```sh
+```bash
 pip install -r requirements.txt
 ```
+
+Main dependencies:
+- pandas
+- numpy
+- matplotlib
+- seaborn
+- scikit-learn
+- imbalanced-learn
+- xgboost
+- tensorflow
+- meteostat
+- geocoder
+- pytz
+
+Some models and notebooks require:
+- imbalanced-learn (for SMOTE and ensemble methods)
+- xgboost (for XGBoost models)
 
 ## Usage
 
@@ -45,15 +52,24 @@ python main.py
 
 ## File Structure
 
-- `main.py`: The main entry point of the application; all other frames are integrated here.
-- `input_frame.py`: Contains the `InputFrame` class for inputting details.
-- `view_frame.py`: Contains the `ViewFrame` class for viewing logged entries.
-- `analysis_frame.py`: Contains the `AnalysisFrame` class for analyzing data.
-- `prediction_frame.py`: Contains the `PredictionFrame` class for predicting migraines.
-- `migraine_log.csv`: The CSV file where data is stored.
-- `weather_data.csv`: The CSV file where weather data is stored.
-- `combined_data.csv`: The CSV file where combined migraine and weather data is stored.
-- `requirements.txt`: Lists the required Python packages and allows easy installation.
+```
+Migraine Navigator/
+├── analysis/                # Analysis modules
+├── data/                    # Data files (CSV, weather, logs)
+├── data_import_helpers/     # Scripts for data import/cleaning
+├── dummy_logs/              # Example migraine logs
+├── input/                   # Input frame modules
+├── models/                  # Saved model files (e.g., .pkl)
+├── notebooks/               # Jupyter notebooks for modeling
+├── prediction/              # Prediction and ML code
+├── screenshots/             # UI screenshots
+├── tests/                   # Unit tests
+├── view/                    # View frame modules
+├── weather/                 # Weather data modules
+├── main.py                  # Main application entry point
+├── requirements.txt         # Python dependencies
+├── README.md                # Project documentation
+```
 
 ## Screenshots
 
@@ -96,6 +112,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Meteostat](https://dev.meteostat.net/) for weather data.
 - [Scikit-learn](https://scikit-learn.org/) for machine learning algorithms.
 - [Joblib](https://joblib.readthedocs.io/) for model serialization.
+- [Imbalanced-learn](https://imbalanced-learn.org/) for resampling and ensemble methods.
+- [XGBoost](https://xgboost.readthedocs.io/) for gradient boosting models.
+- [TensorFlow](https://www.tensorflow.org/) for deep learning models.
+- [Seaborn](https://seaborn.pydata.org/) for statistical data visualization.
 
 ## Author
 

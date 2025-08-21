@@ -17,13 +17,15 @@
 # Except specific directories
 !screenshots/
 !screenshots/*
+!notebooks/
+!notebooks/*
 
 # Ignore specific files
 .venv
 __pycache__
 .DS_Store
 main.spec
-test.py
+scratch.py
 setup.py
 
 # For internal use only
@@ -38,5 +40,4 @@ dist/
 # Ignore other directories
 data/
 models/
-notebooks/
 
