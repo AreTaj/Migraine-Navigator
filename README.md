@@ -2,6 +2,8 @@
 
 Migraine Navigator is a comprehensive tool designed to help users both **track** and **predict** migraine occurrences. By combining detailed logging of migraine episodes with advanced machine learning models, this project empowers users to better understand their migraine patterns and anticipate future episodes.
 
+> **Disclaimer:** This software and its outputs are for informational and educational purposes only and are not intended to diagnose, treat, cure, or prevent any disease. Always consult a qualified healthcare provider for medical advice.
+
 ## Features
 
 - **Migraine Tracking:** Log migraine events, symptoms, triggers, medications, and weather data.
@@ -42,7 +44,7 @@ Some models and notebooks require:
 python main.py
 ```
 
-2. **Input Data**: Use the "Input" tab to enter migraine instance details. Click the "Save Entry" button to save the data.
+2. **Input Data**: Use the "Input" tab to enter migraine instance details. Click the "Save Entry" button to save the data. The Github repository includes anonymized, synthetic data (data/synthetic_migraine_log.csv) for demonstration purposes.
 
 3. **View Entries**: Switch to the "View Entries" tab to see the logged entries in a table.
 
@@ -87,7 +89,7 @@ Cannot be shown for reasons of data privacy.
 ![Prediction Frame](screenshots/prediction_frame.png)
 
 ## Testing
-To run the tests, use the following commad:
+To run the tests, use the following command:
 ```sh
 python -m unittest discover tests
 ```
@@ -104,6 +106,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgements
 
+Special thanks to my neurologist, Dr. Jack Schim, for his guidance, wisdom, and moral support to pursue this project. Dr. Schim did not directly participate in development and this does not constitute an endorsement or medical advice.
+
 - [Tkinter](https://docs.python.org/3/library/tkinter.html) for the GUI framework.
 - [Pandas](https://pandas.pydata.org/) for data manipulation.
 - [Matplotlib](https://matplotlib.org/) for plotting graphs.
@@ -116,6 +120,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [XGBoost](https://xgboost.readthedocs.io/) for gradient boosting models.
 - [TensorFlow](https://www.tensorflow.org/) for deep learning models.
 - [Seaborn](https://seaborn.pydata.org/) for statistical data visualization.
+
 
 ## Author
 
