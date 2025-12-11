@@ -44,6 +44,6 @@ if __name__ == "__main__":      # Facilitates unit testing; prevents code from r
     input_frame_instance.save_button.config(command=lambda: input_frame_instance.save_entry(view_frame_instance))
 
     # Fetch and save weather data
-    fetch_weather_data()
+    fetch_weather_data(migraine_log_path)
 
     window.mainloop()

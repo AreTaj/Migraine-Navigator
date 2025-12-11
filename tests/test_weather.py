@@ -11,11 +11,7 @@ from weather.weather import fetch_weather_data, get_historical_weather, save_wea
 
 class TestWeather(unittest.TestCase):
     def setUp(self):
-        # Create a temporary CSV file for migraine log
-        self.migraine_log_file = "test_migraine_log.csv"
-        with open(self.migraine_log_file, 'w') as f:
-            f.write("Date,Latitude,Longitude\n")
-            f.write("2023-10-10,40.7128,-74.0060\n")
+
 
         # Create a temporary CSV file for weather data
         self.weather_data_file = "test_weather_data.csv"
@@ -23,13 +19,28 @@ class TestWeather(unittest.TestCase):
             f.write("date,tavg,tmin,tmax,pres,prcp,wspd,tsun,average_humidity,midday_humidity,Latitude,Longitude\n")
 
     def tearDown(self):
-        if os.path.exists(self.migraine_log_file):
-            os.remove(self.migraine_log_file)
+
         if os.path.exists(self.weather_data_file):
             os.remove(self.weather_data_file)
 
     @patch('weather.weather.get_historical_weather')
-    def test_fetch_weather_data(self, mock_get_historical_weather):
+    @patch('services.entry_service.EntryService.get_entries_from_db')
+    def test_fetch_weather_data(self, mock_get_entries, mock_get_historical_weather):
+        # Mock get_entries_from_db to return sample data
+        mock_get_entries.return_value = pd.DataFrame({
+            'Date': ['2023-10-10'],
+            'Time': ['12:00'],
+            'Pain Level': [5],
+            'Medication': ['Advil'],
+            'Dosage': ['200mg'],
+            'Sleep': ['Good'],
+            'Physical Activity': ['None'],
+            'Triggers': ['Stress'],
+            'Notes': ['Test'],
+            'Location': ['New York'],
+            'Latitude': [40.7128],
+            'Longitude': [-74.0060]
+        })
         # Mock get_historical_weather to return sample data
         mock_get_historical_weather.return_value = [{
             'date': '2023-10-10',
@@ -47,7 +58,7 @@ class TestWeather(unittest.TestCase):
             'key': ('2023-10-10', 40.7128, -74.0060)  # Include the key field
         }]
 
-        fetch_weather_data(migraine_log_file=self.migraine_log_file, weather_data_file=self.weather_data_file)
+        fetch_weather_data("dummy_db.db", weather_data_file=self.weather_data_file)
 
         # Check if the weather data file was updated
         with open(self.weather_data_file, 'r') as f:

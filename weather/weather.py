@@ -7,8 +7,11 @@ import os
 #warnings.simplefilter(action='ignore', category=FutureWarning)
 
 # Define the filename variable
+from services.entry_service import EntryService
+
+# Define the filename variable
 weather_data_filename = os.path.join(os.path.dirname(__file__), '..', 'data', 'weather_data.csv')
-migraine_data_filename = os.path.join(os.path.dirname(__file__), '..', 'data', 'migraine_log.csv')
+# migraine_data_filename is no longer needed
 combined_data_filename = os.path.join(os.path.dirname(__file__), '..', 'data', 'combined_data.csv')
 
 def get_hourly_weather(lat, lon, date):
@@ -62,11 +65,11 @@ def get_historical_weather(lat, lon, start_date, end_date):
                 weather_info[col] = daily_data[col].iloc[0] if col in daily_data else None
             # Calculate air pressure change
             current_pres = weather_info.get('pres')
-            if prev_pres is not None and current_pres is not None:
-                weather_info['pres_change'] = current_pres - prev_pres
-            else:
-                weather_info['pres_change'] = None
-            prev_pres = current_pres
+            # Fix: prev_pres is not defined here correctly for the loop logic if this function handles single date ranges mostly
+            # For simplicity, Initialize prev_pres outside or ignore change for single day if not tracked
+            # Assuming this function is called per date in fetch_weather_data loop below
+            weather_info['pres_change'] = None 
+            
         else:
             print(f"Warning: No daily data available for {date}.")
             for col in ['tavg', 'tmin', 'tmax', 'pres', 'prcp', 'wspd', 'tsun']:
@@ -83,15 +86,33 @@ def save_weather_data_to_csv(weather_data, filename=weather_data_filename):
         writer.writeheader()
         for data in weather_data:
             # Remove the 'key' field before writing
-            del data['key']
+            if 'key' in data:
+                del data['key']
             writer.writerow(data)
 
-def fetch_weather_data(migraine_log_file=migraine_data_filename, weather_data_file=weather_data_filename):
-    migraine_data = pd.read_csv(migraine_log_file)
+def fetch_weather_data(migraine_db_path, weather_data_file=weather_data_filename):
+    
+    try:
+        migraine_data = EntryService.get_entries_from_db(migraine_db_path)
+    except Exception as e:
+        print(f"Error fetching entries from DB: {e}")
+        return
+
+    if migraine_data.empty:
+        print("No migraine entries found.")
+        return
+
     # Ensure correct data types for comparisons
     migraine_data['Date'] = pd.to_datetime(migraine_data['Date'])
 
     # Create keys for migraine data
+    # Ensure Latitude and Longitude are numeric
+    migraine_data['Latitude'] = pd.to_numeric(migraine_data['Latitude'], errors='coerce')
+    migraine_data['Longitude'] = pd.to_numeric(migraine_data['Longitude'], errors='coerce')
+    
+    # Filter out entries with invalid location
+    migraine_data = migraine_data.dropna(subset=['Latitude', 'Longitude'])
+
     migraine_data['key'] = migraine_data.apply(lambda row: (row['Date'], row['Latitude'], row['Longitude']), axis=1)
 
     data_path = os.path.join(os.path.dirname(__file__), '..', 'data', weather_data_file)

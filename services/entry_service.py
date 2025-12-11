@@ -85,14 +85,14 @@ class EntryService:
         """
         try:
             conn = sqlite3.connect(db_path)
-            query = "SELECT Date, Time, [Pain Level], Medication, Dosage, Sleep, [Physical Activity], Triggers, Notes, Location FROM migraine_log"
+            query = "SELECT Date, Time, [Pain Level], Medication, Dosage, Sleep, [Physical Activity], Triggers, Notes, Location, Latitude, Longitude FROM migraine_log"
             data = pd.read_sql_query(query, conn)
             conn.close()
             return data
         except (sqlite3.OperationalError, pd.errors.DatabaseError) as e:
             # If table doesn't exist, return empty DataFrame
             if "no such table" in str(e):
-                return pd.DataFrame(columns=["Date", "Time", "Pain Level", "Medication", "Dosage", "Sleep", "Physical Activity", "Triggers", "Notes", "Location"])
+                return pd.DataFrame(columns=["Date", "Time", "Pain Level", "Medication", "Dosage", "Sleep", "Physical Activity", "Triggers", "Notes", "Location", "Latitude", "Longitude"])
             raise e
         except Exception as e:
             # Propagate or handle? For now, re-raise or let caller handle empty logic
