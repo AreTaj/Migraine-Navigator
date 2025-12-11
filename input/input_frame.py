@@ -2,35 +2,10 @@ from tkinter import (
     Frame, Label, Entry, Button, Scale, StringVar, Text, Radiobutton,  NORMAL, DISABLED, W, EW, END, HORIZONTAL, messagebox
 )
 from datetime import datetime
-import re
-import os
-import csv
-import geocoder
+from services.utils import get_location_from_ip, get_local_timezone
+from services.entry_service import EntryService
 
-def get_location_from_ip():
-    """ Gets approximate user location from the user IP address."""
-    g = geocoder.ip('me')
-    if g.ok:
-        return g.latlng, g.address
-    else:
-        print(f"Geocoding Error: {g.status_code}, {g.reason}")
-        return None, None
-    
-def get_local_timezone():
-    """Gets the system's local timezone."""
-    try:
-        # Preferred method (Python 3.9+): use zoneinfo
-        import zoneinfo
-        return zoneinfo.ZoneInfo(datetime.now().astimezone().tzinfo.key)
-    except (ImportError, AttributeError):
-        try:
-            # Fallback for older Python versions or systems without zoneinfo
-            import tzlocal
-            return tzlocal.get_localzone()
-        except ImportError:
-            # Last resort: return None if tzlocal is not available
-            print("Warning: tzlocal library not found.")
-            return None
+
 
 class InputFrame(Frame):
     def __init__(self, parent, data_file_path):
@@ -56,7 +31,7 @@ class InputFrame(Frame):
         # Sleep quality
         self.sleep_label = Label(self, text="Sleep Quality:")
         self.sleep_var = StringVar()
-        self.sleep_var.set("fair")  # Default to 'fair'
+        self.sleep_var.set(1)  # Default to 'fair' (value=1)
         self.sleep_radio_frame = Frame(self)  # Create a frame for the radio buttons
         self.sleep_radio_poor = Radiobutton(self.sleep_radio_frame, text="Poor", variable=self.sleep_var, value=0)
         self.sleep_radio_fair = Radiobutton(self.sleep_radio_frame, text="Fair", variable=self.sleep_var, value=1)
@@ -65,7 +40,7 @@ class InputFrame(Frame):
         # Physical activity
         self.physical_activity_label = Label(self, text="Physical Activity:")
         self.physical_activity_var = StringVar()
-        self.physical_activity_var.set("moderate")  # Default to 'moderate'
+        self.physical_activity_var.set(1)  # Default to 'moderate' (value=1)
         self.physical_activity_frame = Frame(self)  # Create a frame
         self.physical_activity_radio_low = Radiobutton(self.physical_activity_frame, text="Low", variable=self.physical_activity_var, value=0)
         self.physical_activity_radio_moderate = Radiobutton(self.physical_activity_frame, text="Moderate", variable=self.physical_activity_var, value=1)
@@ -199,60 +174,26 @@ class InputFrame(Frame):
             except AttributeError:
                 timezone_name = str(local_tz)   
 
-        # --- Date validation ---
-        date_regex = r"^\d{4}-\d{2}-\d{2}$"
-        if not re.match(date_regex, date):
-            messagebox.showerror("Error", "Invalid date format. Please use YYYY-MM-DD.")
-            return
+        # --- Date validation and Persistence ---
+        entry_data = {
+            'Date': date, 
+            'Time': time, 
+            'Pain Level': pain_level, 
+            'Medication': medication, 
+            'Dosage': dosage, 
+            'Sleep': sleep,
+            'Physical Activity': physical_activity,                
+            'Triggers': triggers, 
+            'Notes': notes, 
+            **location_data,
+            'Timezone': timezone_name
+        }
 
-        try: # additional validation; checks if date is valid calendar date.
-            datetime.strptime(date, "%Y-%m-%d")
-        except ValueError:
-            messagebox.showerror("Error", "Invalid date. Please enter a valid calendar date.")
-            return
-
-        # --- Time validation ---
-        time_regex = r"^\d{2}:\d{2}$"
-        if not re.match(time_regex, time):
-            messagebox.showerror("Error", "Invalid time format. Please use HH:MM (24 hour time).")
-            return
-        
-        try: # additional validation; checks if time is valid time.
-            datetime.strptime(time, "%H:%M")
-        except ValueError:
-            messagebox.showerror("Error", "Invalid time. Please enter a valid time.")
-            return
-        
-        data = {
-                'Date': date, 
-                'Time': time, 
-                'Pain Level': pain_level, 
-                'Medication': medication, 
-                'Dosage': dosage, 
-                'Sleep': sleep,
-                'Physical Activity': physical_activity,                
-                'Triggers': triggers, 
-                'Notes': notes, 
-                **location_data,    # Use dictionary unpacking to add location data
-                'Timezone': timezone_name
-            }
-        print(f"Data to be written: {data}")  # Print data dictionary    
-
-        # Get the data file path from the instance variable
-        filename = self.data_file_path # Use instance variable    
-        #filename = 'migraine_log.csv' # store filename in variable for clarity
         try:
-            with open(filename, 'r', newline='') as csvfile:
-                reader = csv.DictReader(csvfile)
-                fieldnames = reader.fieldnames
-        except FileNotFoundError:
-            fieldnames = data.keys()
-
-        with open(filename, 'a', newline='') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            if os.stat(filename).st_size == 0:
-                writer.writeheader()
-            writer.writerow(data)
+            EntryService.add_entry(entry_data, self.data_file_path)
+        except ValueError as e:
+            messagebox.showerror("Error", str(e))
+            return
 
         # After saving, update the view frame
         view_frame.update_entries()
@@ -263,8 +204,8 @@ class InputFrame(Frame):
         self.pain_level_scale.set(1)
         self.medication_entry.delete(0, END)
         self.dosage_entry.delete(0, END)
-        self.sleep_var.set("fair")
-        self.physical_activity_var.set("moderate")           
+        self.sleep_var.set(1)
+        self.physical_activity_var.set(1)           
         self.triggers_entry.delete("1.0", "end-1c")
         self.notes_entry.delete("1.0", "end-1c")
 

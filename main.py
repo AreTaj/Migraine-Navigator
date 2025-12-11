@@ -19,7 +19,7 @@ if __name__ == "__main__":      # Facilitates unit testing; prevents code from r
     window.title("Migraine Log")
 
     # Define specific data file paths using relative paths
-    migraine_log_path = get_data_file_path("migraine_log.csv")      # Path for migraine data
+    migraine_log_path = get_data_file_path("migraine_log.db")      # Path for migraine data
     weather_data_path = get_data_file_path("weather_data.csv")      # Path for weather data
     combined_data_path = get_data_file_path("combined_data.csv")    # Path for combined data
     # (Add paths for other data files as needed)

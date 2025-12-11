@@ -6,6 +6,21 @@ weather_data_filename = os.path.join(os.path.dirname(__file__), '..', 'data', 'w
 migraine_data_filename = os.path.join(os.path.dirname(__file__), '..', 'data', 'migraine_log.csv')
 combined_data_filename = os.path.join(os.path.dirname(__file__), '..', 'data', 'combined_data.csv')
 
+import sqlite3
+
+def load_migraine_log_from_db(db_path='data/migraine_log.db'):
+    """
+    Loads migraine log data from the SQLite database into a pandas DataFrame.
+
+    Args:
+        db_path (str): Path to the SQLite database file."""
+    conn = sqlite3.connect('data/migraine_log.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM migraine_log")
+    rows = c.fetchall()
+    conn.close()
+    return rows
+
 def merge_migraine_and_weather_data(migraine_log_file=migraine_data_filename, weather_data_file=weather_data_filename, output_file=combined_data_filename):
     migraine_data = pd.read_csv(migraine_log_file)
     weather_data = pd.read_csv(weather_data_file)

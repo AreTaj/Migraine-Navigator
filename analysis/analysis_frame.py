@@ -9,6 +9,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import os
 import pandas as pd
 from datetime import datetime
+from services.entry_service import EntryService
 
 class AnalysisFrame(tk.Frame):
     def __init__(self, parent, data_file_path):
@@ -151,12 +152,13 @@ class AnalysisFrame(tk.Frame):
             return
 
         try:
-            self.data = pd.read_csv(self.filename)
+            self.data = EntryService.get_entries_from_db(self.filename)
             if self.data.empty:
-                self.analysis_content.config(text="No data found in the CSV file.")
+                self.analysis_content.config(text="No data found in the database.")
                 return
-        except pd.errors.ParserError:
-            self.analysis_content.config(text=f"Error parsing '{self.filename}'. Check the file format.")
+        except Exception as e:
+            self.analysis_content.config(text=f"Error reading database: {e}")
+            print(f"Analysis error: {e}")
             return
 
         try:
@@ -175,7 +177,10 @@ class AnalysisFrame(tk.Frame):
 
         current_year = datetime.now().year
         yearly_counts = migraines_with_pain.groupby(migraines_with_pain['Date'].dt.year).size()
-        medication_counts = self.data['Medication'].value_counts()
+        
+        # Filter out empty or whitespace-only medication entries
+        medication_data = self.data[self.data['Medication'].astype(str).str.strip() != '']
+        medication_counts = medication_data['Medication'].value_counts()
 
         graph_functions = {
             "Migraine Days per Month": (self.plot_migraines_monthly, migraines_with_pain, current_year),

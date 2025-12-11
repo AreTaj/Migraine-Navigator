@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import pandas as pd
+from services.entry_service import EntryService
 
 class ViewFrame(tk.Frame):
     def __init__(self, parent, data_file_path):
@@ -50,11 +51,18 @@ class ViewFrame(tk.Frame):
 
     def load_entries(self):
         try:
-            # Read data from CSV file
-            data = pd.read_csv(self.filename).fillna("")
+            # Replaced direct SQL logic with Service call
+            # Now using the dynamic path passed from main.py
+            data = EntryService.get_entries_from_db(self.data_file_path)
+    
+            data = data.fillna("")
             
             # Sort the DataFrame by 'Date' and 'Time' in descending order
             data = data.sort_values(by=['Date', 'Time'], ascending=False)
+
+            # Ensure numeric columns are actually numeric (handle string '0', '1', etc.)
+            data['Sleep'] = pd.to_numeric(data['Sleep'], errors='coerce')
+            data['Physical Activity'] = pd.to_numeric(data['Physical Activity'], errors='coerce')
 
             # Map sleep values to descriptive labels
             sleep_mapping = {0: "Poor", 1: "Fair", 2: "Good"}
