@@ -14,31 +14,33 @@ from analysis.analysis_frame import AnalysisFrame
 class TestAnalysisFrame(unittest.TestCase):
     def setUp(self):
         self.root = Tk()
-        self.analysis_frame = AnalysisFrame(self.root, "test_migraine_log.csv")
+        self.analysis_frame = AnalysisFrame(self.root, "test_migraine_log.db")
         self.analysis_frame.pack()
 
-        # Create a temporary CSV file
-        with open("test_migraine_log.csv", 'w') as f:
-            f.write("Date,Pain Level,Medication\n")
+        # Create a dummy file to satisfy os.path.exists check
+        with open("test_migraine_log.db", 'w') as f:
+            pass
+
+
 
     def tearDown(self):
         self.root.destroy()
-        if os.path.exists("test_migraine_log.csv"):
-            os.remove("test_migraine_log.csv")
+        if os.path.exists("test_migraine_log.db"):
+            os.remove("test_migraine_log.db")
 
-    @patch('pandas.read_csv')
-    def test_perform_analysis_no_data(self, mock_read_csv):
-        # Mock read_csv to return an empty DataFrame
-        mock_read_csv.return_value = pd.DataFrame()
+    @patch('services.entry_service.EntryService.get_entries_from_db')
+    def test_perform_analysis_no_data(self, mock_get_entries):
+        # Mock get_entries_from_db to return an empty DataFrame
+        mock_get_entries.return_value = pd.DataFrame()
         
         self.analysis_frame.perform_analysis()
         
-        self.assertEqual(self.analysis_frame.analysis_content.cget("text"), "No data found in the CSV file.")
+        self.assertEqual(self.analysis_frame.analysis_content.cget("text"), "No data found in the database.")
 
-    @patch('pandas.read_csv')
-    def test_perform_analysis_invalid_date_format(self, mock_read_csv):
-        # Mock read_csv to return a DataFrame with invalid date format
-        mock_read_csv.return_value = pd.DataFrame({
+    @patch('services.entry_service.EntryService.get_entries_from_db')
+    def test_perform_analysis_invalid_date_format(self, mock_get_entries):
+        # Mock get_entries_from_db to return a DataFrame with invalid date format
+        mock_get_entries.return_value = pd.DataFrame({
             'Date': ['invalid_date'],
             'Pain Level': [5]
         })
@@ -47,10 +49,10 @@ class TestAnalysisFrame(unittest.TestCase):
         
         self.assertEqual(self.analysis_frame.analysis_content.cget("text"), "Invalid date format in data. Please use YYYY-MM-DD.")
 
-    @patch('pandas.read_csv')
-    def test_perform_analysis_valid_data(self, mock_read_csv):
-        # Mock read_csv to return a valid DataFrame
-        mock_read_csv.return_value = pd.DataFrame({
+    @patch('services.entry_service.EntryService.get_entries_from_db')
+    def test_perform_analysis_valid_data(self, mock_get_entries):
+        # Mock get_entries_from_db to return a valid DataFrame
+        mock_get_entries.return_value = pd.DataFrame({
             'Date': ['2023-10-10'],
             'Pain Level': [5],
             'Medication': ['Ibuprofen']
