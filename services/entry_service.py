@@ -1,4 +1,4 @@
-import csv
+
 import os
 import re
 import sqlite3
@@ -98,13 +98,4 @@ class EntryService:
             # Propagate or handle? For now, re-raise or let caller handle empty logic
             raise e
 
-    @staticmethod
-    def get_entries_from_csv(csv_path: str):
-         """
-         Reads entries from CSV. 
-         (Added this as a fallback/fix since InputFrame writes to CSV)
-         """
-         try:
-             return pd.read_csv(csv_path).fillna("")
-         except FileNotFoundError:
-             return pd.DataFrame()
+
