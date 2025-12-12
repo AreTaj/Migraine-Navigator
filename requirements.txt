@@ -8,6 +8,8 @@ meteostat
 tensorflow
 seaborn
 scikit-learn
+fastapi
+uvicorn
 
 # Below are for creating executables
 #pyinstaller    # Use with pyinstaller --onefile main.py
