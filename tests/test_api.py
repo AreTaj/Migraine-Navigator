@@ -3,6 +3,7 @@ from api.main import app
 import os
 import pytest
 from unittest.mock import patch
+import pandas as pd
 
 client = TestClient(app)
 
@@ -96,3 +97,34 @@ def test_analysis_endpoint(mock_analysis_db, mock_entries_db):
     
     if os.path.exists(test_db):
         os.remove(test_db)
+
+@patch('api.routes.entries.get_db_path')
+@patch('api.routes.analysis.get_db_path')
+@patch('services.entry_service.EntryService.get_entries_from_db')
+def test_read_entry_with_empty_float_fields(mock_get_entries, mock_analysis_db, mock_entries_db):
+    """
+    Regression test: Ensure API handles empty strings in float fields (Latitude/Longitude)
+    gracefully by converting them to None, avoiding 500 errors.
+    """
+    # Mock returning a DataFrame with empty strings for numeric fields
+    mock_get_entries.return_value = pd.DataFrame([{
+        "Date": "2023-10-10",
+        "Time": "12:00",
+        "Pain Level": 5,
+        "Medication": "",
+        "Dosage": "",
+        "Sleep": "Good",
+        "Physical Activity": "Moderate",
+        "Triggers": "",
+        "Notes": "Empty Lat/Lon",
+        "Location": "",
+        "Latitude": "",    # The problematic empty string
+        "Longitude": ""    # The problematic empty string
+    }])
+
+    response = client.get("/api/v1/entries")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data) == 1
+    assert data[0]['Latitude'] is None
+    assert data[0]['Longitude'] is None
