@@ -29,8 +29,15 @@ class AnalysisService:
         yearly_counts = migraines_with_pain.groupby(migraines_with_pain['Date'].dt.year).size()
         
         # 2. Medication Usage
-        medication_data = data[data['Medication'].astype(str).str.strip() != '']
-        medication_counts = medication_data['Medication'].value_counts()
+        # 2. Medication Usage
+        # Filter for entries with Pain > 0 to identify "Migraine Episodes"
+        painful_entries = data[data['Pain Level'] > 0].copy()
+        
+        # Normalize Medication: strip whitespace, replace empty with "No Medication"
+        painful_entries['Medication'] = painful_entries['Medication'].astype(str).str.strip()
+        painful_entries.loc[painful_entries['Medication'] == '', 'Medication'] = 'No Medication'
+        
+        medication_counts = painful_entries['Medication'].value_counts()
         
         # 3. Monthly (Current Year)
         current_year = datetime.now().year
@@ -46,9 +53,15 @@ class AnalysisService:
         past_12_counts = past_12_months.groupby(past_12_months['Date'].dt.to_period('M')).size()
         past_12_counts.index = past_12_counts.index.strftime('%B %Y')
 
+        # 5. General Stats
+        avg_pain = migraines_with_pain['Pain Level'].mean() if not migraines_with_pain.empty else 0
+        max_pain = migraines_with_pain['Pain Level'].max() if not migraines_with_pain.empty else 0
+
         return {
             "yearly_counts": yearly_counts.to_dict(),
             "medication_counts": medication_counts.to_dict(),
             "monthly_counts": monthly_counts.to_dict(),
-            "past_12_months_counts": past_12_counts.to_dict()
+            "past_12_months_counts": past_12_counts.to_dict(),
+            "avg_pain": round(avg_pain, 1),
+            "max_pain": int(max_pain)
         }

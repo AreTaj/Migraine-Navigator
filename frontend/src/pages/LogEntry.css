@@ -1,0 +1,135 @@
+.log-entry-container {
+    max_width: 800px;
+    margin: 0 auto;
+}
+
+.entry-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    background-color: var(--bg-card);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group.half {
+    flex: 1 1 calc(50% - 0.75rem);
+    min-width: 200px;
+}
+
+.form-group.full {
+    flex: 1 1 100%;
+}
+
+label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+input,
+select,
+textarea {
+    padding: 0.75rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary);
+}
+
+/* Slider Style */
+.range-input {
+    width: 100%;
+    accent-color: var(--primary);
+}
+
+.range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* Submit Button */
+.submit-btn {
+    background-color: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    transition: opacity 0.2s;
+}
+
+.submit-btn:hover {
+    opacity: 0.9;
+}
+
+.submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Icons */
+.input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 10px;
+    color: var(--text-muted);
+}
+
+.input-icon-wrapper input {
+    padding-left: 36px;
+    width: 100%;
+}
+
+/* Status Messages */
+.status-message {
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.status-message.success {
+    background-color: rgba(0, 200, 83, 0.1);
+    color: #00c853;
+    border: 1px solid #00c853;
+}
+
+.status-message.error {
+    background-color: rgba(255, 82, 82, 0.1);
+    color: #ff5252;
+    border: 1px solid #ff5252;
+}
+
+.status-message.loading {
+    background-color: rgba(77, 171, 247, 0.1);
+    color: var(--primary);
+}

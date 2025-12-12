@@ -52,3 +52,29 @@ def add_entry(entry: MigraineEntry):
         return {"message": "Entry added successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.delete("/entries/{entry_id}")
+def delete_entry(entry_id: int):
+    try:
+        EntryService.delete_entry(entry_id, get_db_path())
+        return {"message": f"Entry {entry_id} deleted successfully"}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.put("/entries/{entry_id}")
+def update_entry(entry_id: int, entry: MigraineEntry):
+    try:
+        data = entry.model_dump()
+        # Handle remapping
+        data['Pain Level'] = data.pop('Pain_Level')
+        data['Physical Activity'] = data.pop('Physical_Activity')
+        if 'id' in data: del data['id'] # Don't update ID
+
+        EntryService.update_entry(entry_id, data, get_db_path())
+        return {"message": "Entry updated successfully"}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

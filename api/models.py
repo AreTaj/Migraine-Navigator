@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import Optional, Union
 
 class MigraineEntry(BaseModel):
+    id: Optional[int] = None
     Date: str
     Time: str
     Pain_Level: int  # Mapped from 'Pain Level'

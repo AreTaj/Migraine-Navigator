@@ -85,17 +85,64 @@ class EntryService:
         """
         try:
             conn = sqlite3.connect(db_path)
-            query = "SELECT Date, Time, [Pain Level], Medication, Dosage, Sleep, [Physical Activity], Triggers, Notes, Location, Latitude, Longitude FROM migraine_log"
+            query = "SELECT id, Date, Time, [Pain Level], Medication, Dosage, Sleep, [Physical Activity], Triggers, Notes, Location, Latitude, Longitude FROM migraine_log"
             data = pd.read_sql_query(query, conn)
             conn.close()
             return data
         except (sqlite3.OperationalError, pd.errors.DatabaseError) as e:
             # If table doesn't exist, return empty DataFrame
             if "no such table" in str(e):
-                return pd.DataFrame(columns=["Date", "Time", "Pain Level", "Medication", "Dosage", "Sleep", "Physical Activity", "Triggers", "Notes", "Location", "Latitude", "Longitude"])
+                return pd.DataFrame(columns=["id", "Date", "Time", "Pain Level", "Medication", "Dosage", "Sleep", "Physical Activity", "Triggers", "Notes", "Location", "Latitude", "Longitude"])
             raise e
         except Exception as e:
             # Propagate or handle? For now, re-raise or let caller handle empty logic
             raise e
+
+    @staticmethod
+    def delete_entry(entry_id: int, db_path: str):
+        """
+        Deletes an entry by ID.
+        """
+        try:
+            conn = sqlite3.connect(db_path)
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM migraine_log WHERE id = ?", (entry_id,))
+            conn.commit()
+            if cursor.rowcount == 0:
+                 conn.close()
+                 raise ValueError(f"Entry with id {entry_id} not found")
+            conn.close()
+        except Exception as e:
+             raise ValueError(f"Database error: {e}")
+
+    @staticmethod
+    def update_entry(entry_id: int, data: dict, db_path: str):
+        """
+        Updates an existing entry by ID.
+        """
+        # Validate Date/Time again? Yes, strictly speaking we should, but assuming inputs are clean for now or reusing validation logic would be better.
+        # reusing add_entry validation logic is tricky without extraction. For now, simple update.
+        
+        try:
+            conn = sqlite3.connect(db_path)
+            
+            # Prepare SQL
+            set_clause = ', '.join(f'"{k}" = ?' for k in data.keys())
+            sql = f'UPDATE migraine_log SET {set_clause} WHERE id = ?'
+            
+            values = list(data.values())
+            values.append(entry_id)
+            
+            cur = conn.cursor()
+            cur.execute(sql, values)
+            conn.commit()
+            
+            if cur.rowcount == 0:
+                 conn.close()
+                 raise ValueError(f"Entry with id {entry_id} not found")
+                 
+            conn.close()
+        except Exception as e:
+            raise ValueError(f"Database error: {e}")
 
 

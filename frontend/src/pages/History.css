@@ -1,0 +1,147 @@
+.history-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 100%;
+}
+
+.table-wrapper {
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+    flex: 1;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.history-table th,
+.history-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.history-table th {
+    background-color: rgba(255, 255, 255, 0.02);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.9rem;
+    position: sticky;
+    top: 0;
+}
+
+.history-table tr:last-child td {
+    border-bottom: none;
+}
+
+.history-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.no-data {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2rem;
+}
+
+/* Badges */
+.pain-badge {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #fff;
+    background-color: #4dabf7;
+}
+
+.pain-badge.pain-0 {
+    background-color: #b2bec3;
+}
+
+.pain-badge.pain-1,
+.pain-badge.pain-2 {
+    background-color: #00b894;
+}
+
+.pain-badge.pain-3,
+.pain-badge.pain-4 {
+    background-color: #fdcb6e;
+    color: #333;
+}
+
+.pain-badge.pain-5,
+.pain-badge.pain-6 {
+    background-color: #e17055;
+}
+
+.pain-badge.pain-7,
+.pain-badge.pain-8 {
+    background-color: #d63031;
+}
+
+.pain-badge.pain-9,
+.pain-badge.pain-10 {
+    background-color: #636e72;
+    background: radial-gradient(circle, #d63031 0%, #2d3436 100%);
+}
+
+.dosage-tag {
+    font-size: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    color: var(--text-muted);
+}
+
+.notes-cell {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-muted);
+}
+
+.truncate-cell {
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-main);
+}
+
+/* Actions */
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-btn {
+    color: var(--text-muted);
+}
+
+.delete-btn:hover {
+    background-color: rgba(255, 82, 82, 0.1);
+    color: #ff5252;
+}
+
+.delete-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
