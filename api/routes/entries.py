@@ -25,6 +25,13 @@ def get_entries():
             entry_dict = row.to_dict()
             entry_dict['Pain_Level'] = entry_dict.pop('Pain Level', 0)
             entry_dict['Physical_Activity'] = entry_dict.pop('Physical Activity', "")
+
+            # Fix for empty strings in float fields
+            if entry_dict.get('Latitude') == '':
+                entry_dict['Latitude'] = None
+            if entry_dict.get('Longitude') == '':
+                entry_dict['Longitude'] = None
+                
             entries.append(entry_dict)
             
         return entries
