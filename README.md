@@ -23,6 +23,17 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
     - Built on robust SQLite database.
     - Fast and lightweight Desktop experience.
 
+## Screenshots
+
+![Dashboard View](screenshots/dashboard.png)
+*Real-time predictive dashboard with weather integration and trends analysis.*
+
+![Log Entry View](screenshots/log.png)
+*Streamlined data entry with standardized inputs.*
+
+![History View](screenshots/history.png)
+*Detailed log management and searching.*
+
 ## Installation
 
 ### Prerequisites
