@@ -108,6 +108,17 @@ Copyright © 2025 Aresh Tajvar. All Rights Reserved.
 Unauthorized copying of this file, via any medium is strictly prohibited.
 The software is proprietary and confidential.
 
+## Acknowledgements
+
+Special thanks to my neurologist, Dr. Jack Schim, for his guidance, wisdom, and moral support to pursue this project. Dr. Schim did not directly participate in development and this does not constitute an endorsement or medical advice.
+
+- [Tauri](https://tauri.app/) - For the lightweight desktop framework.
+- [React](https://react.dev/) - For the modern UI library.
+- [FastAPI](https://fastapi.tiangolo.com/) - For the high-performance backend.
+- [Recharts](https://recharts.org/) - For the beautiful data visualization.
+- [Meteostat](https://dev.meteostat.net/) - For historical weather data.
+- [Open-Meteo](https://open-meteo.com/) - For live weather forecasts.
+
 ## Author
 
 - **Aresh Tajvar**
