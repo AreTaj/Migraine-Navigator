@@ -103,7 +103,10 @@ python -m unittest discover tests
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Copyright © 2025 Aresh Tajvar. All Rights Reserved.
+
+Unauthorized copying of this file, via any medium is strictly prohibited.
+The software is proprietary and confidential.
 
 ## Author
 

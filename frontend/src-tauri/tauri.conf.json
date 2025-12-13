@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "frontend",
+  "productName": "Migraine Navigator",
   "version": "0.1.0",
   "identifier": "com.migrainenavigator.app",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "frontend",
+        "title": "Migraine Navigator",
         "width": 1200,
         "height": 900
       }

@@ -2,6 +2,8 @@
   "name": "frontend",
   "private": true,
   "version": "0.1.0",
+  "author": "Aresh Tajvar",
+  "license": "UNLICENSED",
   "type": "module",
   "scripts": {
     "dev": "vite",
