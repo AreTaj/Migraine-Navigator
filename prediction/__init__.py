@@ -1,1 +1,1 @@
-from .prediction_frame import PredictionFrame
+from .predict_future import get_prediction_for_date

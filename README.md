@@ -8,10 +8,11 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
 
 ## Features
 
-- **Interactive Dashboard:** 
-    - Real-time statistics (Avg Pain, Max Pain, Yearly Count).
-    - **Trends Chart**: Visualize patterns over 1 Month, 1 Year, or 2 Years.
-    - **Medication Analysis**: See what works and track untreated episodes.
+- **Enhanced Dashboard:** 
+    - **Live Prediction**: See your "Tomorrow Risk" based on weather forecasts and recent history.
+    - **Smart Metrics**: Track "Avg Days/Month" and pain severity trends.
+    - **Interactive Trends**: Filter by 1M (Severity View), 1Y, or Full History (Frequency View).
+    - **Medication Analysis**: Consolidated view with time-based filters.
 - **Detailed Logging:** 
     - Log Date, Time, Pain Level, Sleep Quality, Physical Activity, Triggers, and Location.
     - Standardized numeric inputs for consistent data tracking.
@@ -86,8 +87,7 @@ Backend tests are available to verify API functionality:
 python -m unittest discover tests
 ```
 
-## Future Roadmap (v1.1)
-- **Prediction**: Re-integrating the Machine Learning pipeline with the new standardized data format.
+## Future Roadmap (v1.2)
 - **Packaging**: Building standalone installers (`.dmg`, `.exe`).
 
 ## License

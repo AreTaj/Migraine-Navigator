@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from typing import List
 from api.models import MigraineEntry
 from services.entry_service import EntryService
+import pandas as pd
 import os
 
 router = APIRouter()
@@ -17,6 +18,12 @@ def get_entries():
         df = EntryService.get_entries_from_db(get_db_path())
         # Convert DataFrame to list of dicts
         # Need to handle NaN/None values for Pydantic
+        # Handle NaN values smartly
+        # Pain Level should be 0 if missing
+        if 'Pain Level' in df.columns:
+            df['Pain Level'] = pd.to_numeric(df['Pain Level'], errors='coerce').fillna(0).astype(int)
+            
+        # Other columns can be empty strings
         df = df.fillna("")
         
         entries = []

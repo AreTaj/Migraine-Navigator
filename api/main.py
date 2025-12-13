@@ -12,10 +12,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-from api.routes import entries, analysis
+from api.routes import entries, analysis, prediction
 
 app.include_router(entries.router, prefix="/api/v1")
 app.include_router(analysis.router, prefix="/api/v1")
+app.include_router(prediction.router, prefix="/api/v1")
 
 @app.get("/")
 def read_root():

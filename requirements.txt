@@ -5,6 +5,7 @@ geocoder
 matplotlib
 pytz
 meteostat
+requests
 tensorflow
 seaborn
 scikit-learn

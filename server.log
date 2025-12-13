@@ -1,0 +1,16 @@
+INFO:     Started server process [4962]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+Check 1: Columns Index(['id', 'Date', 'Time', 'Pain Level', 'Medication', 'Dosage', 'Sleep',
+       'Physical Activity', 'Triggers', 'Notes', 'Location', 'Latitude',
+       'Longitude'],
+      dtype='object')
+Check 2: Pain Level Sample [None 5 4 6 3 7.5 7 2 6.5 1]
+Check 3: Pain Level After Clean [0 5 4 6 3 7 2 1 8]
+Check 4: FillNA done
+INFO:     127.0.0.1:52798 - "GET /api/v1/entries HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [4962]

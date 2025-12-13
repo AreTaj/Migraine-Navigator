@@ -1,85 +1,160 @@
 import pandas as pd
 import numpy as np
 import os
-
-weather_data_filename = os.path.join(os.path.dirname(__file__), '..', 'data', 'weather_data.csv')
-migraine_data_filename = os.path.join(os.path.dirname(__file__), '..', 'data', 'migraine_log.csv')
-combined_data_filename = os.path.join(os.path.dirname(__file__), '..', 'data', 'combined_data.csv')
-
 import sqlite3
 
-def load_migraine_log_from_db(db_path='data/migraine_log.db'):
+# Define paths
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+weather_data_filename = os.path.join(BASE_DIR, '..', 'data', 'weather_data.csv')
+migraine_data_filename = os.path.join(BASE_DIR, '..', 'data', 'migraine_log.csv')
+combined_data_filename = os.path.join(BASE_DIR, '..', 'data', 'combined_data.csv')
+
+def load_migraine_log_from_db(db_path=None):
     """
     Loads migraine log data from the SQLite database into a pandas DataFrame.
-
-    Args:
-        db_path (str): Path to the SQLite database file."""
-    conn = sqlite3.connect('data/migraine_log.db')
-    c = conn.cursor()
-    c.execute("SELECT * FROM migraine_log")
-    rows = c.fetchall()
+    """
+    if db_path is None:
+        db_path = os.path.join(BASE_DIR, '..', 'data', 'migraine_log.db')
+        
+    conn = sqlite3.connect(db_path)
+    # c = conn.cursor() # Not needed for pandas read_sql
+    query = "SELECT * FROM migraine_log"
+    df = pd.read_sql_query(query, conn)
     conn.close()
-    return rows
+    return df
 
 def merge_migraine_and_weather_data(migraine_log_file=migraine_data_filename, weather_data_file=weather_data_filename, output_file=combined_data_filename):
-    migraine_data = pd.read_csv(migraine_log_file)
+    """
+    Merges migraine and weather data, ensuring a continuous daily timeline.
+    Crucially, it treats missing days in the migraine log as 'No Pain'.
+    Note: Reads from SQLite DB by default now, though allows file override if needed (but we ignore csv arg mostly).
+    """
+    # Load from DB instead of CSV
+    migraine_data = load_migraine_log_from_db()
     weather_data = pd.read_csv(weather_data_file)
-    combined_data = pd.merge(migraine_data, weather_data, left_on='Date', right_on='date', how='left')
-    combined_data.to_csv(output_file, index=False)
+    
+    # Standardize dates
+    migraine_data['Date'] = pd.to_datetime(migraine_data['Date'])
+    weather_data['date'] = pd.to_datetime(weather_data['date'])
+    
+    # create a full date range from the start of data to today (or max date)
+    min_date = min(migraine_data['Date'].min(), weather_data['date'].min())
+    max_date = max(migraine_data['Date'].max(), weather_data['date'].max())
+    full_date_range = pd.date_range(start=min_date, end=max_date, freq='D')
+    
+    # Create the template dataframe
+    full_df = pd.DataFrame({'Date': full_date_range})
+    
+    # Merge migraine data onto the full timeline
+    # Aggregation Strategy:
+    # - Pain Level: Max (If any point in the day was bad, the day is bad)
+    # - Sleep/Activity: Mean (Avoids losing data if one entry has it and another doesn't)
+    migraine_data['Pain Level'] = pd.to_numeric(migraine_data['Pain Level'], errors='coerce')
+    migraine_data['Sleep'] = pd.to_numeric(migraine_data['Sleep'], errors='coerce')
+    migraine_data['Physical Activity'] = pd.to_numeric(migraine_data['Physical Activity'], errors='coerce')
+    
+    # Identify numeric columns for aggregation
+    agg_dict = {
+        'Pain Level': 'max',
+        'Sleep': 'mean', 
+        'Physical Activity': 'mean',
+    }
+    # Keep other columns if possible (take first)
+    for col in migraine_data.columns:
+        if col not in agg_dict and col != 'Date':
+            agg_dict[col] = 'first'
+
+    migraine_data = migraine_data.groupby('Date', as_index=False).agg(agg_dict)
+    
+    combined = pd.merge(full_df, migraine_data, on='Date', how='left')
+    
+    # Fill missing Pain Level with 0 (Assumption: No entry = No migraine)
+    combined['Pain Level'] = combined['Pain Level'].fillna(0)
+    
+    # Merge weather data
+    combined = pd.merge(combined, weather_data, left_on='Date', right_on='date', how='left')
+    
+    # Drop redundancy and save
+    if 'date' in combined.columns:
+        combined.drop(columns=['date'], inplace=True)
+        
+    combined.to_csv(output_file, index=False)
+    return combined
 
 def convert_time_to_minutes(time_str):
     if pd.isna(time_str):
         return 0
-    h, m = map(int, time_str.split(':'))
-    return h * 60 + m
+    try:
+        h, m = map(int, str(time_str).split(':'))
+        return h * 60 + m
+    except:
+        return 0
 
 def process_combined_data(combined_data_filename=combined_data_filename):
     """
-    Loads the combined migraine and weather data, performs feature engineering, and returns a processed DataFrame.
-
-    Returns:
-        pd.DataFrame: The processed DataFrame ready for modeling.
+    Loads combined data, performs feature engineering including lags and rolling means.
     """
-    combined_data = pd.read_csv(combined_data_filename)
+    df = pd.read_csv(combined_data_filename)
+    df['Date'] = pd.to_datetime(df['Date'])
+    
+    # Sort just in case
+    df = df.sort_values('Date').reset_index(drop=True)
 
-    # Convert time to minutes since midnight
-    combined_data['Time'] = combined_data['Time'].apply(convert_time_to_minutes)
+    # --- Feature Engineering ---
 
-    # Parse date and extract date-based features
-    combined_data['Date'] = pd.to_datetime(combined_data['Date'])
-    combined_data['DayOfWeek'] = combined_data['Date'].dt.dayofweek  # 0=Monday
-    combined_data['Month'] = combined_data['Date'].dt.month
+    # 1. Temporal Features
+    df['DayOfWeek'] = df['Date'].dt.dayofweek
+    df['Month'] = df['Date'].dt.month
+    
+    # Cyclical encoding (Time is a circle!)
+    df['DayOfWeek_sin'] = np.sin(2 * np.pi * df['DayOfWeek'] / 7)
+    df['DayOfWeek_cos'] = np.cos(2 * np.pi * df['DayOfWeek'] / 7)
+    df['Month_sin'] = np.sin(2 * np.pi * df['Month'] / 12)
+    df['Month_cos'] = np.cos(2 * np.pi * df['Month'] / 12)
 
-    # One-hot encode categorical features
-    combined_data = pd.get_dummies(combined_data, columns=['DayOfWeek', 'Month'])
-    combined_data = pd.get_dummies(combined_data, columns=['Sleep', 'Physical Activity'])
+    # 2. Weather Features
+    # Handle missing weather data (forward fill, then backward fill)
+    weather_cols = ['tavg', 'tmin', 'tmax', 'prcp', 'snow', 'wdir', 'wspd', 'wpgt', 'pres', 'tsun']
+    for col in weather_cols:
+        if col in df.columns:
+            df[col] = df[col].ffill().bfill() # Fill gaps
 
-    # Feature engineering: temperature difference
-    combined_data['tdiff'] = combined_data['tmax'] - combined_data['tmin']
+    if 'tmax' in df.columns and 'tmin' in df.columns:
+        df['tdiff'] = df['tmax'] - df['tmin']
+        df['tavg'] = (df['tmax'] + df['tmin']) / 2
+    
+    # Weather Interaction
+    if 'average_humidity' in df.columns and 'tavg' in df.columns:
+        df['humid.*tavg'] = df['average_humidity'].fillna(0) * df['tavg']
 
-    # Feature engineering: average temperature
-    combined_data['tavg'] = (combined_data['tmax'] + combined_data['tmin']) / 2
+    # 3. Autoregressive Features (CRITICAL for Time Series)
+    # Lagged pain levels - did you hurt yesterday?
+    df['Pain_Lag_1'] = df['Pain Level'].shift(1)
+    df['Pain_Lag_2'] = df['Pain Level'].shift(2)
+    df['Pain_Lag_3'] = df['Pain Level'].shift(3)
+    df['Pain_Lag_7'] = df['Pain Level'].shift(7) # Weekly pattern check
 
-    # Feature engineering: lag features for average temperature
-    combined_data['tavg_lag1'] = combined_data['tavg'].shift(1)
-    combined_data['tavg_lag2'] = combined_data['tavg'].shift(2)
+    # Rolling stats
+    df['Pain_Rolling_Mean_3'] = df['Pain Level'].shift(1).rolling(window=3).mean()
+    df['Pain_Rolling_Mean_7'] = df['Pain Level'].shift(1).rolling(window=7).mean()
+    df['Pain_Rolling_Mean_30'] = df['Pain Level'].shift(1).rolling(window=30).mean()
+    
+    # Lagged Weather (Weather often triggers migraines with a delay)
+    if 'pres' in df.columns:
+        df['pres_change'] = df['pres'].diff()
+        df['pres_change_lag1'] = df['pres_change'].shift(1)
+    
+    if 'tavg' in df.columns:
+        df['tavg_lag1'] = df['tavg'].shift(1)
 
-    # Feature engineering: interaction between humidity and average temperature
-    combined_data['humid.*tavg'] = combined_data['average_humidity'] * combined_data['tavg']
+    # 4. Target Transformations
+    df['Pain_Level_Binary'] = (df['Pain Level'] > 0).astype(int)
+    # Log transform for regression stability, but handle 0s
+    df['Pain_Level_Log'] = np.log1p(df['Pain Level'])
 
-    if 'pres_change' in combined_data.columns:
-        combined_data['pres_change_lag1'] = combined_data['pres_change'].shift(1)
-        combined_data['pres_change_lag2'] = combined_data['pres_change'].shift(2)
-    else:
-        combined_data['pres_change_lag1'] = None
-        combined_data['pres_change_lag2'] = None
+    # Drop rows with NaN created by shifting (first 30 rows typically)
+    # df = df.dropna().reset_index(drop=True) 
+    # Actually, let's just drop the first 30 rows to clean up the lags
+    df = df.iloc[30:].reset_index(drop=True)
 
-    # Clean and transform pain level
-    combined_data['Pain Level'] = pd.to_numeric(combined_data['Pain Level'], errors='coerce').fillna(0)
-    # Log-transform pain level for regression tasks
-    combined_data['Pain_Level_Log'] = np.log1p(combined_data['Pain Level'])
-
-    # Binary pain level for classification tasks
-    combined_data['Pain_Level_Binary'] = (combined_data['Pain Level'] > 0).astype(int)
-
-    return combined_data.copy()
+    return df
