@@ -122,3 +122,5 @@ Special thanks to my neurologist, Dr. Jack Schim, for his guidance, wisdom, and 
 ## Author
 
 - **Aresh Tajvar**
+- **GitHub**: [github.com/AreTaj](https://github.com/AreTaj)
+- **LinkedIn**: [linkedin.com/in/aresh-tajvar](https://linkedin.com/in/aresh-tajvar)
