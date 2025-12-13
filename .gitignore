@@ -48,3 +48,6 @@ data/*
 
 # Ignore local scripts
 scripts/
+
+# Logs
+server.log
