@@ -14,11 +14,12 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
     - **Interactive Trends**: Filter by 1M (Severity View), 1Y, or Full History (Frequency View).
     - **Medication Analysis**: Consolidated view with time-based filters.
 - **Detailed Logging:** 
-    - Log Date, Time, Pain Level, Sleep Quality, Physical Activity, Triggers, and Location.
-    - Standardized numeric inputs for consistent data tracking.
+    - **Smart Geolocation**: IP-based location tagging for accurate weather correlation without intrusive permissions.
+    - **Medication Management**: Dedicated registry for tracking doses, frequencies, and stock.
+    - **Log Date, Time, Pain Level, Sleep Quality, Physical Activity, Triggers.**
 - **History Management:** 
-    - Full searchable/sortable history table.
-    - **Edit** and **Delete** capabilities.
+    - **Performance Optimized**: Date-based filtering (Last 7 Days, 30 Days, etc.) for instant loading.
+    - Full searchable/sortable history table with **Edit** and **Delete** capabilities.
 - **Modern Architecture:** 
     - Built on robust SQLite database.
     - Fast and lightweight Desktop experience.
