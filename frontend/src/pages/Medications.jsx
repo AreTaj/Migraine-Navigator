@@ -196,7 +196,7 @@ function Medications() {
                 <form onSubmit={handleAdd} className="add-form">
                     <div className="form-row">
                         <div className="form-group">
-                            <label>Name (Generic)</label>
+                            <label>Scientific Name (Generic)</label>
                             <input
                                 type="text"
                                 name="name"
@@ -207,7 +207,7 @@ function Medications() {
                             />
                         </div>
                         <div className="form-group">
-                            <label>Display Name (Optional)</label>
+                            <label>Brand / Display Name (Optional)</label>
                             <input
                                 type="text"
                                 name="display_name"
@@ -266,8 +266,8 @@ function Medications() {
                     <table>
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Display As</th>
+                                <th>Scientific Name</th>
+                                <th>Brand / Display Name</th>
                                 <th>Default Dosage</th>
                                 <th>Frequency</th>
                                 <th>Actions</th>
