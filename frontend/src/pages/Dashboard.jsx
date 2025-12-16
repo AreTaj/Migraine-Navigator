@@ -399,193 +399,200 @@ function Dashboard() {
         return '#51cf66';
     };
 
+    // --- Render Logic ---
+    const showDailyCheckin = todayStatus === 'missing';
+    const showRetroCheckin = showRetroCard && missingDays.length > 0;
+    const showReminders = dueMeds.length > 0;
+    const hasSmartCards = showDailyCheckin || showRetroCheckin || showReminders;
+
     return (
         <div className="dashboard-container">
             <h2>Dashboard</h2>
 
             {/* --- SMART CARDS SECTION --- */}
-            <div className="smart-cards-section">
+            {hasSmartCards && (
+                <div className="smart-cards-section">
 
-                {/* 1. Daily Check-in (Only if not logged) */}
-                {/* 1. Daily Check-in (Only if not logged) */}
-                {todayStatus === 'missing' && (
-                    <div className="smart-card">
-                        <div className="card-header">
-                            <h3><CheckCircle2 color="#4ade80" /> Daily Check-in</h3>
-                            <p>
-                                {checkinStep === 'initial'
-                                    ? "You haven't logged an entry for today yet."
-                                    : "Great! Just a few quick details:"}
-                            </p>
-                        </div>
-
-                        {checkinStep === 'initial' ? (
-                            <div className="card-actions">
-                                <button className="action-btn" onClick={handleStartDailyCheckin}>
-                                    {dailyMeds.length > 0 ? "Healthy & Medicated" : "Pain Free Day"}
-                                </button>
-                                <button className="action-btn secondary" onClick={() => navigate('/log')}>
-                                    Migraine Attack
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="checkin-form" style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                                    <div>
-                                        <label style={{ fontSize: '0.85rem', color: '#bfdbfe', display: 'block', marginBottom: '4px' }}>Last Night's Sleep</label>
-                                        <select
-                                            name="sleep"
-                                            value={checkinData.sleep}
-                                            onChange={handleCheckinChange}
-                                            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
-                                        >
-                                            <option value="1">Poor</option>
-                                            <option value="2">Fair</option>
-                                            <option value="3">Good</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label style={{ fontSize: '0.85rem', color: '#bfdbfe', display: 'block', marginBottom: '4px' }}>Activity Level</label>
-                                        <select
-                                            name="activity"
-                                            value={checkinData.activity}
-                                            onChange={handleCheckinChange}
-                                            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
-                                        >
-                                            <option value="0">None</option>
-                                            <option value="1">Light</option>
-                                            <option value="2">Moderate</option>
-                                            <option value="3">Heavy</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label style={{ fontSize: '0.85rem', color: '#bfdbfe', display: 'block', marginBottom: '4px' }}>Notes (Optional)</label>
-                                    <input
-                                        type="text"
-                                        name="notes"
-                                        value={checkinData.notes}
-                                        onChange={handleCheckinChange}
-                                        placeholder="Any notes..."
-                                        style={{ width: '100%', padding: '8px', borderRadius: '6px', border: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
-                                    />
-                                </div>
-                                <div className="card-actions">
-                                    <button className="action-btn" onClick={handleConfirmDailyCheckin}>
-                                        Confirm Log
-                                    </button>
-                                    <button className="action-btn secondary" onClick={() => setCheckinStep('initial')}>
-                                        Cancel
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* 2. Retroactive Check-in */}
-                {showRetroCard && missingDays.length > 0 && (
-                    <div className="smart-card">
-                        <div className="card-header">
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <h3><CalendarCheck color="#fbbf24" /> Missing {missingDays.length} Days</h3>
-                                <div onClick={() => setShowRetroCard(false)} style={{ cursor: 'pointer' }}><XCircle size={18} /></div>
-                            </div>
-                            <p>We missed logs for <b>{missingDays[0]}</b> to <b>{missingDays[missingDays.length - 1]}</b>. Were they pain-free?</p>
-                        </div>
-
-                        {!retroConfirming ? (
-                            <div className="card-actions">
-                                <button className="action-btn" onClick={() => {
-                                    // Initialize per-day data
-                                    const initialData = {};
-                                    missingDays.forEach(d => {
-                                        initialData[d] = { sleep: '3', activity: '2' };
-                                    });
-                                    setRetroData(initialData);
-                                    setRetroConfirming(true);
-                                }}>
-                                    Yes, Log All
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="checkin-form" style={{ marginTop: '1rem' }}>
-                                <p style={{ fontSize: '0.9rem', color: '#bfdbfe', marginBottom: '1rem' }}>
-                                    Confirm details for each day:
+                    {/* 1. Daily Check-in (Only if not logged) */}
+                    {showDailyCheckin && (
+                        <div className="smart-card">
+                            <div className="card-header">
+                                <h3><CheckCircle2 color="#4ade80" /> Daily Check-in</h3>
+                                <p>
+                                    {checkinStep === 'initial'
+                                        ? "You haven't logged an entry for today yet."
+                                        : "Great! Just a few quick details:"}
                                 </p>
-                                <div className="retro-days-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', maxHeight: '300px', overflowY: 'auto', marginBottom: '1rem' }}>
-                                    {missingDays.map(dateStr => (
-                                        <div key={dateStr} style={{ background: 'rgba(255,255,255,0.05)', padding: '0.8rem', borderRadius: '8px' }}>
-                                            <div style={{ fontWeight: '600', marginBottom: '0.5rem', fontSize: '0.9rem' }}>{new Date(dateStr).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</div>
-                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                                                <div>
-                                                    <label style={{ fontSize: '0.75rem', color: '#bfdbfe', display: 'block', marginBottom: '2px' }}>Sleep (Night Before)</label>
-                                                    <select
-                                                        value={retroData[dateStr]?.sleep || '3'}
-                                                        onChange={(e) => setRetroData(prev => ({
-                                                            ...prev,
-                                                            [dateStr]: { ...prev[dateStr], sleep: e.target.value }
-                                                        }))}
-                                                        style={{ width: '100%', padding: '6px', borderRadius: '4px', border: 'none', background: 'rgba(0,0,0,0.2)', color: 'white', fontSize: '0.85rem' }}
-                                                    >
-                                                        <option value="1">Poor</option>
-                                                        <option value="2">Fair</option>
-                                                        <option value="3">Good</option>
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <label style={{ fontSize: '0.75rem', color: '#bfdbfe', display: 'block', marginBottom: '2px' }}>Activity</label>
-                                                    <select
-                                                        value={retroData[dateStr]?.activity || '2'}
-                                                        onChange={(e) => setRetroData(prev => ({
-                                                            ...prev,
-                                                            [dateStr]: { ...prev[dateStr], activity: e.target.value }
-                                                        }))}
-                                                        style={{ width: '100%', padding: '6px', borderRadius: '4px', border: 'none', background: 'rgba(0,0,0,0.2)', color: 'white', fontSize: '0.85rem' }}
-                                                    >
-                                                        <option value="0">None</option>
-                                                        <option value="1">Light</option>
-                                                        <option value="2">Moderate</option>
-                                                        <option value="3">Heavy</option>
-                                                    </select>
+                            </div>
+
+                            {checkinStep === 'initial' ? (
+                                <div className="card-actions">
+                                    <button className="action-btn" onClick={handleStartDailyCheckin}>
+                                        {dailyMeds.length > 0 ? "Healthy & Medicated" : "Pain Free Day"}
+                                    </button>
+                                    <button className="action-btn secondary" onClick={() => navigate('/log')}>
+                                        Migraine Attack
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="checkin-form" style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                        <div>
+                                            <label style={{ fontSize: '0.85rem', color: '#bfdbfe', display: 'block', marginBottom: '4px' }}>Last Night's Sleep</label>
+                                            <select
+                                                name="sleep"
+                                                value={checkinData.sleep}
+                                                onChange={handleCheckinChange}
+                                                style={{ width: '100%', padding: '8px', borderRadius: '6px', border: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
+                                            >
+                                                <option value="1">Poor</option>
+                                                <option value="2">Fair</option>
+                                                <option value="3">Good</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label style={{ fontSize: '0.85rem', color: '#bfdbfe', display: 'block', marginBottom: '4px' }}>Activity Level</label>
+                                            <select
+                                                name="activity"
+                                                value={checkinData.activity}
+                                                onChange={handleCheckinChange}
+                                                style={{ width: '100%', padding: '8px', borderRadius: '6px', border: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
+                                            >
+                                                <option value="0">None</option>
+                                                <option value="1">Light</option>
+                                                <option value="2">Moderate</option>
+                                                <option value="3">Heavy</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label style={{ fontSize: '0.85rem', color: '#bfdbfe', display: 'block', marginBottom: '4px' }}>Notes (Optional)</label>
+                                        <input
+                                            type="text"
+                                            name="notes"
+                                            value={checkinData.notes}
+                                            onChange={handleCheckinChange}
+                                            placeholder="Any notes..."
+                                            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
+                                        />
+                                    </div>
+                                    <div className="card-actions">
+                                        <button className="action-btn" onClick={handleConfirmDailyCheckin}>
+                                            Confirm Log
+                                        </button>
+                                        <button className="action-btn secondary" onClick={() => setCheckinStep('initial')}>
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* 2. Retroactive Check-in */}
+                    {showRetroCheckin && (
+                        <div className="smart-card">
+                            <div className="card-header">
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <h3><CalendarCheck color="#fbbf24" /> Missing {missingDays.length} Days</h3>
+                                    <div onClick={() => setShowRetroCard(false)} style={{ cursor: 'pointer' }}><XCircle size={18} /></div>
+                                </div>
+                                <p>We missed logs for <b>{missingDays[0]}</b> to <b>{missingDays[missingDays.length - 1]}</b>. Were they pain-free?</p>
+                            </div>
+
+                            {!retroConfirming ? (
+                                <div className="card-actions">
+                                    <button className="action-btn" onClick={() => {
+                                        // Initialize per-day data
+                                        const initialData = {};
+                                        missingDays.forEach(d => {
+                                            initialData[d] = { sleep: '3', activity: '2' };
+                                        });
+                                        setRetroData(initialData);
+                                        setRetroConfirming(true);
+                                    }}>
+                                        Yes, Log All
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="checkin-form" style={{ marginTop: '1rem' }}>
+                                    <p style={{ fontSize: '0.9rem', color: '#bfdbfe', marginBottom: '1rem' }}>
+                                        Confirm details for each day:
+                                    </p>
+                                    <div className="retro-days-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', maxHeight: '300px', overflowY: 'auto', marginBottom: '1rem' }}>
+                                        {missingDays.map(dateStr => (
+                                            <div key={dateStr} style={{ background: 'rgba(255,255,255,0.05)', padding: '0.8rem', borderRadius: '8px' }}>
+                                                <div style={{ fontWeight: '600', marginBottom: '0.5rem', fontSize: '0.9rem' }}>{new Date(dateStr).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</div>
+                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                                                    <div>
+                                                        <label style={{ fontSize: '0.75rem', color: '#bfdbfe', display: 'block', marginBottom: '2px' }}>Sleep (Night Before)</label>
+                                                        <select
+                                                            value={retroData[dateStr]?.sleep || '3'}
+                                                            onChange={(e) => setRetroData(prev => ({
+                                                                ...prev,
+                                                                [dateStr]: { ...prev[dateStr], sleep: e.target.value }
+                                                            }))}
+                                                            style={{ width: '100%', padding: '6px', borderRadius: '4px', border: 'none', background: 'rgba(0,0,0,0.2)', color: 'white', fontSize: '0.85rem' }}
+                                                        >
+                                                            <option value="1">Poor</option>
+                                                            <option value="2">Fair</option>
+                                                            <option value="3">Good</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label style={{ fontSize: '0.75rem', color: '#bfdbfe', display: 'block', marginBottom: '2px' }}>Activity</label>
+                                                        <select
+                                                            value={retroData[dateStr]?.activity || '2'}
+                                                            onChange={(e) => setRetroData(prev => ({
+                                                                ...prev,
+                                                                [dateStr]: { ...prev[dateStr], activity: e.target.value }
+                                                            }))}
+                                                            style={{ width: '100%', padding: '6px', borderRadius: '4px', border: 'none', background: 'rgba(0,0,0,0.2)', color: 'white', fontSize: '0.85rem' }}
+                                                        >
+                                                            <option value="0">None</option>
+                                                            <option value="1">Light</option>
+                                                            <option value="2">Moderate</option>
+                                                            <option value="3">Heavy</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
+                                    <div className="card-actions">
+                                        <button className="action-btn" onClick={handleConfirmRetroLog}>
+                                            Confirm All
+                                        </button>
+                                        <button className="action-btn secondary" onClick={() => setRetroConfirming(false)}>
+                                            Cancel
+                                        </button>
+                                    </div>
                                 </div>
-                                <div className="card-actions">
-                                    <button className="action-btn" onClick={handleConfirmRetroLog}>
-                                        Confirm All
-                                    </button>
-                                    <button className="action-btn secondary" onClick={() => setRetroConfirming(false)}>
-                                        Cancel
-                                    </button>
-                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* 3. Periodic Reminders */}
+                    {showReminders && dueMeds.map((med, i) => (
+                        <div className="smart-card reminder" key={i}>
+                            <div className="card-header">
+                                <h3><Clock color="#c4b5fd" /> {med.name} Reminder</h3>
+                                <p>
+                                    {med.dueDays <= 0 ?
+                                        `Overdue by ${Math.abs(med.dueDays)} days!` :
+                                        `Due in ${med.dueDays} days (${med.nextDate})`}
+                                </p>
                             </div>
-                        )}
-                    </div>
-                )}
-
-                {/* 3. Periodic Reminders */}
-                {dueMeds.map((med, i) => (
-                    <div className="smart-card reminder" key={i}>
-                        <div className="card-header">
-                            <h3><Clock color="#c4b5fd" /> {med.name} Reminder</h3>
-                            <p>
-                                {med.dueDays <= 0 ?
-                                    `Overdue by ${Math.abs(med.dueDays)} days!` :
-                                    `Due in ${med.dueDays} days (${med.nextDate})`}
-                            </p>
+                            <div className="card-actions">
+                                <button className="action-btn" onClick={() => navigate('/log')}>
+                                    Log Injection
+                                </button>
+                            </div>
                         </div>
-                        <div className="card-actions">
-                            <button className="action-btn" onClick={() => navigate('/log')}>
-                                Log Injection
-                            </button>
-                        </div>
-                    </div>
-                ))}
+                    ))}
 
-            </div>
+                </div>
+            )}
 
             <div className="stats-grid">
                 {/* Forecast Card */}
