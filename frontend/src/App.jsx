@@ -1,12 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, PlusCircle, History } from "lucide-react";
+import { LayoutDashboard, PlusCircle, History, Pill } from "lucide-react";
 import "./App.css";
 
 import Dashboard from "./pages/Dashboard";
-
 import LogEntry from "./pages/LogEntry";
-
 import HistoryPage from "./pages/History";
+import Medications from "./pages/Medications";
 
 function NavItem({ to, icon: Icon, label }) {
   const location = useLocation();
@@ -31,6 +30,7 @@ function App() {
             <NavItem to="/" icon={LayoutDashboard} label="Dashboard" />
             <NavItem to="/log" icon={PlusCircle} label="Log Entry" />
             <NavItem to="/history" icon={History} label="History" />
+            <NavItem to="/medications" icon={Pill} label="Medications" />
           </nav>
         </aside>
         <main className="content">
@@ -38,6 +38,7 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/log" element={<LogEntry />} />
             <Route path="/history" element={<HistoryPage />} />
+            <Route path="/medications" element={<Medications />} />
           </Routes>
         </main>
       </div>

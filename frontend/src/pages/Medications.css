@@ -1,0 +1,146 @@
+.medications-container {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    color: #e0e0e0;
+}
+
+.subtitle {
+    color: #a0a0a0;
+    margin-bottom: 2rem;
+}
+
+.add-medication-card {
+    background-color: #2a2a2a;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border: 1px solid #333;
+}
+
+.add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    color: #ccc;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.6rem;
+    background-color: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: white;
+}
+
+.form-group.full {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+.add-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background-color: #4dabf7;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.add-btn:hover {
+    background-color: #3b8dc4;
+}
+
+.medications-list table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.medications-list th,
+.medications-list td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #333;
+}
+
+.medications-list th {
+    background-color: #333;
+    font-weight: 600;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.icon-btn:hover {
+    background-color: #444;
+    color: #fff;
+}
+
+.icon-btn.delete:hover {
+    color: #ff6b6b;
+}
+
+.empty-state {
+    text-align: center;
+    color: #666;
+    padding: 2rem;
+}
+
+@media (max-width: 768px) {
+    .add-form {
+        grid-template-columns: 1fr;
+    }
+}
+
+.freq-tag {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.freq-tag.as_needed {
+    background-color: #444;
+    color: #ccc;
+}
+
+.freq-tag.daily {
+    background-color: #1b5e20;
+    color: #a5d6a7;
+}
+
+.freq-tag.periodic {
+    background-color: #0d47a1;
+    color: #90caf9;
+}

@@ -23,15 +23,21 @@ def load_migraine_log_from_db(db_path=None):
     conn.close()
     return df
 
-def merge_migraine_and_weather_data(migraine_log_file=migraine_data_filename, weather_data_file=weather_data_filename, output_file=combined_data_filename):
+def merge_migraine_and_weather_data(migraine_log_file=migraine_data_filename, weather_data_file=weather_data_filename, output_file=combined_data_filename, db_path=None, return_df=False):
     """
     Merges migraine and weather data, ensuring a continuous daily timeline.
     Crucially, it treats missing days in the migraine log as 'No Pain'.
     Note: Reads from SQLite DB by default now, though allows file override if needed (but we ignore csv arg mostly).
     """
     # Load from DB instead of CSV
-    migraine_data = load_migraine_log_from_db()
-    weather_data = pd.read_csv(weather_data_file)
+    migraine_data = load_migraine_log_from_db(db_path)
+    if os.path.exists(weather_data_file):
+        weather_data = pd.read_csv(weather_data_file)
+    else:
+        # Fallback if no weather data in test env
+        weather_data = pd.DataFrame({'date': [], 'tavg': []}) 
+        
+    # Standardize dates
     
     # Standardize dates
     migraine_data['Date'] = pd.to_datetime(migraine_data['Date'])
@@ -56,7 +62,7 @@ def merge_migraine_and_weather_data(migraine_log_file=migraine_data_filename, we
     # Identify numeric columns for aggregation
     agg_dict = {
         'Pain Level': 'max',
-        'Sleep': 'mean', 
+        'Sleep': 'mean', # Note: 'Sleep' in entries already refers to the night before the entry date.
         'Physical Activity': 'mean',
     }
     # Keep other columns if possible (take first)
@@ -79,6 +85,9 @@ def merge_migraine_and_weather_data(migraine_log_file=migraine_data_filename, we
         combined.drop(columns=['date'], inplace=True)
         
     combined.to_csv(output_file, index=False)
+    
+    if return_df:
+        return combined
     return combined
 
 def convert_time_to_minutes(time_str):
@@ -90,12 +99,18 @@ def convert_time_to_minutes(time_str):
     except:
         return 0
 
-def process_combined_data(combined_data_filename=combined_data_filename):
+def process_combined_data(combined_data_filename=combined_data_filename, input_df=None):
     """
     Loads combined data, performs feature engineering including lags and rolling means.
+    Can accept a direct DataFrame for testing/pipeline integration without reading from CSV.
     """
-    df = pd.read_csv(combined_data_filename)
-    df['Date'] = pd.to_datetime(df['Date'])
+    if input_df is not None:
+        df = input_df.copy()
+    else:
+        df = pd.read_csv(combined_data_filename)
+        
+    if 'Date' in df.columns and not pd.api.types.is_datetime64_any_dtype(df['Date']):
+        df['Date'] = pd.to_datetime(df['Date'])
     
     # Sort just in case
     df = df.sort_values('Date').reset_index(drop=True)

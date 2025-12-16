@@ -221,10 +221,20 @@ def construct_features(target_date, history_df):
     
     return pd.DataFrame([features])
 
+_prediction_cache = {}
+
 def get_prediction_for_date(target_date_str):
     """
     Main API entry point.
     """
+    # 1. Check Cache (1 Hour TTL)
+    if target_date_str in _prediction_cache:
+        entry = _prediction_cache[target_date_str]
+        age = datetime.datetime.now() - entry["timestamp"]
+        if age < timedelta(hours=1):
+            print(f"Using cached prediction for {target_date_str}")
+            return entry["result"]
+
     target_date = pd.to_datetime(target_date_str)
     
     # Load history
@@ -260,12 +270,20 @@ def get_prediction_for_date(target_date_str):
     else:
         risk = "Low"
         
-    return {
+    result = {
         "date": target_date_str,
         "probability": round(prob_migraine * 100, 1),
         "risk_level": risk,
         "predicted_pain": round(pred_pain, 1) if prob_migraine > 0.2 else 0.0
     }
+
+    # Updating Cache
+    _prediction_cache[target_date_str] = {
+        "timestamp": datetime.datetime.now(),
+        "result": result
+    }
+        
+    return result
 
 if __name__ == "__main__":
     # Test for tomorrow

@@ -5,11 +5,53 @@
     height: 100%;
 }
 
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.history-header h2 {
+    margin-bottom: 0;
+    color: #e0e0e0;
+}
+
+.filter-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: #2b2b2b;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #444;
+}
+
+.filter-controls label {
+    font-size: 0.9rem;
+    color: #bbb;
+}
+
+.filter-controls select {
+    background: #1a1a1a;
+    border: 1px solid #444;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.filter-controls select:focus {
+    outline: none;
+    border-color: #4dabf7;
+}
+
 .table-wrapper {
-    background-color: var(--bg-card);
-    border-radius: 12px;
-    border: 1px solid var(--border);
     overflow-x: auto;
+    background-color: #2b2b2b;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     flex: 1;
 }
 
@@ -24,6 +66,34 @@
     padding: 1rem;
     text-align: left;
     border-bottom: 1px solid var(--border);
+    position: relative;
+    /* Ensure z-index works */
+    z-index: 1;
+}
+
+/* ... existing styles ... */
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 10;
+    pointer-events: auto !important;
+    /* Force clicks */
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 20;
 }
 
 .history-table th {
@@ -120,6 +190,11 @@
 }
 
 /* Actions */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
 .action-btn {
     background: none;
     border: none;
@@ -144,4 +219,20 @@
 .delete-btn:disabled {
     opacity: 0.3;
     cursor: default;
+}
+
+/* New Medication Tags */
+.meds-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
+
+.med-tag {
+    background-color: #333;
+    color: #ddd;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    border: 1px solid #444;
 }

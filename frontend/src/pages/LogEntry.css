@@ -1,16 +1,23 @@
 .log-entry-container {
-    max_width: 800px;
+    padding: 2rem;
+    max-width: 600px;
     margin: 0 auto;
+    color: white;
+}
+
+h2 {
+    margin-bottom: 2rem;
+    color: #e0e0e0;
 }
 
 .entry-form {
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
-    background-color: var(--bg-card);
+    background-color: #2b2b2b;
     padding: 2rem;
     border-radius: 12px;
-    border: 1px solid var(--border);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .form-group {
@@ -20,116 +27,248 @@
 }
 
 .form-group.half {
-    flex: 1 1 calc(50% - 0.75rem);
-    min-width: 200px;
+    width: calc(50% - 0.75rem);
 }
 
 .form-group.full {
-    flex: 1 1 100%;
+    width: 100%;
 }
 
 label {
     font-size: 0.9rem;
-    color: var(--text-muted);
+    color: #bbb;
+    font-weight: 500;
 }
 
 input,
 select,
 textarea {
-    padding: 0.75rem;
+    padding: 0.8rem;
     border-radius: 6px;
-    border: 1px solid var(--border);
-    background-color: var(--bg-dark);
-    color: var(--text-main);
-    font-family: inherit;
+    border: 1px solid #444;
+    background-color: #1a1a1a;
+    color: white;
     font-size: 1rem;
-    outline: none;
-    transition: border-color 0.2s;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-    border-color: var(--primary);
+    outline: none;
+    border-color: #4dabf7;
+    box-shadow: 0 0 0 2px rgba(77, 171, 247, 0.2);
 }
 
-/* Slider Style */
 .range-input {
-    width: 100%;
-    accent-color: var(--primary);
+    padding: 0;
+    height: 8px;
+    background: #444;
+    border-radius: 4px;
+    appearance: none;
+    cursor: pointer;
+}
+
+.range-input::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #4dabf7;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
 }
 
 .range-labels {
     display: flex;
     justify-content: space-between;
     font-size: 0.8rem;
-    color: var(--text-muted);
+    color: #888;
 }
 
-/* Submit Button */
-.submit-btn {
-    background-color: var(--primary);
-    color: #fff;
-    border: none;
-    padding: 0.75rem 1.5rem;
+.input-icon-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.input-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
+    border: 1px solid #444;
     border-radius: 6px;
+    width: 42px;
+    height: 42px;
+    color: #4dabf7;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.input-icon-btn:hover {
+    background-color: #444;
+    color: #3b8dc4;
+    transform: scale(1.05);
+}
+
+.input-icon-wrapper input[type="text"] {
+    flex: 1;
+    /* Use standard padding since icon is now outside */
+    padding: 0.8rem;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: #4dabf7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     margin-top: 1rem;
-    transition: opacity 0.2s;
+    transition: background-color 0.2s;
 }
 
-.submit-btn:hover {
-    opacity: 0.9;
+.submit-btn:hover:not(:disabled) {
+    background-color: #3b8dc4;
 }
 
 .submit-btn:disabled {
-    opacity: 0.5;
+    opacity: 0.7;
     cursor: not-allowed;
 }
 
-/* Icons */
-.input-icon-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.input-icon {
-    position: absolute;
-    left: 10px;
-    color: var(--text-muted);
-}
-
-.input-icon-wrapper input {
-    padding-left: 36px;
-    width: 100%;
-}
-
-/* Status Messages */
 .status-message {
     padding: 1rem;
     border-radius: 6px;
-    margin-bottom: 1rem;
-    font-weight: 500;
+    margin-bottom: 1.5rem;
+    text-align: center;
 }
 
 .status-message.success {
-    background-color: rgba(0, 200, 83, 0.1);
-    color: #00c853;
-    border: 1px solid #00c853;
+    background-color: rgba(64, 192, 87, 0.15);
+    color: #69db7c;
+    border: 1px solid rgba(64, 192, 87, 0.3);
 }
 
 .status-message.error {
-    background-color: rgba(255, 82, 82, 0.1);
-    color: #ff5252;
-    border: 1px solid #ff5252;
+    background-color: rgba(250, 82, 82, 0.15);
+    color: #ff8787;
+    border: 1px solid rgba(250, 82, 82, 0.3);
 }
 
 .status-message.loading {
-    background-color: rgba(77, 171, 247, 0.1);
-    color: var(--primary);
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #ccc;
+}
+
+/* Meds Selector Styles */
+.meds-selector-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.med-select {
+    flex: 1;
+}
+
+.icon-btn.add-med-btn {
+    background-color: #4dabf7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.icon-btn.add-med-btn:hover {
+    background-color: #3b8dc4;
+}
+
+.icon-btn.add-med-btn:disabled {
+    background-color: #444;
+    color: #888;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.selected-meds-list {
+    margin-top: 0.5rem;
+    background-color: #222;
+    border-radius: 6px;
+    border: 1px solid #444;
+    overflow: hidden;
+}
+
+.med-item-row {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid #333;
+    gap: 1rem;
+}
+
+.med-item-row:last-child {
+    border-bottom: none;
+}
+
+.med-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.med-dosage-input {
+    width: 80px;
+    padding: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.icon-btn.remove-med-btn {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.icon-btn.remove-med-btn:hover {
+    color: #ff6b6b;
+}
+
+.no-meds-text {
+    padding: 1rem;
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.meds-hint {
+    text-align: right;
+    margin-top: 0.2rem;
+}
+
+.meds-hint a {
+    color: #4dabf7;
+    text-decoration: none;
+}
+
+.meds-hint a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .form-group.half {
+        width: 100%;
+    }
 }

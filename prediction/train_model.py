@@ -9,7 +9,12 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_sc
 import matplotlib.pyplot as plt
 
 # Import data processing
-from data_processing import merge_migraine_and_weather_data, process_combined_data
+# Import data processing
+try:
+    from prediction.data_processing import merge_migraine_and_weather_data, process_combined_data
+except ImportError:
+    # Fallback for running as script directly
+    from data_processing import merge_migraine_and_weather_data, process_combined_data
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -18,17 +23,41 @@ os.makedirs(MODEL_DIR, exist_ok=True)
 MODEL_CLF_PATH = os.path.join(MODEL_DIR, 'best_model_clf.pkl')
 MODEL_REG_PATH = os.path.join(MODEL_DIR, 'best_model_reg.pkl')
 
-def train_and_evaluate():
+def train_and_evaluate(db_path=None):
     print("Step 1: Merging and Processing Data...")
-    merge_migraine_and_weather_data()
-    df = process_combined_data()
+    
+    # Allow overriding DB path for testing
+    if db_path:
+        # If test DB is provided, we need to replicate the pipeline steps
+        from prediction.data_processing import load_migraine_log_from_db, merge_migraine_and_weather_data
+        
+        # 1. Load Raw
+        raw_df = load_migraine_log_from_db(db_path)
+        
+        # 2. Merge/Format (This function needs to handle raw_df input or we patch it)
+        # Actually, `merge_migraine_and_weather_data` reads from DB by default. 
+        # Let's just create a temporary combined DF manually for the test to avoid refactoring everything
+        # Or better: Update merge_migraine_and_weather_data to take a DF.
+        # But for now, let's just use the `process_combined_data` on a pre-prepared DF if possible.
+        
+        # To make this robust without modifying `merge...` too much:
+        # We will assume `load_migraine_log_from_db` isn't enough, we need `merge...`.
+        # Taking a shortcut: We will update `merge_migraine_and_weather_data` to take `db_path` too.
+        
+        combined_df = merge_migraine_and_weather_data(db_path=db_path, return_df=True)
+        df = process_combined_data(input_df=combined_df)
+
+    else:
+        # Default production flow
+        merge_migraine_and_weather_data()
+        df = process_combined_data()
     
     print(f"Data Loaded: {len(df)} days of history.")
     
     # Define Features and Target
     exclude_cols = [
         'Date', 'date', 
-        'Medication', 'Dosage', 'Triggers', 'Notes', 'Location', 'Timezone', 
+        'Medication', 'Dosage', 'Medications', 'Triggers', 'Notes', 'Location', 'Timezone', 
         'Pain Level', 'Pain_Level_Binary', 'Pain_Level_Log', 
         'Longitude_x', 'Latitude_x', 'Longitude_y', 'Latitude_y', 
         'Time'
@@ -146,6 +175,9 @@ def train_and_evaluate():
     joblib.dump(clf, MODEL_CLF_PATH)
     joblib.dump(reg, MODEL_REG_PATH)
     print("Models saved.")
+    
+    # Return stats for testing
+    return clf, np.mean(acc_scores), np.mean(combined_mae_scores)
 
 if __name__ == "__main__":
     train_and_evaluate()

@@ -8,18 +8,47 @@ function HistoryPage() {
     const [entries, setEntries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [deleteId, setDeleteId] = useState(null); // ID of entry to delete
+    // Filters
+    const [timeRange, setTimeRange] = useState('30d'); // 7d, 30d, 90d, 180d, 1y
+
     const navigate = useNavigate();
 
     useEffect(() => {
         fetchEntries();
-    }, []);
+    }, [timeRange]);
+
+    const getDateRange = () => {
+        const end = new Date();
+        let start = new Date();
+
+        switch (timeRange) {
+            case '7d': start.setDate(end.getDate() - 7); break;
+            case '30d': start.setDate(end.getDate() - 30); break;
+            case '90d': start.setDate(end.getDate() - 90); break;
+            case '180d': start.setDate(end.getDate() - 180); break;
+            case '1y': start.setFullYear(end.getFullYear() - 1); break;
+            default: start.setDate(end.getDate() - 30);
+        }
+
+        return {
+            startStr: start.toISOString().split('T')[0],
+            endStr: end.toISOString().split('T')[0]
+        };
+    };
 
     const fetchEntries = async () => {
+        setLoading(true);
         try {
-            const response = await axios.get('/api/v1/entries');
-            // Sort by Date Descending
-            const sorted = response.data.sort((a, b) => new Date(b.Date) - new Date(a.Date));
-            setEntries(sorted);
+            const { startStr, endStr } = getDateRange();
+            let url = '/api/v1/entries';
+            const params = new URLSearchParams();
+            if (startStr) params.append('start_date', startStr);
+            if (endStr) params.append('end_date', endStr);
+
+            const response = await axios.get(url, { params });
+            // API now returns sorted data, but double check
+            setEntries(response.data);
         } catch (err) {
             console.error(err);
             setError("Failed to load history.");
@@ -28,16 +57,26 @@ function HistoryPage() {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (!confirm("Are you sure you want to delete this entry?")) return;
+    const confirmDelete = (e, id) => {
+        e.stopPropagation();
+        setDeleteId(id);
+    };
+
+    const performDelete = async () => {
+        if (!deleteId) return;
 
         try {
-            await axios.delete(`/api/v1/entries/${id}`);
-            setEntries(entries.filter(e => e.id !== id));
+            await axios.delete(`/api/v1/entries/${deleteId}`);
+            setEntries(prev => prev.filter(e => e.id !== deleteId));
+            setDeleteId(null); // Close modal
         } catch (err) {
             console.error("Delete failed:", err);
-            alert("Failed to delete entry.");
+            // Fallback to console since alert is broken
         }
+    };
+
+    const cancelDelete = () => {
+        setDeleteId(null);
     };
 
     const handleEdit = (entry) => {
@@ -75,7 +114,19 @@ function HistoryPage() {
 
     return (
         <div className="history-container">
-            <h2>Migraine History</h2>
+            <div className="history-header">
+                <h2>Migraine History</h2>
+                <div className="filter-controls">
+                    <label>Period:</label>
+                    <select value={timeRange} onChange={(e) => setTimeRange(e.target.value)}>
+                        <option value="7d">Last 7 Days</option>
+                        <option value="30d">Last 30 Days</option>
+                        <option value="90d">Last 3 Months</option>
+                        <option value="180d">Last 6 Months</option>
+                        <option value="1y">Last Year</option>
+                    </select>
+                </div>
+            </div>
 
             <div className="table-wrapper">
                 <table className="history-table">
@@ -107,8 +158,22 @@ function HistoryPage() {
                                         </span>
                                     </td>
                                     <td>
-                                        {entry.Medication}
-                                        {entry.Dosage && <span className="dosage-tag">{entry.Dosage}</span>}
+                                        {/* New Format */}
+                                        {entry.Medications && entry.Medications.length > 0 ? (
+                                            <div className="meds-tags">
+                                                {entry.Medications.map((m, i) => (
+                                                    <span key={i} className="med-tag">
+                                                        {m.name} {m.dosage ? `(${m.dosage})` : ''}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            /* Legacy Fallback */
+                                            <>
+                                                {entry.Medication}
+                                                {entry.Dosage && <span className="dosage-tag">{entry.Dosage}</span>}
+                                            </>
+                                        )}
                                     </td>
                                     <td>{getSleepLabel(entry.Sleep)}</td>
                                     <td>{getActivityLabel(entry['Physical Activity'] || entry.Physical_Activity)}</td>
@@ -126,9 +191,8 @@ function HistoryPage() {
                                             </button>
                                             <button
                                                 className="action-btn delete-btn"
-                                                onClick={() => handleDelete(entry.id)}
-                                                title="Delete Entry"
-                                                disabled={!entry.id}
+                                                onClick={(e) => confirmDelete(e, entry.id)}
+                                                title={`Delete Entry ${entry.id}`}
                                             >
                                                 <Trash2 size={16} />
                                             </button>
@@ -140,6 +204,44 @@ function HistoryPage() {
                     </tbody>
                 </table>
             </div>
+
+            {/* Confirmation Modal */}
+            {deleteId && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    zIndex: 1000
+                }}>
+                    <div style={{
+                        backgroundColor: '#1e293b', padding: '2rem', borderRadius: '12px',
+                        border: '1px solid #334155', maxWidth: '400px', width: '90%'
+                    }}>
+                        <h3 style={{ marginTop: 0 }}>Confirm Deletion</h3>
+                        <p style={{ color: '#94a3b8' }}>Are you sure you want to delete this entry? This action cannot be undone.</p>
+                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+                            <button
+                                onClick={cancelDelete}
+                                style={{
+                                    padding: '8px 16px', background: 'transparent', color: '#cbd5e1',
+                                    border: '1px solid #475569', borderRadius: '6px', cursor: 'pointer'
+                                }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={performDelete}
+                                style={{
+                                    padding: '8px 16px', background: '#ef4444', color: 'white',
+                                    border: 'none', borderRadius: '6px', cursor: 'pointer'
+                                }}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

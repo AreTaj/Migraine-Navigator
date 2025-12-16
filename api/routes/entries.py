@@ -1,5 +1,6 @@
+from fastapi import Query
 from fastapi import APIRouter, HTTPException
-from typing import List
+from typing import List, Optional
 from api.models import MigraineEntry
 from services.entry_service import EntryService
 import pandas as pd
@@ -13,9 +14,10 @@ def get_db_path():
     return os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'migraine_log.db')
 
 @router.get("/entries", response_model=List[MigraineEntry])
-def get_entries():
+def get_entries(start_date: str = Query(None, description="Filter start date (YYYY-MM-DD)"), 
+                end_date: str = Query(None, description="Filter end date (YYYY-MM-DD)")):
     try:
-        df = EntryService.get_entries_from_db(get_db_path())
+        df = EntryService.get_entries_from_db(get_db_path(), start_date, end_date)
         # Convert DataFrame to list of dicts
         # Need to handle NaN/None values for Pydantic
         # Handle NaN values smartly
