@@ -264,6 +264,12 @@ function Dashboard() {
             ? (painfulEntries.reduce((sum, e) => sum + Number(e.Pain_Level), 0) / painfulEntries.length).toFixed(1)
             : 0;
 
+        // new mapping: Generic Name (DB) -> User Preference (Registry)
+        const medDisplayMap = {};
+        meds.forEach(m => {
+            medDisplayMap[m.name] = m.display_name || m.name;
+        });
+
         // 2. Medication Data (Filtered by medTimeRange)
         let medStartDate = new Date();
         // 'now' is already defined at the beginning of the useMemo hook
@@ -277,14 +283,14 @@ function Dashboard() {
 
         const medCounts = {};
         const normalizeMed = (name) => {
+            // Check Registry Mapping First (Pharma -> Display)
+            if (medDisplayMap[name]) return medDisplayMap[name];
+
+            // Legacy/Fallback Logic
             const lower = name.toLowerCase();
-            if (lower.includes('ibuprofen') || lower.includes('advil')) return 'Ibuprofen';
-            if (lower.includes('nurtec')) return 'Nurtec';
-            if (lower.includes('tylenol') || lower.includes('acetaminophen')) return 'Tylenol';
-            if (lower.includes('excedrin')) return 'Excedrin';
-            if (lower.includes('ubrelvy')) return 'Ubrelvy';
-            if (lower.includes('sumatriptan') || lower.includes('imitrex')) return 'Sumatriptan';
-            if (lower.includes('rizatriptan') || lower.includes('maxalt')) return 'Rizatriptan';
+            if (lower.includes('ibuprofen') || lower.includes('advil')) return 'Advil'; // Default to Brand? Or Generic? User prefers Brand for display.
+            if (lower.includes('nurtec') || lower.includes('rimegepant')) return 'Nurtec ODT';
+            if (lower.includes('botox') || lower.includes('onabotulinumtoxina')) return 'Botox';
             return name; // Return original if no match
         };
 
