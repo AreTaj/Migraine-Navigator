@@ -103,11 +103,21 @@ function HistoryPage() {
 
     const formatDate = (dateStr) => {
         if (!dateStr) return '';
-        return new Date(dateStr).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        });
+        // Parse "YYYY-MM-DD" manually to construct a LOCAL date object
+        // This avoids the issue where new Date("YYYY-MM-DD") is treated as UTC midnight
+        // which often shifts to the previous day in Western timezones.
+        const parts = dateStr.split('-');
+        if (parts.length === 3) {
+            const year = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10) - 1; // JS months are 0-indexed
+            const day = parseInt(parts[2], 10);
+            return new Date(year, month, day).toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+        return dateStr;
     };
 
     const getSleepLabel = (val) => {

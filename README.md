@@ -10,18 +10,21 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
 
 - **Enhanced Dashboard:** 
     - **Live Prediction**: See your "Tomorrow Risk" based on weather forecasts and recent history.
+    - **Offline Resilience**: Automatically falls back to the most recent known weather data if the internet is down, with visual alerts.
     - **Smart Metrics**: Track "Avg Days/Month" and pain severity trends.
     - **Interactive Trends**: Filter by 1M (Severity View), 1Y, or Full History (Frequency View).
-    - **Medication Analysis**: Consolidated view with time-based filters.
+    - **Medication Analysis**: Consolidated view with time-based filters (Defaults to 1-Year view).
 - **Detailed Logging:** 
     - **Smart Geolocation**: IP-based location tagging for accurate weather correlation without intrusive permissions.
     - **Medication Management**: Dedicated registry for tracking doses, frequencies, and stock.
     - **Log Date, Time, Pain Level, Sleep Quality, Physical Activity, Triggers.**
 - **History Management:** 
     - **Performance Optimized**: Date-based filtering (Last 7 Days, 30 Days, etc.) for instant loading.
+    - **TimeZone Aware**: Intelligent date handling ensuring "Today" means *your* today, regardless of when you log.
     - Full searchable/sortable history table with **Edit** and **Delete** capabilities.
 - **Modern Architecture:** 
     - Built on robust SQLite database.
+    - **Reactive Caching**: Instant dashboard updates upon data modification, with 1-hour caching for stability.
     - Fast and lightweight Desktop experience.
 
 ## Screenshots

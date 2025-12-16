@@ -29,7 +29,7 @@ def train_and_evaluate(db_path=None):
     # Allow overriding DB path for testing
     if db_path:
         # If test DB is provided, we need to replicate the pipeline steps
-        from prediction.data_processing import load_migraine_log_from_db, merge_migraine_and_weather_data
+        from prediction.data_processing import load_migraine_log_from_db
         
         # 1. Load Raw
         raw_df = load_migraine_log_from_db(db_path)
@@ -83,14 +83,27 @@ def train_and_evaluate(db_path=None):
     
     thresholds = []
 
+    # Calculate Sample Weights
+    # Strategy: Give higher weight to the most recent year of data.
+    # This addresses "concept drift" / changing health conditions.
+    current_max_date = df['Date'].max()
+    cutoff_date = current_max_date - pd.Timedelta(days=365)
+    
+    # Base weight 1.0, Recent weight 3.0
+    # We use numpy where for vectorization
+    sample_weights = np.where(df['Date'] > cutoff_date, 3.0, 1.0)
+    
+    print(f"Applying Weighted Training: Recent data (> {cutoff_date.date()}) gets 3x weight.")
+    
     print("\n--- Starting Time Series Cross-Validation ---")
     for fold, (train_index, test_index) in enumerate(tscv.split(X)):
         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
         y_train_bin, y_test_bin = y_bin.iloc[train_index], y_bin.iloc[test_index]
         y_train_reg, y_test_reg = y_reg.iloc[train_index], y_reg.iloc[test_index]
+        weights_train = sample_weights[train_index]
         
         # 1. Train Classifier
-        clf.fit(X_train, y_train_bin)
+        clf.fit(X_train, y_train_bin, sample_weight=weights_train)
         
         # Predict Probabilities
         y_probs = clf.predict_proba(X_test)[:, 1]
@@ -116,7 +129,7 @@ def train_and_evaluate(db_path=None):
         # 2. Train Regressor (on full data or just positives? Let's use full for robustness, or just positives)
         # Using full data is safer for gradient boosting, it learns 0s. 
         # But let's try training on all, and gating output.
-        reg.fit(X_train, y_train_reg)
+        reg.fit(X_train, y_train_reg, sample_weight=weights_train)
         y_pred_reg_raw = reg.predict(X_test)
         y_pred_reg_raw = np.maximum(y_pred_reg_raw, 0)
         
@@ -169,8 +182,8 @@ def train_and_evaluate(db_path=None):
     
     # Final Training
     print("\nTraining Final Models on All Data...")
-    clf.fit(X, y_bin)
-    reg.fit(X, y_reg)
+    clf.fit(X, y_bin, sample_weight=sample_weights)
+    reg.fit(X, y_reg, sample_weight=sample_weights)
     
     joblib.dump(clf, MODEL_CLF_PATH)
     joblib.dump(reg, MODEL_REG_PATH)

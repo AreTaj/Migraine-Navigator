@@ -4,10 +4,20 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 
 
 import { useNavigate } from 'react-router-dom';
-import { Loader2, Pill, CalendarCheck, CheckCircle2, Clock, XCircle } from 'lucide-react';
+import { Loader2, Pill, CalendarCheck, CheckCircle2, Clock, XCircle, AlertTriangle } from 'lucide-react';
 import './Dashboard.css';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#aaa'];
+
+// Helper to parse YYYY-MM-DD as local date (avoiding UTC offset issues)
+const parseLocalDate = (dateStr) => {
+    if (!dateStr) return new Date();
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+        return new Date(parts[0], parts[1] - 1, parts[2]);
+    }
+    return new Date(dateStr);
+};
 
 function Dashboard() {
     const [entries, setEntries] = useState([]);
@@ -16,7 +26,7 @@ function Dashboard() {
     const [predLoading, setPredLoading] = useState(true); // New state for lazy load
     const [error, setError] = useState(null);
     const [timeRange, setTimeRange] = useState('1y'); // '1m', '1y', '2y'
-    const [medTimeRange, setMedTimeRange] = useState('all'); // Separate filter for meds
+    const [medTimeRange, setMedTimeRange] = useState('1y'); // Separate filter for meds
 
     const navigate = useNavigate();
     const [meds, setMeds] = useState([]);
@@ -53,7 +63,9 @@ function Dashboard() {
                 setMeds(allMeds);
 
                 // --- SMART LOGIC (Synchronous) ---
-                const todayStr = new Date().toISOString().split('T')[0];
+                // Use local date for "today"
+                const now = new Date();
+                const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
                 const dailyMedList = allMeds.filter(m => m.frequency === 'daily');
                 setDailyMeds(dailyMedList);
 
@@ -143,7 +155,9 @@ function Dashboard() {
 
     const handleConfirmDailyCheckin = async () => {
         try {
-            const todayStr = new Date().toISOString().split('T')[0];
+            // Use local date for "today"
+            const now = new Date();
+            const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
             const payload = {
                 Date: todayStr,
                 Time: "12:00",
@@ -369,9 +383,9 @@ function Dashboard() {
         if (timeRange === '1m') {
             // Daily Grouping -> Show Pain Level
             chartData = migraineDays
-                .sort((a, b) => new Date(a.Date) - new Date(b.Date))
+                .sort((a, b) => parseLocalDate(a.Date) - parseLocalDate(b.Date))
                 .map(e => ({
-                    name: new Date(e.Date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+                    name: parseLocalDate(e.Date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
                     value: Number(e.Pain_Level),
                     type: 'pain'
                 }));
@@ -379,7 +393,7 @@ function Dashboard() {
             // Monthly Grouping (1y, 2y, all) -> Show Frequency
             const monthlyMap = {};
             migraineDays.forEach(e => {
-                const d = new Date(e.Date);
+                const d = parseLocalDate(e.Date);
                 const key = `${d.getFullYear()}-${d.getMonth()}`; // Unique sortable key
                 const label = d.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
 
@@ -528,7 +542,7 @@ function Dashboard() {
                                     <div className="retro-days-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', maxHeight: '300px', overflowY: 'auto', marginBottom: '1rem' }}>
                                         {missingDays.map(dateStr => (
                                             <div key={dateStr} style={{ background: 'rgba(255,255,255,0.05)', padding: '0.8rem', borderRadius: '8px' }}>
-                                                <div style={{ fontWeight: '600', marginBottom: '0.5rem', fontSize: '0.9rem' }}>{new Date(dateStr).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</div>
+                                                <div style={{ fontWeight: '600', marginBottom: '0.5rem', fontSize: '0.9rem' }}>{parseLocalDate(dateStr).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</div>
                                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
                                                     <div>
                                                         <label style={{ fontSize: '0.75rem', color: '#bfdbfe', display: 'block', marginBottom: '2px' }}>Sleep (Night Before)</label>
@@ -617,6 +631,22 @@ function Dashboard() {
                             <p className="stat-subtext" style={{ fontSize: '0.9rem', color: '#ccc' }}>
                                 {prediction.risk_level} Risk
                             </p>
+
+                            {prediction.source === 'historical_fallback' && (
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    marginTop: '8px',
+                                    paddingTop: '8px',
+                                    borderTop: '1px solid #333',
+                                    fontSize: '0.8rem',
+                                    color: '#fcb900' // Careful orange
+                                }}>
+                                    <AlertTriangle size={14} />
+                                    <span>Using past weather ({prediction.source_date})</span>
+                                </div>
+                            )}
                         </>
                     ) : (
                         <p style={{ fontSize: '0.9rem', color: '#888', marginTop: '1rem' }}>Data Unavailable</p>
