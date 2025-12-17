@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkwebsite=globalThis.webpackChunkwebsite||[]).push([[284],{1912(a){a.exports=JSON.parse('{"blogBasePath":"/Migraine-Navigator/blog","blogTitle":"Blog","authorsListPath":"/Migraine-Navigator/blog/authors"}')}}]);

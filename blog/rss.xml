@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>Migraine Navigator Blog</title>
+        <link>https://aretaj.github.io/Migraine-Navigator/blog</link>
+        <description>Migraine Navigator Blog</description>
+        <lastBuildDate>Tue, 16 Dec 2025 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <item>
+            <title><![CDATA[The Perfect Storm Protocol]]></title>
+            <link>https://aretaj.github.io/Migraine-Navigator/blog/perfect-storm</link>
+            <guid>https://aretaj.github.io/Migraine-Navigator/blog/perfect-storm</guid>
+            <pubDate>Tue, 16 Dec 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Date: December 16, 2025]]></description>
+            <content:encoded><![CDATA[<p><strong>Date:</strong> December 16, 2025
+<strong>Subject:</strong> Optimization Study of Predictive Triggers</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="part-1-executive-summary">Part 1: Executive Summary<a href="https://aretaj.github.io/Migraine-Navigator/blog/perfect-storm#part-1-executive-summary" class="hash-link" aria-label="Direct link to Part 1: Executive Summary" title="Direct link to Part 1: Executive Summary" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-question">The Question<a href="https://aretaj.github.io/Migraine-Navigator/blog/perfect-storm#the-question" class="hash-link" aria-label="Direct link to The Question" title="Direct link to The Question" translate="no">​</a></h3>
+<blockquote>
+<p><strong>Dataset Scope</strong>: This study analyzes a model trained exclusively on <strong>single-patient historical data (N=1)</strong>. The identified triggers and risk probabilities are highly personalized to this specific user's biological patterns and environmental sensitivity. They do not represent clinical generalizations for the broader migraine population.</p>
+</blockquote>
+<p>Can we identify the absolute worst-case scenario for a migraine sufferer? By reverse-engineering our predictive AI, we sought to find the precise combination of weather and lifestyle choices that guarantees a migraine.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-stress-test">The "Stress Test"<a href="https://aretaj.github.io/Migraine-Navigator/blog/perfect-storm#the-stress-test" class="hash-link" aria-label="Direct link to The &quot;Stress Test&quot;" title="Direct link to The &quot;Stress Test&quot;" translate="no">​</a></h3>
+<p>Think of this as a crash test for the digital brain. Rather than ask the AI "will I get a migraine today?", we forced it to simulate <strong>80,640 different days</strong>, ranging from the virtual equivalent of perfect weather vacations to stressful, stormy work weeks. We tweaked every dial—temperature, pressure, sleep quality, activity levels, and even the day of the week—to find the worst possible breaking point.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-perfect-storm-result-912-risk">The "Perfect Storm" Result (91.2% Risk)<a href="https://aretaj.github.io/Migraine-Navigator/blog/perfect-storm#the-perfect-storm-result-912-risk" class="hash-link" aria-label="Direct link to The &quot;Perfect Storm&quot; Result (91.2% Risk)" title="Direct link to The &quot;Perfect Storm&quot; Result (91.2% Risk)" translate="no">​</a></h3>
+<p>The model identified a specific set of conditions that created a near-certainty (<strong>91.2%</strong>) of a migraine attack:</p>
+<ul>
+<li class=""><strong>The Timing</strong>: A <strong>Monday</strong>.</li>
+<li class=""><strong>The Weather</strong>: A hot <strong>35°C (95°F)</strong> day combined with a sharp drop in barometric pressure (<strong>990 hPa</strong>—typical of an incoming storm front).</li>
+<li class="">** The Behavior**: Crucially, the weather alone wasn't enough. The risk peaked only when combined with <strong>Poor Sleep</strong> and <strong>Zero Physical Activity</strong>.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-takeaway">Key Takeaway<a href="https://aretaj.github.io/Migraine-Navigator/blog/perfect-storm#key-takeaway" class="hash-link" aria-label="Direct link to Key Takeaway" title="Direct link to Key Takeaway" translate="no">​</a></h3>
+<p>The AI justifies (though maybe not yet proves) a hypothesis that we've all probably heard before: <strong>Lifestyle acts as a buffer.</strong> Even in the worst weather conditions, improving sleep or activity levels in the simulation dropped the risk from "Critical" to "High" or "Moderate." You cannot control the weather, but you can control the outcome.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="part-2-technical-analysis">Part 2: Technical Analysis<a href="https://aretaj.github.io/Migraine-Navigator/blog/perfect-storm#part-2-technical-analysis" class="hash-link" aria-label="Direct link to Part 2: Technical Analysis" title="Direct link to Part 2: Technical Analysis" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="methodology-brute-force-grid-search">Methodology: Brute-Force Grid Search<a href="https://aretaj.github.io/Migraine-Navigator/blog/perfect-storm#methodology-brute-force-grid-search" class="hash-link" aria-label="Direct link to Methodology: Brute-Force Grid Search" title="Direct link to Methodology: Brute-Force Grid Search" translate="no">​</a></h3>
+<p>To identify the global maximum for P(Migraine | X), we implemented a Cartesian Grid Search algorithm iterating over a discretized feature space of N=80,640 vectors.</p>
+<p><strong>Feature Space Dimensions:</strong></p>
+<ul>
+<li class=""><strong>T_avg (Temperature)</strong>: <code>[5.0, 15.0, 25.0, 35.0]</code> (Celsius)</li>
+<li class=""><strong>P_surface (Pressure)</strong>: <code>[990.0, 1000.0, 1015.0, 1030.0]</code> (hPa)</li>
+<li class=""><strong>H_rel (Humidity)</strong>: <code>[20.0, 50.0, 80.0]</code> (%)</li>
+<li class=""><strong>Delta_P (Pressure Change)</strong>: <code>[-5.0 ... 5.0]</code> (hPa/24h)</li>
+<li class=""><strong>S_qual (Sleep)</strong>: <code>[1.0, 2.0, 3.0]</code> (Ordinal Scale)</li>
+<li class=""><strong>A_phys (Activity)</strong>: <code>[0.0, 1.0, 2.0, 3.0]</code> (Ordinal Scale)</li>
+<li class=""><strong>L_pain (Lag History)</strong>: <code>[0.0, 3.0, 7.0, 9.0]</code> (Pain Magnitude)</li>
+<li class=""><strong>D_week (Day of Week)</strong>: <code>[0, ..., 6]</code> (Mon-Sun)</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="optimization-logic">Optimization Logic<a href="https://aretaj.github.io/Migraine-Navigator/blog/perfect-storm#optimization-logic" class="hash-link" aria-label="Direct link to Optimization Logic" title="Direct link to Optimization Logic" translate="no">​</a></h3>
+<p>The script (<code>tests/maximize_risk.py</code>) initializes the trained Gradient Boosting Classifier. For each permutation vector v_i:</p>
+<ol>
+<li class="">Construct a synthetic feature matrix X_i.</li>
+<li class="">Override scalar keys with v_i components.</li>
+<li class="">Compute inference: <code>y_hat = clf.predict_proba(X_i)[1]</code>.</li>
+<li class="">Update <code>theta_max</code> if <code>y_hat &gt; theta_current</code>.</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="results--feature-interaction">Results &amp; Feature Interaction<a href="https://aretaj.github.io/Migraine-Navigator/blog/perfect-storm#results--feature-interaction" class="hash-link" aria-label="Direct link to Results &amp; Feature Interaction" title="Direct link to Results &amp; Feature Interaction" translate="no">​</a></h3>
+<p>The convergence on <strong>91.2%</strong> probability reveals high non-linearity in the decision trees.</p>
+<ul>
+<li class=""><strong>The "Monday" Factor</strong>: Including the Day of Week increased the risk ceiling from 91.1% to 91.2%. While the model identified <strong>Monday</strong> as the highest-risk day, the marginal impact (+0.1%) suggests that while cyclical stressors exist, biological and meteorological factors are far more dominant.</li>
+<li class=""><strong>Interaction Effect</strong>: The model shows a strong interaction between <strong>Low Pressure</strong> and <strong>High Temperature</strong>.</li>
+<li class=""><strong>History Sensitivity</strong>: Interestingly, a <em>Moderate</em> recent pain history (3.0 vs 9.0) yielded higher immediate risk. This suggests the model has learned a "prodrome" or "buildup" pattern, where mid-level pain predicts a future spike better than already-peak pain (which might indicate the attack is subsiding).</li>
+<li class=""><strong>Dominant Factors</strong>: Sleep quality (S_qual) functioned as a primary gatekeeper; values of S_qual &gt;= 2.0 significantly dampened the maximum achievable risk, regardless of weather vectors.</li>
+</ul>]]></content:encoded>
+            <category>data-science</category>
+            <category>analysis</category>
+            <category>n=1</category>
+        </item>
+    </channel>
+</rss>
