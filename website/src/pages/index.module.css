@@ -21,28 +21,51 @@
 .heroSubtitle {
   font-size: 1.5rem;
   color: #e6c65c;
-  /* Muted Gold */
   margin-bottom: 2rem;
 }
 
 .buttons {
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: 20px;
 }
 
-/* Dashboard Styling */
+/* --- NEW: High Contrast Gold Button --- */
+.goldButton {
+  background-color: #d4af37 !important;
+  /* Force Gold Background */
+  color: #000000 !important;
+  /* Force Black Text */
+  border: 2px solid #d4af37;
+  font-weight: 800;
+  /* Bold Text */
+  padding: 12px 30px;
+  border-radius: 8px;
+  text-decoration: none !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: inline-block;
+}
+
+.goldButton:hover {
+  transform: translateY(-2px);
+  /* Slight lift on hover */
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+  /* Gold Glow */
+  color: #000000 !important;
+  text-decoration: none;
+}
+
+/* ------------------------------------- */
+
 .dashboardSection {
   padding: 0 1rem 4rem;
   text-align: center;
   background-color: #1b1b1d;
-  /* Force dark background */
   color: #fff;
 }
 
 .dashboardContainer {
   margin-top: -3rem;
-  /* Overlap effect */
   margin-bottom: 3rem;
   position: relative;
   z-index: 10;
@@ -50,7 +73,6 @@
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   border: 1px solid rgba(212, 175, 55, 0.3);
-  /* Gold border */
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
   max-width: 1000px;
   margin-left: auto;
@@ -72,9 +94,12 @@
   color: #d4af37;
 }
 
-/* Mobile Responsive */
 @media screen and (max-width: 996px) {
   .heroTitle {
     font-size: 2.5rem;
+  }
+
+  .buttons {
+    flex-direction: column;
   }
 }

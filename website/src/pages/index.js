@@ -17,13 +17,12 @@ function HomepageHeader() {
         <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <Link
-            className="button button--secondary button--lg"
+            className={styles.goldButton}
             to="/docs/architecture">
             View Architecture
           </Link>
-          <span style={{ margin: '0 10px' }}></span>
           <Link
-            className="button button--secondary button--lg"
+            className={styles.goldButton}
             to="/blog">
             Read "Perfect Storm" Study
           </Link>
@@ -43,8 +42,7 @@ export default function Home() {
       <main>
         <div className={styles.dashboardSection}>
           <div className={styles.dashboardContainer}>
-            {/* LINK DIRECTLY TO YOUR REPO RAW IMAGE */}
-            {/* This bypasses the build error completely */}
+            {/* Using Raw GitHub URL to guarantee image loads */}
             <img
               src="https://raw.githubusercontent.com/AreTaj/Migraine-Navigator/main/screenshots/dashboard.png"
               alt="Migraine Navigator Dashboard"
