@@ -74,7 +74,10 @@ def merge_migraine_and_weather_data(migraine_log_file=migraine_data_filename, we
     
     combined = pd.merge(full_df, migraine_data, on='Date', how='left')
     
-    # Fill missing Pain Level with 0 (Assumption: No entry = No migraine)
+    # Fill missing Pain Level with 0
+    # CRITICAL ASSUMPTION: Days missing from the log are "Pain Free" days.
+    # If a user forgets to log a migraine, this will introduce False Negatives.
+    # However, forcing users to log "0" every day is high friction, so we opt for this convenience.
     combined['Pain Level'] = combined['Pain Level'].fillna(0)
     
     # Merge weather data

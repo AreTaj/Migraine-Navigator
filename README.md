@@ -42,6 +42,13 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
 ![Medications Registry](screenshots/medications.png)
 *Centralized registry for managing medication types, dosages, and frequencies (Acute vs. Preventative).*
 
+## Documentation
+    
+For deep dives into the system architecture and AI logic:
+
+*   **[Technical System Overview](documentation/technical_system_overview.md)**: Details the FastAPI/Tauri architecture and the "Hurdle Model" ML strategy.
+*   **[Model Optimization Study](documentation/model_optimization_study.md)**: The "Perfect Storm" experiment finding the maximum risk triggers (N=80,640 simulations).
+
 ## Installation
 
 ### Prerequisites
@@ -95,6 +102,8 @@ Migraine Navigator/
 │   │   └── App.jsx          # Main Router
 │   └── src-tauri/           # Rust Backend (Window Management)
 ├── services/                # Business Logic Layer
+├── prediction/              # ML Pipeline (Training & Inference)
+├── documentation/           # Technical Reports & Architecture
 ├── data/                    # Database (migraine_log.db)
 └── ...
 ```

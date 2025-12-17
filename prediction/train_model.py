@@ -76,16 +76,19 @@ def train_and_evaluate(db_path=None):
     acc_scores = []
     combined_mae_scores = []
     
-    # Initialize models
-    # class_weight='balanced' helps with the "No Pain" dominance
+    # Initialize models (Gradient Boosting)
+    # We use HistGradientBoosting because it natively handles NaN values (missing data)
+    # and is much faster for tabular data than standard Random Forest.
+    # class_weight='balanced' helps with the "No Pain" dominance (imbalanced classes).
     clf = HistGradientBoostingClassifier(max_iter=100, max_depth=5, learning_rate=0.05, random_state=42, class_weight='balanced')
     reg = HistGradientBoostingRegressor(max_iter=100, max_depth=5, learning_rate=0.05, random_state=42)
     
     thresholds = []
 
-    # Calculate Sample Weights
+    # Calculate Sample Weights (Concept Drift Handling)
     # Strategy: Give higher weight to the most recent year of data.
-    # This addresses "concept drift" / changing health conditions.
+    # Why? Migraine patterns change over time due to biology/lifestyle.
+    # Data from 2 years ago is less predictive of "You Today" than data from last month.
     current_max_date = df['Date'].max()
     cutoff_date = current_max_date - pd.Timedelta(days=365)
     
@@ -133,7 +136,11 @@ def train_and_evaluate(db_path=None):
         y_pred_reg_raw = reg.predict(X_test)
         y_pred_reg_raw = np.maximum(y_pred_reg_raw, 0)
         
-        # Combined Prediction: If Classifier says 0, then 0. Else Regressor.
+        # Combined Prediction (Hurdle Model)
+        # 1. Classifier Says: "Will there be a migraine?" (0 or 1)
+        # 2. Regressor Says: "If there is one, how bad is it?" (0-10)
+        # Combined = (0 or 1) * Severity.
+        # This prevents the model from predicting "Severity 0.5" on days with zero risk.
         y_pred_combined = y_pred_reg_raw * y_pred_bin
         
         # Metrics

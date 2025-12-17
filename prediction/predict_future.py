@@ -75,7 +75,8 @@ def fetch_weather_forecast(target_date, lat, lon):
     try:
         # Open-Meteo API
         # Constraint: 'past_days' is relative to TODAY, not start_date.
-        # To get yesterday's context for a future date, we must explicitly set start_date to target-1.
+        # To get yesterday's context (needed for Pressure Change calculation) for a future date, 
+        # we must explicitly set start_date to target-1.
         
         start_dt = target_date - timedelta(days=1)
         start_str = start_dt.strftime('%Y-%m-%d')
@@ -292,7 +293,11 @@ def construct_features(target_date, history_df, manual_weather=None):
     """
     features = {}
     
-    # 1. Temporal
+    # 1. Temporal Features (Cyclical Encoding)
+    # We transform DayOfWeek (0-6) and Month (1-12) into Sine/Cosine pairs.
+    # Why? because "Sunday" (6) is close to "Monday" (0).
+    # Linear features (0,1,2...6) imply Monday(0) is far from Sunday(6).
+    # Sin/Cos representation preserves this cyclical proximity for the model.
     features['DayOfWeek'] = target_date.dayofweek
     features['Month'] = target_date.month
     features['DayOfWeek_sin'] = np.sin(2 * np.pi * features['DayOfWeek'] / 7)
@@ -417,7 +422,7 @@ def get_prediction_for_date(target_date_str, weather_override=None):
     Main API entry point.
     """
     # 1. Check Cache (1 Hour TTL)
-    # 1. Check Cache (1 Hour TTL)
+    # We cache predictions to avoid spamming the Open-Meteo API and to make the UI instant.
     if target_date_str in _prediction_cache:
         entry = _prediction_cache[target_date_str]
         age = datetime.datetime.now() - entry["timestamp"]
@@ -427,7 +432,8 @@ def get_prediction_for_date(target_date_str, weather_override=None):
 
     target_date = pd.to_datetime(target_date_str)
     
-    # Load history
+    # Load history (Lags)
+    # This fetches recent user logs to calculate "Recent Pain" features.
     history = get_recent_history()
     
     # Construct features
