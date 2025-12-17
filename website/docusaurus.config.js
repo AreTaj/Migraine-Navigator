@@ -15,9 +15,8 @@ const config = {
   organizationName: 'AreTaj',
   projectName: 'Migraine-Navigator',
 
-  // THIS IS THE CRITICAL FIX:
+  // FIX 1: Removed deprecated 'onBrokenMarkdownLinks' to stop the warning
   onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
 
   i18n: {
     defaultLocale: 'en',
@@ -34,6 +33,9 @@ const config = {
         },
         blog: {
           showReadingTime: true,
+          // FIX 2: Tell Docusaurus it's okay to define authors inside the file
+          onInlineAuthors: 'ignore',
+          onUntruncatedBlogPosts: 'ignore',
         },
         theme: {
           customCss: './src/css/custom.css',
