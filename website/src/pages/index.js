@@ -6,9 +6,8 @@ import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
-// NUCLEAR OPTION: Import the image directly. 
-// This forces Webpack to bundle it. No more broken paths.
-import DashboardImg from '@site/static/img/dashboard.png';
+// Import the image from the same folder
+import DashboardImg from './dashboard.png';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
