@@ -6,9 +6,6 @@ import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
-// Import the image from the same folder
-import DashboardImg from './dashboard.png';
-
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
@@ -46,9 +43,10 @@ export default function Home() {
       <main>
         <div className={styles.dashboardSection}>
           <div className={styles.dashboardContainer}>
-            {/* using the imported variable 'DashboardImg' ensures it loads */}
+            {/* LINK DIRECTLY TO YOUR REPO RAW IMAGE */}
+            {/* This bypasses the build error completely */}
             <img
-              src={DashboardImg}
+              src="https://raw.githubusercontent.com/AreTaj/Migraine-Navigator/main/screenshots/dashboard.png"
               alt="Migraine Navigator Dashboard"
               className={styles.dashboardImage}
             />
