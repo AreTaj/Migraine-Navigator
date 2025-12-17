@@ -2,20 +2,23 @@ import React from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import useBaseUrl from '@docusaurus/useBaseUrl'; // <--- The Fix for broken images
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import styles from './index.module.css';
+
+// NUCLEAR OPTION: Import the image directly. 
+// This forces Webpack to bundle it. No more broken paths.
+import DashboardImg from '@site/static/img/dashboard.png';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
     <header className={clsx('hero', styles.heroBanner)}>
       <div className="container">
-        <Heading as="h1" className={styles.hero__title}>
+        <Heading as="h1" className={styles.heroTitle}>
           {siteConfig.title}
         </Heading>
-        <p className={styles.hero__subtitle}>{siteConfig.tagline}</p>
+        <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
@@ -42,20 +45,19 @@ export default function Home() {
       description="N=1 Migraine Prediction Engine">
       <HomepageHeader />
       <main>
-        <div className="container" style={{ padding: '0 1rem 4rem', textAlign: 'center' }}>
-
-          {/* The Image Container with the new CSS class */}
-          <div className="dashboard-container">
+        <div className={styles.dashboardSection}>
+          <div className={styles.dashboardContainer}>
+            {/* using the imported variable 'DashboardImg' ensures it loads */}
             <img
-              src={useBaseUrl('/img/dashboard.png')} // <--- Forces correct path
+              src={DashboardImg}
               alt="Migraine Navigator Dashboard"
-              style={{ width: '100%', borderRadius: '8px', display: 'block' }}
+              className={styles.dashboardImage}
             />
           </div>
 
-          <div style={{ marginTop: '3rem', maxWidth: '800px', margin: '3rem auto' }}>
+          <div className={styles.descSection}>
             <Heading as="h2">Biological & Meteorological Intelligence</Heading>
-            <p style={{ fontSize: '1.2rem', opacity: 0.8 }}>
+            <p>
               A local-first predictive engine that correlates
               weather patterns with personal biomarkers to forecast risk.
             </p>

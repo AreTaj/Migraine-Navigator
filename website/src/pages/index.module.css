@@ -1,23 +1,80 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
-
+/* Dark & Gold Theme Enforced */
 .heroBanner {
   padding: 4rem 0;
   text-align: center;
   position: relative;
-  overflow: hidden;
+  background: linear-gradient(180deg, #1b1b1d 0%, #242526 100%);
+  color: #fff;
+  border-bottom: 1px solid #333;
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
+.heroTitle {
+  font-size: 3.5rem;
+  font-weight: 800;
+  /* Gold Gradient Text */
+  background: linear-gradient(to right, #d4af37, #f5e4a8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  color: #e6c65c;
+  /* Muted Gold */
+  margin-bottom: 2rem;
 }
 
 .buttons {
   display: flex;
-  align-items: center;
   justify-content: center;
+  gap: 1rem;
+}
+
+/* Dashboard Styling */
+.dashboardSection {
+  padding: 0 1rem 4rem;
+  text-align: center;
+  background-color: #1b1b1d;
+  /* Force dark background */
+  color: #fff;
+}
+
+.dashboardContainer {
+  margin-top: -3rem;
+  /* Overlap effect */
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 10;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  /* Gold border */
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dashboardImage {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+}
+
+.descSection {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.descSection h2 {
+  color: #d4af37;
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 996px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
 }
