@@ -32,24 +32,24 @@ The core value proposition of Migraine Navigator is its predictive engine, which
 We utilize a dual-model approach using **Gradient Boosting Decision Trees (GBDT)** via `scikit-learn`.
 1.  **Risk Classifier (`GradientBoostingClassifier`)**:
     * **Task**: Binary Classification (Will a migraine occur? Yes/No).
-    * **Output**: Probability Score ($P \in [0, 1]$).
-    * **Calibration**: Threshold-tuned (e.g., $>0.2$ = Moderate Risk) based on user sensitivity.
+    * **Output**: Probability Score (P from 0 to 1).
+    * **Calibration**: Threshold-tuned (e.g., > 0.2 = Moderate Risk) based on user sensitivity.
 2.  **Severity Regressor (`GradientBoostingRegressor`)**:
     * **Task**: Regression (Predicted Pain Level 0-10).
-    * **Target**: Log-transformed Pain Level ($\log(1 + y)$) to handle zero-inflated targets and enforce non-negativity.
+    * **Target**: Log-transformed Pain Level (log(1 + y)) to handle zero-inflated targets and enforce non-negativity.
 
 ### 2.2 Feature Engineering (`predict_future.py`)
-Raw data is transformed into a dense feature vector $X$ containing ~24 dimensions:
+Raw data is transformed into a dense feature vector X containing ~24 dimensions:
 
 * **Temporal Features**:
     * Cyclical Encoding: `DayOfWeek_sin`, `DayOfWeek_cos`, `Month_sin`, `Month_cos`. This preserves the proximity between "Sunday" (6) and "Monday" (0).
 * **Meteorological Features** (Source: Open-Meteo API):
-    * **Thermodynamics**: Temperature ($T_{max}, T_{min}, T_{avg}$), Humidity ($H_{rel}$).
-    * **Barometrics**: Surface Pressure ($P_{surf}$) and 24-hour Delta ($\Delta P$).
+    * **Thermodynamics**: Temperature (T_max, T_min, T_avg), Humidity (H_rel).
+    * **Barometrics**: Surface Pressure (P_surf) and 24-hour Delta (Delta_P).
     * **Solar**: Sunshine Duration (Minutes).
 * **Autoregressive (Lag) Features**:
     * Captures the "Memory" of the disease.
-    * **Lags**: $t_{-1}, t_{-2}, t_{-3}, t_{-7}$ days.
+    * **Lags**: t-1, t-2, t-3, t-7 days.
     * **Rolling Statistics**: Rolling Mean (3-day, 7-day window) to detect flare-up clusters.
 * **Lifestyle Inputs**:
     * Sleep Quality (Ordinal 1-3) and Physical Activity (Ordinal 0-3).
@@ -65,7 +65,7 @@ The analytics engine transforms raw logs into actionable intelligence on the cli
 * **Unit Consistency**: Strict type enforcement ensures alignment between Backend (Integers/Floats) and Frontend (Strings from Forms).
 
 ### 3.2 Forecasting Engine
-* **Batch Processing**: The 7-Day Forecast generates predictions in bulk. It fetches a single JSON packet from Open-Meteo containing 7 days of hourly data, processes it into 7 feature vectors, and runs batch inference in $<0.8s$.
+* **Batch Processing**: The 7-Day Forecast generates predictions in bulk. It fetches a single JSON packet from Open-Meteo containing 7 days of hourly data, processes it into 7 feature vectors, and runs batch inference in less than 0.8s.
 * **Caching Strategy**: Predictions are cached in-memory with a 1-hour TTL (Time-To-Live). This prevents API rate-limiting and ensures instant dashboard reloads.
 
 ---
