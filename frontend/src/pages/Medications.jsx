@@ -1,7 +1,15 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Trash2, Plus, Save, Edit2, X, Loader2 } from 'lucide-react';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import './Medications.css'; // We'll create this next
+
+const COLORS = [
+    '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8',
+    '#82ca9d', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4',
+    '#FFEEAD', '#D4A5A5', '#9B59B6', '#3498DB', '#E67E22',
+    '#2ECC71', '#F1C40F', '#E74C3C', '#34495E', '#1ABC9C'
+];
 
 function Medications() {
     const [medications, setMedications] = useState([]);
@@ -10,6 +18,11 @@ function Medications() {
     const [editingId, setEditingId] = useState(null);
     const [deleteConfirmId, setDeleteConfirmId] = useState(null);
     const [editData, setEditData] = useState({});
+
+    // Usage Stats State
+    const [entries, setEntries] = useState([]);
+    const [medTimeRange, setMedTimeRange] = useState('1y');
+    const [usageStats, setUsageStats] = useState([]);
 
     // UI States
     const [saveLoading, setSaveLoading] = useState(false);
@@ -29,7 +42,63 @@ function Medications() {
 
     useEffect(() => {
         fetchMedications();
+        fetchEntries();
     }, []);
+
+    // Calculate Usage Stats when entries or range changes
+    useEffect(() => {
+        if (!entries.length || !medications.length) return;
+
+        let startDate = new Date();
+        if (medTimeRange === '1m') startDate.setMonth(startDate.getMonth() - 1);
+        if (medTimeRange === '1y') startDate.setFullYear(startDate.getFullYear() - 1);
+        if (medTimeRange === 'all') startDate = new Date(0);
+
+        const filteredEntries = entries.filter(e => new Date(e.Date) >= startDate && Number(e.Pain_Level) > 0);
+
+        // Count usage
+        const counts = {};
+        let total = 0;
+
+        filteredEntries.forEach(e => {
+            let meds = [];
+
+            // Handle different data formats for Medications
+            if (Array.isArray(e.Medications)) {
+                // New Format: List of objects [{name: "Advil", dosage: "200mg"}, ...]
+                meds = e.Medications.map(m => m.name).filter(Boolean);
+            } else if (typeof e.Medications === 'string' && e.Medications.trim().length > 0) {
+                // Legacy Format: "Advil, Tylenol"
+                meds = e.Medications.split(',').map(s => s.trim()).filter(Boolean);
+            }
+
+            if (meds.length === 0) {
+                counts['No Medication'] = (counts['No Medication'] || 0) + 1;
+                total++;
+            } else {
+                meds.forEach(m => {
+                    counts[m] = (counts[m] || 0) + 1;
+                    total++;
+                });
+            }
+        });
+
+        const data = Object.keys(counts).map(key => ({
+            name: `${key} (${total > 0 ? ((counts[key] / total) * 100).toFixed(0) + '%' : '0%'})`,
+            value: counts[key]
+        })).sort((a, b) => b.value - a.value);
+
+        setUsageStats(data);
+    }, [entries, medications, medTimeRange]);
+
+    const fetchEntries = async () => {
+        try {
+            const res = await axios.get('/api/v1/entries');
+            setEntries(res.data);
+        } catch (err) {
+            console.error("Failed to fetch entries for stats");
+        }
+    };
 
     const fetchMedications = async () => {
         try {
@@ -356,6 +425,56 @@ function Medications() {
                         </tbody>
                     </table>
                 )}
+            </div>
+
+            {/* --- Usage Chart Section --- */}
+            <div className="medication-stats-card" style={{ marginTop: '2rem', padding: '1.5rem', background: '#1e1e1e', borderRadius: '12px', border: '1px solid #333' }}>
+                <div className="chart-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                    <h3>Usage Analysis</h3>
+                    <div className="range-selector" style={{ background: '#333', padding: '4px', borderRadius: '6px' }}>
+                        <button
+                            onClick={() => setMedTimeRange('1m')}
+                            style={{ background: medTimeRange === '1m' ? '#4dabf7' : 'transparent', color: medTimeRange === '1m' ? 'white' : '#888', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer' }}
+                        >1M</button>
+                        <button
+                            onClick={() => setMedTimeRange('1y')}
+                            style={{ background: medTimeRange === '1y' ? '#4dabf7' : 'transparent', color: medTimeRange === '1y' ? 'white' : '#888', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer' }}
+                        >1Y</button>
+                        <button
+                            onClick={() => setMedTimeRange('all')}
+                            style={{ background: medTimeRange === 'all' ? '#4dabf7' : 'transparent', color: medTimeRange === 'all' ? 'white' : '#888', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer' }}
+                        >All</button>
+                    </div>
+                </div>
+                <div style={{ width: '100%', height: 300 }}>
+                    {usageStats.length > 0 ? (
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                                <Pie
+                                    data={usageStats}
+                                    cx="40%"
+                                    cy="50%"
+                                    outerRadius={80}
+                                    fill="#8884d8"
+                                    dataKey="value"
+                                >
+                                    {usageStats.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.name.startsWith('No Medication') ? '#aaa' : COLORS[index % COLORS.length]} />
+                                    ))}
+                                </Pie>
+                                <Tooltip
+                                    contentStyle={{ backgroundColor: '#333', border: 'none', color: '#fff' }}
+                                    formatter={(value, name, props) => [`${value} (${(props.payload.percent * 100).toFixed(0)}%)`, name]}
+                                />
+                                <Legend layout="vertical" verticalAlign="middle" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
+                            </PieChart>
+                        </ResponsiveContainer>
+                    ) : (
+                        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#888' }}>
+                            <p>No usage data for this period.</p>
+                        </div>
+                    )}
+                </div>
             </div>
         </div >
     );

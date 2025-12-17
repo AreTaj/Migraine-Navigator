@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, Label } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label, LineChart, Line } from 'recharts';
 
 
 import { useNavigate } from 'react-router-dom';
@@ -24,9 +24,9 @@ function Dashboard() {
     const [prediction, setPrediction] = useState(null);
     const [loading, setLoading] = useState(true);
     const [predLoading, setPredLoading] = useState(true); // New state for lazy load
+    const [forecast, setForecast] = useState([]); // 7-day forecast
     const [error, setError] = useState(null);
     const [timeRange, setTimeRange] = useState('1y'); // '1m', '1y', '2y'
-    const [medTimeRange, setMedTimeRange] = useState('1y'); // Separate filter for meds
 
     const navigate = useNavigate();
     const [meds, setMeds] = useState([]);
@@ -129,8 +129,17 @@ function Dashboard() {
                 } catch (predErr) {
                     console.warn("Prediction fetch failed:", predErr);
                     // Don't error the whole dashboard, just the widget
+                }
+
+                // 3. Lazy Load Forecast (Slow)
+                try {
+                    const forecastRes = await axios.get('/api/v1/prediction/forecast');
+                    setForecast(forecastRes.data);
+                } catch (err) {
+                    console.error("Forecast fetch failed", err);
+                    setError("Could not load forecast.");
                 } finally {
-                    setPredLoading(false);
+                    setPredLoading(false); // This finally block now covers both lazy loads
                 }
 
             } catch (err) {
@@ -254,7 +263,7 @@ function Dashboard() {
 
     // --- Aggregation Logic ---
     const stats = useMemo(() => {
-        if (!entries.length) return { yearlyCount: 0, avgPain: 0, maxPain: 0, medData: [], chartData: [] };
+        if (!entries.length) return { yearlyCount: 0, avgPain: 0, maxPain: 0, chartData: [] };
 
         const now = new Date();
         const currentYear = now.getFullYear();
@@ -269,71 +278,23 @@ function Dashboard() {
         });
 
         // Unique days count
+        // 1. Avg Days/Month (Last 12 Months)
+        // Calculate dynamic denominator based on data range
+        let denominator = 12;
+        if (entries.length > 0) {
+            const firstEntry = new Date(Math.min(...entries.map(e => new Date(e.Date))));
+            const dataSpanMonths = (now.getFullYear() - firstEntry.getFullYear()) * 12 + (now.getMonth() - firstEntry.getMonth()) + 1;
+            denominator = Math.min(12, Math.max(1, dataSpanMonths));
+        }
+
         const uniqueDays12Mo = new Set(last12MoEntries.map(e => e.Date)).size;
-        const avgDaysPerMonth = (uniqueDays12Mo / 12).toFixed(1);
+        const avgDaysPerMonth = (uniqueDays12Mo / denominator).toFixed(1);
 
         const painfulEntries = entries.filter(e => Number(e.Pain_Level) > 0);
         const maxPain = painfulEntries.reduce((max, e) => Math.max(max, Number(e.Pain_Level)), 0);
         const avgPain = painfulEntries.length
             ? (painfulEntries.reduce((sum, e) => sum + Number(e.Pain_Level), 0) / painfulEntries.length).toFixed(1)
             : 0;
-
-        // new mapping: Generic Name (DB) -> User Preference (Registry)
-        const medDisplayMap = {};
-        meds.forEach(m => {
-            medDisplayMap[m.name] = m.display_name || m.name;
-        });
-
-        // 2. Medication Data (Filtered by medTimeRange)
-        let medStartDate = new Date();
-        // 'now' is already defined at the beginning of the useMemo hook
-        if (medTimeRange === '1m') medStartDate.setMonth(now.getMonth() - 1);
-        if (medTimeRange === '1y') medStartDate.setFullYear(now.getFullYear() - 1);
-        if (medTimeRange === '2y') medStartDate.setFullYear(now.getFullYear() - 2);
-        if (medTimeRange === '3y') medStartDate.setFullYear(now.getFullYear() - 3);
-        if (medTimeRange === 'all') medStartDate = new Date(0);
-
-        const medFilteredEntries = entries.filter(e => new Date(e.Date) >= medStartDate && Number(e.Pain_Level) > 0);
-
-        const medCounts = {};
-        const normalizeMed = (name) => {
-            // Check Registry Mapping First (Pharma -> Display)
-            if (medDisplayMap[name]) return medDisplayMap[name];
-
-            // Legacy/Fallback Logic
-            const lower = name.toLowerCase();
-            if (lower.includes('ibuprofen') || lower.includes('advil')) return 'Advil'; // Default to Brand? Or Generic? User prefers Brand for display.
-            if (lower.includes('nurtec') || lower.includes('rimegepant')) return 'Nurtec ODT';
-            if (lower.includes('botox') || lower.includes('onabotulinumtoxina')) return 'Botox';
-            return name; // Return original if no match
-        };
-
-        medFilteredEntries.forEach(e => {
-            // New Format Logic
-            if (e.Medications && e.Medications.length > 0) {
-                e.Medications.forEach(m => {
-                    const name = normalizeMed(m.name);
-                    medCounts[name] = (medCounts[name] || 0) + 1;
-                });
-            }
-            // Legacy Logic Fallback
-            else {
-                let med = e.Medication ? e.Medication.trim() : "No Medication";
-                if (med === "") med = "No Medication";
-                if (med !== "No Medication") {
-                    med = normalizeMed(med);
-                }
-                medCounts[med] = (medCounts[med] || 0) + 1;
-            }
-        });
-        const medData = Object.entries(medCounts)
-            .map(([name, value]) => ({ name, value }))
-            .sort((a, b) => {
-                if (b.value === a.value) {
-                    return a.name.localeCompare(b.name);
-                }
-                return b.value - a.value;
-            });
 
         // 3. Chart Data (Dynamic based on timeRange)
         let startDate = new Date();
@@ -406,8 +367,8 @@ function Dashboard() {
                 .map(item => ({ name: item.label, value: item.count, type: 'count' }));
         }
 
-        return { avgDaysPerMonth, avgPain, maxPain, medData, chartData };
-    }, [entries, timeRange, medTimeRange]);
+        return { avgDaysPerMonth, avgPain, maxPain, chartData };
+    }, [entries, timeRange]);
 
     if (loading) return <div className="loading-state"><Loader2 className="animate-spin" size={48} /></div>;
     if (error) return <div className="error-state">{error}</div>;
@@ -670,6 +631,50 @@ function Dashboard() {
             <div className="charts-grid">
                 <div className="chart-card">
                     <div className="chart-header">
+                        <h3>7-Day Forecast</h3>
+                    </div>
+                    <div className="chart-wrapper">
+                        {forecast.length > 0 ? (
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={forecast}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#444" />
+                                    <XAxis
+                                        dataKey="date"
+                                        stroke="#ccc"
+                                        fontSize={12}
+                                        tickFormatter={(dateStr) => parseLocalDate(dateStr).toLocaleDateString(undefined, { weekday: 'short', month: 'numeric', day: 'numeric' })}
+                                    />
+                                    <YAxis stroke="#ccc" domain={[0, 100]}>
+                                        <Label
+                                            value="Risk Probability"
+                                            angle={-90}
+                                            position="insideLeft"
+                                            style={{ textAnchor: 'middle', fill: '#ccc', fontSize: '0.8rem' }}
+                                        />
+                                    </YAxis>
+                                    <Tooltip
+                                        contentStyle={{ backgroundColor: '#333', border: 'none' }}
+                                        formatter={(value) => [`${value.toFixed(1)}%`, 'Risk']}
+                                        labelFormatter={(label) => parseLocalDate(label).toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}
+                                    />
+                                    <Line type="monotone" dataKey="risk_probability" stroke="#8884d8" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        ) : error ? (
+                            <div className="error-state" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+                                <AlertTriangle className="mr-2" size={20} />
+                                <p>Unable to load forecast</p>
+                            </div>
+                        ) : (
+                            <div className="loading-state" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Loader2 className="animate-spin" size={24} />
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <div className="chart-card">
+                    <div className="chart-header">
                         <h3>Migraine Trends</h3>
                         <div className="range-selector">
                             <button className={timeRange === '1m' ? 'active' : ''} onClick={() => setTimeRange('1m')}>1M</button>
@@ -705,51 +710,6 @@ function Dashboard() {
                                 />
                                 <Bar dataKey="value" fill="#4dabf7" radius={[4, 4, 0, 0]} />
                             </BarChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
-
-                <div className="chart-card">
-                    <div className="chart-header">
-                        <h3>Medication Usage</h3>
-                        <div className="range-selector">
-                            <button className={medTimeRange === '1m' ? 'active' : ''} onClick={() => setMedTimeRange('1m')}>1M</button>
-                            <button className={medTimeRange === '1y' ? 'active' : ''} onClick={() => setMedTimeRange('1y')}>1Y</button>
-                            <button className={medTimeRange === 'all' ? 'active' : ''} onClick={() => setMedTimeRange('all')}>All</button>
-                        </div>
-                    </div>
-                    <div className="chart-wrapper">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <PieChart>
-                                <Pie
-                                    data={stats.medData}
-                                    cx="50%"
-                                    cy="50%"
-                                    outerRadius={80}
-                                    fill="#8884d8"
-                                    dataKey="value"
-                                >
-                                    {stats.medData.map((entry, index) => (
-                                        <Cell
-                                            key={`cell-${index}`}
-                                            fill={entry.name === 'No Medication' ? '#aaa' : COLORS[index % COLORS.length]}
-                                        />
-                                    ))}
-                                </Pie>
-                                <Tooltip contentStyle={{ backgroundColor: '#333', border: 'none' }} />
-                                <Legend
-                                    layout="vertical"
-                                    align="right"
-                                    verticalAlign="middle"
-                                    wrapperStyle={{ fontSize: '0.8rem', paddingLeft: '10px' }}
-                                    formatter={(value, entry) => {
-                                        const { payload } = entry;
-                                        const total = stats.medData.reduce((sum, item) => sum + item.value, 0);
-                                        const percent = ((payload.value / total) * 100).toFixed(0);
-                                        return `${value} (${percent}%)`;
-                                    }}
-                                />
-                            </PieChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
