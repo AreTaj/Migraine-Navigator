@@ -1,62 +1,64 @@
 import clsx from 'clsx';
-import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
-import styles from './index.module.css';
+import styles from './styles.module.css';
 
-function HomepageHeader() {
-  const { siteConfig } = useDocusaurusContext();
+const FeatureList = [
+  {
+    title: 'Easy to Use',
+    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    description: (
+      <>
+        Docusaurus was designed from the ground up to be easily installed and
+        used to get your website up and running quickly.
+      </>
+    ),
+  },
+  {
+    title: 'Focus on What Matters',
+    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    description: (
+      <>
+        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
+        ahead and move your docs into the <code>docs</code> directory.
+      </>
+    ),
+  },
+  {
+    title: 'Powered by React',
+    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    description: (
+      <>
+        Extend or customize your website layout by reusing React. Docusaurus can
+        be extended while reusing the same header and footer.
+      </>
+    ),
+  },
+];
+
+function Feature({ Svg, title, description }) {
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/architecture">
-            View Architecture
-          </Link>
-          <span style={{ margin: '0 10px' }}></span>
-          <Link
-            className="button button--secondary button--lg"
-            to="/blog">
-            Read "Perfect Storm" Study
-          </Link>
-        </div>
+    <div className={clsx('col col--4')}>
+      <div className="text--center">
+        <Svg className={styles.featureSvg} role="img" />
       </div>
-    </header>
+      <div className="text--center padding-horiz--md">
+        <Heading as="h3">{title}</Heading>
+        <p>{description}</p>
+      </div>
+    </div>
   );
 }
 
-export default function Home() {
-  const { siteConfig } = useDocusaurusContext();
+export default function HomepageFeatures() {
   return (
-    <Layout
-      title={`Home`}
-      description="N=1 Migraine Prediction Engine">
-      <HomepageHeader />
-      <main>
-        <div className="container" style={{ padding: '4rem 0', textAlign: 'center' }}>
-          <Heading as="h2">Project Dashboard</Heading>
-          <p>A local-first predictive analytics engine using biological and meteorological data.</p>
-          {/* This pulls the image we already put in your static folder */}
-          <img
-            src="img/dashboard.png"
-            alt="Migraine Navigator Dashboard"
-            style={{
-              maxWidth: '100%',
-              height: 'auto',
-              borderRadius: '10px',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-              marginTop: '20px'
-            }}
-          />
+    <section className={styles.features}>
+      <div className="container">
+        <div className="row">
+          {FeatureList.map((props, idx) => (
+            <Feature key={idx} {...props} />
+          ))}
         </div>
-      </main>
-    </Layout>
+      </div>
+    </section>
   );
 }
