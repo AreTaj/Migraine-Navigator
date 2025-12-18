@@ -31,7 +31,6 @@ async def get_future_prediction(date: str = Query(None, description="Date in YYY
         raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD.")
     except Exception as e:
         print(f"Prediction Error: {e}")
-        # In prod, log this, don't expose detail
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/forecast")
@@ -45,11 +44,8 @@ async def get_weekly_forecast():
         
         # 1. Fetch Weather Batch (Optimize speed)
         lat, lon = get_latest_location_from_db() 
-        # Note: get_latest_location_from_db might be tied to internal DB_PATH in predict_future, 
-        # checking previous view... yes it has DB_PATH default or global.
-        
         if not lat:
-             lat, lon = 34.05, -118.25 # Default LA
+             lat, lon = 34.05, -118.25 # Default: Los Angeles
              
         weather_map = fetch_weekly_weather_forecast(start_date, lat, lon)
         

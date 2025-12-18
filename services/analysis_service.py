@@ -29,7 +29,6 @@ class AnalysisService:
         yearly_counts = migraines_with_pain.groupby(migraines_with_pain['Date'].dt.year).size()
         
         # 2. Medication Usage
-        # 2. Medication Usage
         # Filter for entries with Pain > 0 to identify "Migraine Episodes"
         painful_entries = data[data['Pain Level'] > 0].copy()
         

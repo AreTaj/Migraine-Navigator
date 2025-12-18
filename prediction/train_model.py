@@ -3,12 +3,11 @@ import numpy as np
 import os
 import joblib
 from sklearn.model_selection import TimeSeriesSplit
-# from sklearn.experimental import enable_hist_gradient_boosting  # noqa
+
 from sklearn.ensemble import HistGradientBoostingRegressor, HistGradientBoostingClassifier
 from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_score, classification_report
 import matplotlib.pyplot as plt
 
-# Import data processing
 # Import data processing
 try:
     from prediction.data_processing import merge_migraine_and_weather_data, process_combined_data
@@ -24,26 +23,15 @@ MODEL_CLF_PATH = os.path.join(MODEL_DIR, 'best_model_clf.pkl')
 MODEL_REG_PATH = os.path.join(MODEL_DIR, 'best_model_reg.pkl')
 
 def train_and_evaluate(db_path=None):
+    """
+    Train Gradient Boosting Classifier and Regressor using a Hurdle Model approach.
+    """
     print("Step 1: Merging and Processing Data...")
     
     # Allow overriding DB path for testing
     if db_path:
         # If test DB is provided, we need to replicate the pipeline steps
-        from prediction.data_processing import load_migraine_log_from_db
-        
-        # 1. Load Raw
-        raw_df = load_migraine_log_from_db(db_path)
-        
-        # 2. Merge/Format (This function needs to handle raw_df input or we patch it)
-        # Actually, `merge_migraine_and_weather_data` reads from DB by default. 
-        # Let's just create a temporary combined DF manually for the test to avoid refactoring everything
-        # Or better: Update merge_migraine_and_weather_data to take a DF.
-        # But for now, let's just use the `process_combined_data` on a pre-prepared DF if possible.
-        
-        # To make this robust without modifying `merge...` too much:
-        # We will assume `load_migraine_log_from_db` isn't enough, we need `merge...`.
-        # Taking a shortcut: We will update `merge_migraine_and_weather_data` to take `db_path` too.
-        
+        # Override DB usage for testing by passing the temporary db_path down the chain
         combined_df = merge_migraine_and_weather_data(db_path=db_path, return_df=True)
         df = process_combined_data(input_df=combined_df)
 
@@ -76,24 +64,15 @@ def train_and_evaluate(db_path=None):
     acc_scores = []
     combined_mae_scores = []
     
-    # Initialize models (Gradient Boosting)
-    # We use HistGradientBoosting because it natively handles NaN values (missing data)
-    # and is much faster for tabular data than standard Random Forest.
-    # class_weight='balanced' helps with the "No Pain" dominance (imbalanced classes).
+    # Initialize models (Gradient Boosting handles NaNs natively)
     clf = HistGradientBoostingClassifier(max_iter=100, max_depth=5, learning_rate=0.05, random_state=42, class_weight='balanced')
     reg = HistGradientBoostingRegressor(max_iter=100, max_depth=5, learning_rate=0.05, random_state=42)
     
     thresholds = []
 
-    # Calculate Sample Weights (Concept Drift Handling)
-    # Strategy: Give higher weight to the most recent year of data.
-    # Why? Migraine patterns change over time due to biology/lifestyle.
-    # Data from 2 years ago is less predictive of "You Today" than data from last month.
+    # Calculate Sample Weights: 3x weight for recent data (< 1 year) to handle concept drift
     current_max_date = df['Date'].max()
     cutoff_date = current_max_date - pd.Timedelta(days=365)
-    
-    # Base weight 1.0, Recent weight 3.0
-    # We use numpy where for vectorization
     sample_weights = np.where(df['Date'] > cutoff_date, 3.0, 1.0)
     
     print(f"Applying Weighted Training: Recent data (> {cutoff_date.date()}) gets 3x weight.")
@@ -111,14 +90,11 @@ def train_and_evaluate(db_path=None):
         # Predict Probabilities
         y_probs = clf.predict_proba(X_test)[:, 1]
         
-        # Optimize Threshold for F1 Score
-        # Simple loop to find best threshold on TEST set (idealized) 
-        # In prod we'd pick this on validation set, but here we just want to see potential.
+        # Optimize Threshold for F1 Score (simple search on test set for demonstration)
         best_f1 = 0
         best_thresh = 0.5
         from sklearn.metrics import f1_score
         
-        # Search range 0.1 to 0.9
         for thresh in np.arange(0.1, 0.9, 0.05):
             y_temp = (y_probs >= thresh).astype(int)
             f1 = f1_score(y_test_bin, y_temp, zero_division=0)
@@ -129,18 +105,12 @@ def train_and_evaluate(db_path=None):
         thresholds.append(best_thresh)
         y_pred_bin = (y_probs >= best_thresh).astype(int)
         
-        # 2. Train Regressor (on full data or just positives? Let's use full for robustness, or just positives)
-        # Using full data is safer for gradient boosting, it learns 0s. 
-        # But let's try training on all, and gating output.
+        # 2. Train Regressor (using full data allows model to learn 0s naturally)
         reg.fit(X_train, y_train_reg, sample_weight=weights_train)
         y_pred_reg_raw = reg.predict(X_test)
         y_pred_reg_raw = np.maximum(y_pred_reg_raw, 0)
         
-        # Combined Prediction (Hurdle Model)
-        # 1. Classifier Says: "Will there be a migraine?" (0 or 1)
-        # 2. Regressor Says: "If there is one, how bad is it?" (0-10)
-        # Combined = (0 or 1) * Severity.
-        # This prevents the model from predicting "Severity 0.5" on days with zero risk.
+        # Combined Prediction (Hurdle Model): Gate regression output with classifier to enforce true 0s
         y_pred_combined = y_pred_reg_raw * y_pred_bin
         
         # Metrics
@@ -161,8 +131,7 @@ def train_and_evaluate(db_path=None):
         from sklearn.metrics import precision_recall_fscore_support
         prec, rec, f1, _ = precision_recall_fscore_support(y_test_bin, y_pred_bin, average='binary', zero_division=0)
         
-        # Regressor Metrics (Only on True Positives - days where user actually had pain)
-        # This tells us: "When there IS a migraine, how close is the prediction?"
+        # Regressor Metrics: Evaluate severity error only on days where pain actually occurred
         mask_pain = y_test_bin > 0
         if mask_pain.sum() > 0:
             reg_mae_pain = mean_absolute_error(y_test_reg_orig[mask_pain], y_pred_combined_orig[mask_pain])

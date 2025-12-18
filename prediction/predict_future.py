@@ -9,7 +9,6 @@ from datetime import timedelta
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-# Import data processing helpers
 from prediction.data_processing import load_migraine_log_from_db
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -73,10 +72,8 @@ def fetch_weather_forecast(target_date, lat, lon):
     Returns feature dictionary or None if failed.
     """
     try:
-        # Open-Meteo API
-        # Constraint: 'past_days' is relative to TODAY, not start_date.
-        # To get yesterday's context (needed for Pressure Change calculation) for a future date, 
-        # we must explicitly set start_date to target-1.
+        # Open-Meteo API: Request weather for target date.
+        # We need start_date = target - 1 day to calculate pressure change context from "yesterday".
         
         start_dt = target_date - timedelta(days=1)
         start_str = start_dt.strftime('%Y-%m-%d')
@@ -294,10 +291,8 @@ def construct_features(target_date, history_df, manual_weather=None):
     features = {}
     
     # 1. Temporal Features (Cyclical Encoding)
-    # We transform DayOfWeek (0-6) and Month (1-12) into Sine/Cosine pairs.
-    # Why? because "Sunday" (6) is close to "Monday" (0).
-    # Linear features (0,1,2...6) imply Monday(0) is far from Sunday(6).
-    # Sin/Cos representation preserves this cyclical proximity for the model.
+    # Transform DayOfWeek (0-6) and Month (1-12) into Sin/Cos pairs to preserve cyclical proximity 
+    # (e.g., Sunday (6) is close to Monday (0)).
     features['DayOfWeek'] = target_date.dayofweek
     features['Month'] = target_date.month
     features['DayOfWeek_sin'] = np.sin(2 * np.pi * features['DayOfWeek'] / 7)
@@ -440,7 +435,6 @@ def get_prediction_for_date(target_date_str, weather_override=None):
     X, meta = construct_features(target_date, history, manual_weather=weather_override)
     
     # Load Models
-        # Load Models
     clf, reg = load_models()
     
     # Reorder columns to match training data

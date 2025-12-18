@@ -10,9 +10,7 @@ from prediction.predict_future import get_prediction_for_date, clear_prediction_
 
 router = APIRouter()
 
-# Helper to get DB path (can be environment variable or config later)
 def get_db_path():
-    # Assuming standard project structure
     return os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'migraine_log.db')
 
 @router.get("/entries", response_model=List[MigraineEntry])
@@ -20,14 +18,11 @@ def get_entries(start_date: str = Query(None, description="Filter start date (YY
                 end_date: str = Query(None, description="Filter end date (YYYY-MM-DD)")):
     try:
         df = EntryService.get_entries_from_db(get_db_path(), start_date, end_date)
-        # Convert DataFrame to list of dicts
-        # Need to handle NaN/None values for Pydantic
-        # Handle NaN values smartly
-        # Pain Level should be 0 if missing
+        
+        # Handle missing numeric values (Pain Level default 0)
         if 'Pain Level' in df.columns:
             df['Pain Level'] = pd.to_numeric(df['Pain Level'], errors='coerce').fillna(0).astype(int)
             
-        # Other columns can be empty strings
         df = df.fillna("")
         
         entries = []
@@ -60,7 +55,6 @@ def add_entry(entry: MigraineEntry):
         data['Physical Activity'] = data.pop('Physical_Activity')
         
         EntryService.add_entry(data, get_db_path())
-        # Invalidate prediction cache so dashboard updates instantly
         clear_prediction_cache()
         return {"message": "Entry added successfully"}
     except Exception as e:

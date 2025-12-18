@@ -85,7 +85,7 @@ uvicorn api.main:app --reload
 **Terminal 2: Frontend App**
 ```bash
 cd frontend
-npm run tauri dev
+npm run dev
 ```
 *Launches the Desktop Window*
 
@@ -103,6 +103,7 @@ Migraine Navigator/
 │   └── src-tauri/           # Rust Backend (Window Management)
 ├── services/                # Business Logic Layer
 ├── prediction/              # ML Pipeline (Training & Inference)
+├── scripts/                 # Utility Scripts (Latency, Simulation)
 ├── documentation/           # Technical Reports & Architecture
 ├── data/                    # Database (migraine_log.db)
 └── ...
@@ -133,7 +134,6 @@ Special thanks to my neurologist, Dr. Jack Schim, for his guidance, wisdom, and 
 - [React](https://react.dev/) - For the modern UI library.
 - [FastAPI](https://fastapi.tiangolo.com/) - For the high-performance backend.
 - [Recharts](https://recharts.org/) - For the beautiful data visualization.
-- [Meteostat](https://dev.meteostat.net/) - For historical weather data.
 - [Open-Meteo](https://open-meteo.com/) - For live weather forecasts.
 
 ## Author

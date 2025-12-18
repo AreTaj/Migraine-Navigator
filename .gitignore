@@ -45,6 +45,8 @@ data/*
 # Except for the synthetic_migraine_log.csv file
 !data/synthetic_migraine_log.csv
 
+# Except favicon
+!frontend/public/favicon.ico
 
 # Ignore local scripts
 scripts/

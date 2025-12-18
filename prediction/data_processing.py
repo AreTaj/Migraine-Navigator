@@ -38,8 +38,6 @@ def merge_migraine_and_weather_data(migraine_log_file=migraine_data_filename, we
         weather_data = pd.DataFrame({'date': [], 'tavg': []}) 
         
     # Standardize dates
-    
-    # Standardize dates
     migraine_data['Date'] = pd.to_datetime(migraine_data['Date'])
     weather_data['date'] = pd.to_datetime(weather_data['date'])
     
@@ -52,9 +50,7 @@ def merge_migraine_and_weather_data(migraine_log_file=migraine_data_filename, we
     full_df = pd.DataFrame({'Date': full_date_range})
     
     # Merge migraine data onto the full timeline
-    # Aggregation Strategy:
-    # - Pain Level: Max (If any point in the day was bad, the day is bad)
-    # - Sleep/Activity: Mean (Avoids losing data if one entry has it and another doesn't)
+    # Aggregation Strategy: Max for Pain, Mean for Sleep/Activity
     migraine_data['Pain Level'] = pd.to_numeric(migraine_data['Pain Level'], errors='coerce')
     migraine_data['Sleep'] = pd.to_numeric(migraine_data['Sleep'], errors='coerce')
     migraine_data['Physical Activity'] = pd.to_numeric(migraine_data['Physical Activity'], errors='coerce')
@@ -74,10 +70,7 @@ def merge_migraine_and_weather_data(migraine_log_file=migraine_data_filename, we
     
     combined = pd.merge(full_df, migraine_data, on='Date', how='left')
     
-    # Fill missing Pain Level with 0
-    # CRITICAL ASSUMPTION: Days missing from the log are "Pain Free" days.
-    # If a user forgets to log a migraine, this will introduce False Negatives.
-    # However, forcing users to log "0" every day is high friction, so we opt for this convenience.
+    # Fill missing Pain Level with 0 (Assumption: Missing Log = No Pain)
     combined['Pain Level'] = combined['Pain Level'].fillna(0)
     
     # Merge weather data
@@ -124,7 +117,7 @@ def process_combined_data(combined_data_filename=combined_data_filename, input_d
     df['DayOfWeek'] = df['Date'].dt.dayofweek
     df['Month'] = df['Date'].dt.month
     
-    # Cyclical encoding (Time is a circle!)
+    # Cyclical encoding for Time (DayOfWeek, Month)
     df['DayOfWeek_sin'] = np.sin(2 * np.pi * df['DayOfWeek'] / 7)
     df['DayOfWeek_cos'] = np.cos(2 * np.pi * df['DayOfWeek'] / 7)
     df['Month_sin'] = np.sin(2 * np.pi * df['Month'] / 12)
@@ -145,8 +138,7 @@ def process_combined_data(combined_data_filename=combined_data_filename, input_d
     if 'average_humidity' in df.columns and 'tavg' in df.columns:
         df['humid.*tavg'] = df['average_humidity'].fillna(0) * df['tavg']
 
-    # 3. Autoregressive Features (CRITICAL for Time Series)
-    # Lagged pain levels - did you hurt yesterday?
+    # 3. Autoregressive Features (Lags)
     df['Pain_Lag_1'] = df['Pain Level'].shift(1)
     df['Pain_Lag_2'] = df['Pain Level'].shift(2)
     df['Pain_Lag_3'] = df['Pain Level'].shift(3)
@@ -170,9 +162,7 @@ def process_combined_data(combined_data_filename=combined_data_filename, input_d
     # Log transform for regression stability, but handle 0s
     df['Pain_Level_Log'] = np.log1p(df['Pain Level'])
 
-    # Drop rows with NaN created by shifting (first 30 rows typically)
-    # df = df.dropna().reset_index(drop=True) 
-    # Actually, let's just drop the first 30 rows to clean up the lags
+    # Drop rows with NaN created by shifting (first 30 rows)
     df = df.iloc[30:].reset_index(drop=True)
 
     return df

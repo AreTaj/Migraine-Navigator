@@ -1,18 +1,15 @@
-# pip install -r requirements.txt
-
+# Core Data Science
 pandas
-geocoder
-matplotlib
-pytz
-meteostat
-requests
-tensorflow
-seaborn
+numpy
 scikit-learn
+joblib
+matplotlib
+
+# API & Web
 fastapi
 uvicorn
+requests
 
-# Below are for creating executables
-#pyinstaller    # Use with pyinstaller --onefile main.py
-#PyOxidizer
-#cx_Freeze
+# Utilities
+geocoder
+tzlocal

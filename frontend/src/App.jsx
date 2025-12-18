@@ -24,21 +24,21 @@ function App() {
       <div className="app-container">
         <aside className="sidebar">
           <div className="logo-area">
-            <h1>Migraine Nav</h1>
+            <h1>Migraine Navigator</h1>
           </div>
           <nav>
             <NavItem to="/" icon={LayoutDashboard} label="Dashboard" />
             <NavItem to="/log" icon={PlusCircle} label="Log Entry" />
-            <NavItem to="/history" icon={History} label="History" />
             <NavItem to="/medications" icon={Pill} label="Medications" />
+            <NavItem to="/history" icon={History} label="History" />
           </nav>
         </aside>
         <main className="content">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/log" element={<LogEntry />} />
-            <Route path="/history" element={<HistoryPage />} />
             <Route path="/medications" element={<Medications />} />
+            <Route path="/history" element={<HistoryPage />} />
           </Routes>
         </main>
       </div>

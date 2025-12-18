@@ -6,7 +6,8 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "tauri dev",
+    "web": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "tauri": "tauri"

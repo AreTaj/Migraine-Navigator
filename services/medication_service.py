@@ -70,7 +70,6 @@ class MedicationService:
             MedicationService._create_table_if_not_exists(conn)
             
             c = conn.cursor()
-            c = conn.cursor()
             sql = "INSERT INTO medications (name, display_name, default_dosage, frequency, period_days) VALUES (?, ?, ?, ?, ?)"
             c.execute(sql, (
                 data['name'], 
@@ -93,7 +92,6 @@ class MedicationService:
         try:
             conn = sqlite3.connect(db_path)
             
-            c = conn.cursor()
             c = conn.cursor()
             sql = "UPDATE medications SET name=?, display_name=?, default_dosage=?, frequency=?, period_days=? WHERE id=?"
             c.execute(sql, (

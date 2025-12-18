@@ -35,10 +35,8 @@ class EntryService:
             c.execute("PRAGMA table_info(migraine_log)")
             columns = [info[1] for info in c.fetchall()]
             if 'Medications' not in columns:
-                print("Adding 'Medications' column to schema...")
                 c.execute("ALTER TABLE migraine_log ADD COLUMN Medications TEXT")
                 conn.commit()
-                # Run Migration immediately
                 EntryService.migrate_legacy_medications(conn)
                 
         except Exception as e:
@@ -97,12 +95,11 @@ class EntryService:
         except ValueError:
             raise ValueError("Invalid time. Please enter a valid time.")
 
-        # --- Handle Medications JSON ---
+        # Handle Medications JSON
         if 'Medications' in data and isinstance(data['Medications'], list):
             data['Medications'] = json.dumps(data['Medications'])
         
-        # Ensure legacy columns are empty for new entries (or could populate first med for compat)
-        # Choosing to keep them empty to signify deprecation
+        # Ensure legacy columns are empty/default
         if 'Medication' not in data: data['Medication'] = ""
         if 'Dosage' not in data: data['Dosage'] = ""
 
@@ -197,9 +194,6 @@ class EntryService:
         """
         Updates an existing entry by ID.
         """
-        # Validate Date/Time again? Yes, strictly speaking we should, but assuming inputs are clean for now or reusing validation logic would be better.
-        # reusing add_entry validation logic is tricky without extraction. For now, simple update.
-        
         try:
             # --- Handle Medications JSON ---
             if 'Medications' in data and isinstance(data['Medications'], list):
