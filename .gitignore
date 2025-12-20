@@ -36,6 +36,8 @@ build/main/
 build/Migraine Log/
 build/
 dist/
+releases/
+frontend/src-tauri/binaries/
 
 # Ignore other directories
 models/
@@ -50,6 +52,8 @@ data/*
 
 # Ignore local scripts
 scripts/
+#!scripts/api_entry.py
+#!scripts/package_app.sh
 
 # Logs
 server.log

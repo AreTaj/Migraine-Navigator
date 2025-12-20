@@ -6,7 +6,13 @@ app = FastAPI(title="Migraine Navigator API")
 # Add CORS middleware to allow requests from standard localhost ports
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"], # React default
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:1420",
+        "tauri://localhost",
+        "http://tauri.localhost"
+    ], # React default + Tauri
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

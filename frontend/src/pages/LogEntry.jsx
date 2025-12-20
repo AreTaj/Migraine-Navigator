@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../services/apiClient';
 import { Save, MapPin, Trash2, Plus, Loader2 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getCurrentLocation, getCityName } from '../utils/geolocation';

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../services/apiClient';
 
 // Get Current Location (Lat/Lon + City) via IP
 export const getCurrentLocation = async () => {
