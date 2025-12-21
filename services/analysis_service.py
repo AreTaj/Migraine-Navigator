@@ -1,5 +1,5 @@
 from services.entry_service import EntryService
-import pandas as pd
+# Lazy loaded
 from datetime import datetime
 
 class AnalysisService:
@@ -10,6 +10,14 @@ class AnalysisService:
         Returns calculated statistics directly, rather than raw data.
         """
         data = EntryService.get_entries_from_db(db_path)
+        
+        if not data:
+            return None
+
+        import pandas as pd
+        
+        # Convert list of dicts to DataFrame for analysis
+        data = pd.DataFrame(data)
         
         if data.empty:
             return None

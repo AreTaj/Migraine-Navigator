@@ -4,12 +4,17 @@ import zoneinfo
 
 def get_location_from_ip():
     """ Gets approximate user location from the user IP address."""
-    g = geocoder.ip('me')
-    if g.ok:
-        return g.latlng, g.address
-    else:
-        print(f"Geocoding Error: {g.status_code}, {g.reason}")
-        return None, None
+    try:
+        import requests
+        resp = requests.get('https://ipinfo.io/json', timeout=3)
+        if resp.status_code == 200:
+            data = resp.json()
+            loc = data.get('loc', '').split(',')
+            if len(loc) == 2:
+                return [float(loc[0]), float(loc[1])], f"{data.get('city')}, {data.get('region')}"
+    except Exception as e:
+        print(f"Geocoding Error: {e}")
+    return None, None
     
 def get_local_timezone():
     """Gets the system's local timezone."""

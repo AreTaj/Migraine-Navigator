@@ -52,8 +52,8 @@ data/*
 
 # Ignore local scripts
 scripts/
-#!scripts/api_entry.py
-#!scripts/package_app.sh
+!scripts/api_entry.py
+!scripts/package_app.sh
 
 # Logs
 server.log

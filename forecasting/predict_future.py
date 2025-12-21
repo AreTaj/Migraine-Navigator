@@ -6,16 +6,17 @@ import sqlite3
 import datetime
 from datetime import timedelta
 
-import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from prediction.data_processing import load_migraine_log_from_db
+from .data_processing import load_migraine_log_from_db
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_DIR = os.path.join(BASE_DIR, '..', 'models')
 MODEL_CLF_PATH = os.path.join(MODEL_DIR, 'best_model_clf.pkl')
 MODEL_REG_PATH = os.path.join(MODEL_DIR, 'best_model_reg.pkl')
-DB_PATH = os.path.join(BASE_DIR, '..', 'data', 'migraine_log.db')
+from api.utils import get_db_path
+
+DB_PATH = get_db_path()
 
 _clf_model = None
 _reg_model = None

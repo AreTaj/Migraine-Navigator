@@ -3,44 +3,58 @@ from fastapi import APIRouter, HTTPException
 from typing import List, Optional
 from api.models import MigraineEntry
 from services.entry_service import EntryService
-import pandas as pd
 import os
 
-from prediction.predict_future import get_prediction_for_date, clear_prediction_cache
+from forecasting.predict_future import get_prediction_for_date, clear_prediction_cache
 
 router = APIRouter()
 
-def get_db_path():
-    return os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'migraine_log.db')
-
+from api.utils import get_db_path
 @router.get("/entries", response_model=List[MigraineEntry])
 def get_entries(start_date: str = Query(None, description="Filter start date (YYYY-MM-DD)"), 
                 end_date: str = Query(None, description="Filter end date (YYYY-MM-DD)")):
     try:
-        df = EntryService.get_entries_from_db(get_db_path(), start_date, end_date)
+        entries_data = EntryService.get_entries_from_db(get_db_path(), start_date, end_date)
         
-        # Handle missing numeric values (Pain Level default 0)
-        if 'Pain Level' in df.columns:
-            df['Pain Level'] = pd.to_numeric(df['Pain Level'], errors='coerce').fillna(0).astype(int)
+        processed_entries = []
+        for entry in entries_data:
+            # Handle missing numeric values (Pain Level default 0)
+            try:
+                if entry.get('Pain Level') is not None:
+                    entry['Pain Level'] = int(float(entry['Pain Level']))
+                else:
+                    entry['Pain Level'] = 0
+            except (ValueError, TypeError):
+                entry['Pain Level'] = 0
             
-        df = df.fillna("")
-        
-        entries = []
-        for _, row in df.iterrows():
+            # Use 'entry' directly since it's already a dict
             # Map 'Pain Level' (DB) to 'Pain_Level' (Model)
-            entry_dict = row.to_dict()
-            entry_dict['Pain_Level'] = entry_dict.pop('Pain Level', 0)
-            entry_dict['Physical_Activity'] = entry_dict.pop('Physical Activity', "")
-
-            # Fix for empty strings in float fields
-            if entry_dict.get('Latitude') == '':
-                entry_dict['Latitude'] = None
-            if entry_dict.get('Longitude') == '':
-                entry_dict['Longitude'] = None
-                
-            entries.append(entry_dict)
+            # Create a new dict for the model to avoid mutating the original if reused
+            model_entry = entry.copy()
             
-        return entries
+            model_entry['Pain_Level'] = model_entry.pop('Pain Level', 0)
+            model_entry['Physical_Activity'] = model_entry.pop('Physical Activity', "")
+            
+            # Map legacy column names if they exist and aren't None, else default to None or ""
+            # The DB returns keys as they are in the columns (e.g. "Physical Activity")
+            
+            # Fix for empty strings in float fields
+            if model_entry.get('Latitude') == '':
+                model_entry['Latitude'] = None
+            if model_entry.get('Longitude') == '':
+                model_entry['Longitude'] = None
+                
+            # Replace None strings with empty strings for text fields if needed, 
+            # though Pydantic usually handles Optional[str] fine.
+            # But the original code did df.fillna(""), so we replicate that behavior 
+            # for string fields primarily.
+            for k, v in model_entry.items():
+                if v is None and k not in ['Latitude', 'Longitude', 'Pain_Level']:
+                    model_entry[k] = ""
+                
+            processed_entries.append(model_entry)
+            
+        return processed_entries
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

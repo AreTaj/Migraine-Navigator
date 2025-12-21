@@ -1,7 +1,7 @@
 import os
 import re
 import sqlite3
-import pandas as pd
+import sqlite3
 import json
 from datetime import datetime
 
@@ -125,12 +125,16 @@ class EntryService:
         """
         Reads entries from the SQLite database.
         Optional: Filter by date range (inclusive). Dates should be 'YYYY-MM-DD'.
-        Returns a DataFrame.
+        Returns a list of dictionaries.
         """
         try:
             conn = sqlite3.connect(db_path)
             # Ensure schema is up to date on read too
             EntryService._create_table_if_not_exists(conn)
+            
+            # Use a row factory to get dict-like access if needed, 
+            # but simple fetchall and column mapping is safer for serialization.
+            conn.row_factory = sqlite3.Row
             
             query = "SELECT * FROM migraine_log"
             params = []
@@ -150,24 +154,30 @@ class EntryService:
             # Always sort by Date descending for History view
             query += " ORDER BY Date DESC, Time DESC"
 
-            data = pd.read_sql_query(query, conn, params=params)
+            cur = conn.cursor()
+            cur.execute(query, params)
+            rows = cur.fetchall()
+            
+            # Convert to list of dicts
+            data = [dict(row) for row in rows]
             conn.close()
             
             # Parse JSON column back to objects
-            if 'Medications' in data.columns:
-                def parse_meds(x):
-                    if not x: return []
+            for item in data:
+                if 'Medications' in item:
                     try:
-                        return json.loads(x)
+                        if item['Medications']:
+                            item['Medications'] = json.loads(item['Medications'])
+                        else:
+                            item['Medications'] = []
                     except:
-                        return []
-                data['Medications'] = data['Medications'].apply(parse_meds)
+                        item['Medications'] = []
                 
             return data
-        except (sqlite3.OperationalError, pd.errors.DatabaseError) as e:
-            # If table doesn't exist, return empty DataFrame
+        except sqlite3.OperationalError as e:
+            # If table doesn't exist, return empty list
             if "no such table" in str(e):
-                return pd.DataFrame()
+                return []
             raise e
         except Exception as e:
             raise e

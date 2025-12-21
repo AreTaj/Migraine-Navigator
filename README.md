@@ -51,13 +51,12 @@ For deep dives into the system architecture and AI logic:
 
 ## Installation
 
-### Prerequisites
-- **Python 3.10+**
-- **Node.js 18+**
-- **Rust** (for Tauri)
+### Download (macOS)
+1. Go to the [Releases](https://github.com/AreTaj/Migraine-Navigator/releases) page.
+2. Download the latest `.dmg` file (e.g., `Migraine Navigator_0.1.0_aarch64.dmg`).
+3. Drag the app to your Applications folder.
 
-### Setup
-
+### Developer Setup
 1.  **Clone the Repository**
 2.  **Backend Setup**:
     ```bash
@@ -73,6 +72,10 @@ For deep dives into the system architecture and AI logic:
 
 ## Usage
 
+**For Users:**
+Launch "Migraine Navigator" from your Applications folder.
+
+**For Developers (Debug Mode):**
 To run the application in development mode, you need two terminals:
 
 **Terminal 1: Backend API**
@@ -93,7 +96,7 @@ npm run dev
 
 ```
 Migraine Navigator/
-├── api/                     # FastAPI Backend
+├── api/                     # FastAPI Backend (Process Management: psutil)
 │   ├── routes/              # API Endpoints (Entries, Analysis)
 │   └── main.py              # Server Entry Point
 ├── frontend/                # React + Tauri Frontend
@@ -101,7 +104,7 @@ Migraine Navigator/
 │   │   ├── pages/           # Dashboard, LogEntry, History
 │   │   └── App.jsx          # Main Router
 │   └── src-tauri/           # Rust Backend (Window Management)
-├── services/                # Business Logic Layer
+├── services/                # Business Logic Layer (Pure Python/SQLite)
 ├── prediction/              # ML Pipeline (Training & Inference)
 ├── scripts/                 # Utility Scripts (Latency, Simulation)
 ├── documentation/           # Technical Reports & Architecture
@@ -117,7 +120,8 @@ python -m unittest discover tests
 ```
 
 ## Future Roadmap (v1.2)
-- **Packaging**: Building standalone installers (`.dmg`, `.exe`).
+- **Dashboard Sequencing**: Improved visual loading (Issue #38).
+- **Cloud Sync**: Optional encrypted backup.
 
 ## License
 

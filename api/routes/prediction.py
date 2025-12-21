@@ -3,12 +3,8 @@ from datetime import datetime, timedelta
 import sys
 import os
 
-# Add project root to path for imports
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-if BASE_DIR not in sys.path:
-    sys.path.append(BASE_DIR)
-
-from prediction.predict_future import get_prediction_for_date, fetch_weekly_weather_forecast, get_latest_location_from_db
+# from forecasting.predict_future import get_prediction_for_date, fetch_weekly_weather_forecast, get_latest_location_from_db
+# Lazy loaded inside functions
 
 router = APIRouter(prefix="/prediction", tags=["prediction"])
 
@@ -25,6 +21,7 @@ async def get_future_prediction(date: str = Query(None, description="Date in YYY
         # Validate date format
         datetime.strptime(date, "%Y-%m-%d")
         
+        from forecasting.predict_future import get_prediction_for_date
         result = get_prediction_for_date(date)
         return result
     except ValueError:
@@ -43,6 +40,9 @@ async def get_weekly_forecast():
         forecasts = []
         
         # 1. Fetch Weather Batch (Optimize speed)
+        # 1. Fetch Weather Batch (Optimize speed)
+        from forecasting.predict_future import get_prediction_for_date, fetch_weekly_weather_forecast, get_latest_location_from_db
+        
         lat, lon = get_latest_location_from_db() 
         if not lat:
              lat, lon = 34.05, -118.25 # Default: Los Angeles

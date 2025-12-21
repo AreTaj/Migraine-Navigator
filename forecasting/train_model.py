@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 
 # Import data processing
 try:
-    from prediction.data_processing import merge_migraine_and_weather_data, process_combined_data
+    from forecasting.data_processing import merge_migraine_and_weather_data, process_combined_data
 except ImportError:
     # Fallback for running as script directly
     from data_processing import merge_migraine_and_weather_data, process_combined_data

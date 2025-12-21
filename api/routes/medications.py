@@ -6,8 +6,7 @@ import os
 
 router = APIRouter()
 
-def get_db_path():
-    return os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'migraine_log.db')
+from api.utils import get_db_path
 
 @router.get("/medications", response_model=List[Medication])
 def get_medications():

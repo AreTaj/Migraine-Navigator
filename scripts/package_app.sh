@@ -26,14 +26,16 @@ echo "Building Python backend..."
 source .venv/bin/activate
 
 # Install pyinstaller if needed (check if installed first to save time, or just pip install)
-pip install pyinstaller
+pip install pyinstaller appdirs geocoder
 
 # Run PyInstaller
 # --noconsole: Hide terminal window
 # --onefile: Single executable
 # --name: Specific name
 # --distpath: Output directly to binaries dir (temp) or move later
-pyinstaller --noconsole --onefile --name migraine-navigator-api scripts/api_entry.py
+# --paths .: Add project root to sys.path
+# Use --add-data for local packages (forecasting, services, api) to ensure they are bundled physically
+pyinstaller --clean --noconsole --noconfirm --onefile --collect-all certifi --collect-all psutil --hidden-import requests --hidden-import sklearn.ensemble._hist_gradient_boosting.gradient_boosting --hidden-import sklearn.ensemble._hist_gradient_boosting.histogram --hidden-import sklearn.ensemble._hist_gradient_boosting.splitting --hidden-import sklearn.ensemble._hist_gradient_boosting.predictor --add-data "forecasting:forecasting" --add-data "services:services" --add-data "api:api" --add-data "models:models" --paths . --name migraine-navigator-api api_entry.py
 
 # 4. Move and Rename Binary for Tauri
 echo "Preparing sidecar binary..."

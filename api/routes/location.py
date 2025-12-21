@@ -18,19 +18,26 @@ async def get_current_location():
         }
     """
     try:
-        # 'me' uses the current device's public IP
-        g = geocoder.ip('me')
+        import requests
+        # Use ipinfo.io (free tier, 50k requests/month, reliable)
+        # Bundled certifi will handle SSL automatically via environment vars
+        resp = requests.get('https://ipinfo.io/json', timeout=5)
+        resp.raise_for_status()
+        data = resp.json()
         
-        if not g.ok:
-            raise HTTPException(status_code=404, detail=f"Could not determine location: {g.reason}")
-            
+        loc_str = data.get('loc', '').split(',')
+        lat = float(loc_str[0]) if len(loc_str) == 2 else None
+        lng = float(loc_str[1]) if len(loc_str) == 2 else None
+        
         return {
-            "latitude": g.latlng[0] if g.latlng else None,
-            "longitude": g.latlng[1] if g.latlng else None,
-            "city": g.city,
-            "state": g.state,
-            "country": g.country,
-            "address": g.address
+            "latitude": lat,
+            "longitude": lng,
+            "city": data.get('city'),
+            "state": data.get('region'), # Region is usually state
+            "country": data.get('country'),
+            "address": f"{data.get('city')}, {data.get('region')}"
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"Location Error: {e}")
+        # Return fallback or raise
+        raise HTTPException(status_code=500, detail=f"Failed to get location from IP: {str(e)}")

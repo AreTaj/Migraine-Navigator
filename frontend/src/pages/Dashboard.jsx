@@ -49,7 +49,8 @@ function Dashboard() {
     });
 
     useEffect(() => {
-        const fetchData = async () => {
+
+        const fetchCoreData = async () => {
             try {
                 // 1. Critical Data (Fast) - Loads immediately
                 const [entriesRes, medsRes] = await Promise.all([
@@ -119,36 +120,44 @@ function Dashboard() {
                 });
                 setDueMeds(dueList);
 
-                // --- CRITICAL DATA LOADED ---
-                setLoading(false);
-
-                // 2. Lazy Load Prediction (Slow)
-                try {
-                    const predRes = await axios.get('/api/v1/prediction/future');
-                    setPrediction(predRes.data);
-                } catch (predErr) {
-                    console.warn("Prediction fetch failed:", predErr);
-                    // Don't error the whole dashboard, just the widget
-                }
-
-                // 3. Lazy Load Forecast (Slow)
-                try {
-                    const forecastRes = await axios.get('/api/v1/prediction/forecast');
-                    setForecast(forecastRes.data);
-                } catch (err) {
-                    console.error("Forecast fetch failed", err);
-                    setError("Could not load forecast.");
-                } finally {
-                    setPredLoading(false); // This finally block now covers both lazy loads
-                }
-
             } catch (err) {
                 console.error("Error fetching dashboard data:", err);
                 setError("Failed to load dashboard data.");
+            } finally {
+                // Critical data done -> Show UI
                 setLoading(false);
             }
         };
-        fetchData();
+
+        const fetchPredictions = async () => {
+            // 2. Lazy Load Prediction (Slow)
+            setPredLoading(true);
+            try {
+                // Run in parallel
+                const [predRes, forecastRes] = await Promise.allSettled([
+                    axios.get('/api/v1/prediction/future'),
+                    axios.get('/api/v1/prediction/forecast')
+                ]);
+
+                if (predRes.status === 'fulfilled') {
+                    setPrediction(predRes.value.data);
+                } else {
+                    console.warn("Prediction fetch failed:", predRes.reason);
+                }
+
+                if (forecastRes.status === 'fulfilled') {
+                    setForecast(forecastRes.value.data);
+                } else {
+                    console.error("Forecast fetch failed", forecastRes.reason);
+                }
+            } finally {
+                setPredLoading(false);
+            }
+        };
+
+        // Fire both, but only await core data for the main loader
+        fetchCoreData();
+        fetchPredictions();
     }, []);
 
     // --- Actions ---

@@ -4,17 +4,21 @@ import os
 import sqlite3
 
 # Define paths
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-weather_data_filename = os.path.join(BASE_DIR, '..', 'data', 'weather_data.csv')
-migraine_data_filename = os.path.join(BASE_DIR, '..', 'data', 'migraine_log.csv')
-combined_data_filename = os.path.join(BASE_DIR, '..', 'data', 'combined_data.csv')
+from api.utils import get_data_dir
+
+# Define paths
+data_dir = get_data_dir()
+weather_data_filename = os.path.join(data_dir, 'weather_data.csv')
+migraine_data_filename = os.path.join(data_dir, 'migraine_log.csv')
+combined_data_filename = os.path.join(data_dir, 'combined_data.csv')
 
 def load_migraine_log_from_db(db_path=None):
     """
     Loads migraine log data from the SQLite database into a pandas DataFrame.
     """
+    from api.utils import get_db_path
     if db_path is None:
-        db_path = os.path.join(BASE_DIR, '..', 'data', 'migraine_log.db')
+        db_path = get_db_path()
         
     conn = sqlite3.connect(db_path)
     # c = conn.cursor() # Not needed for pandas read_sql
