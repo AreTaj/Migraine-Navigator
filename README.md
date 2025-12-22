@@ -26,7 +26,8 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
 - **Modern Architecture:** 
     - Built on robust SQLite database.
     - **Reactive Caching**: Instant dashboard updates upon data modification, with 1-hour caching for stability.
-    - Fast and lightweight Desktop experience.
+    - Fast and lightweight Desktop experience (~180MB optimized DMG).
+    - **Robust Sidecar Management**: Uses "Stdin Monitoring" (Dead Man's Switch) to ensure zero zombie processes.
 
 ## Screenshots
 

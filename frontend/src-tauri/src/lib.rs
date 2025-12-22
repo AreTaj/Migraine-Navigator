@@ -15,16 +15,21 @@ pub fn run() {
         .setup(|app| {
             let handle = app.handle().clone();
             
-            // Spawn the sidecar (Python API)
             tauri::async_runtime::spawn(async move {
-                let (_rx, _child) = handle.shell().sidecar("migraine-navigator-api")
+                let (mut rx, mut _child) = handle.shell().sidecar("migraine-navigator-api")
                     .expect("Failed to create sidecar")
                     .spawn()
                     .expect("Failed to spawn sidecar");
 
-                // Keep the child process alive
-                // We can read events here if needed:
-                // while let Some(event) = rx.recv().await { ... }
+                // CRITICAL: We must keep '_child' alive to keep stdin open.
+                // If this block exits, _child is dropped, stdin closes, and Python self-destructs.
+                // We also listen for events to prevent buffer filling.
+                while let Some(event) = rx.recv().await {
+                   // Just consume events
+                   // println!("Event: {:?}", event);
+                }
+                
+                // If event loop ends (sidecar died?), we can exit task.
             });
             
             Ok(())

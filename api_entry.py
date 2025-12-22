@@ -67,27 +67,46 @@ if __name__ == "__main__":
         logger.error(f"Cleanup failed: {e}")
     # ---------------------------
     
-    # Custom Signal Handling (Safe Shutdown)
-    def handle_exit(signum, frame):
-        logger.info(f"Received signal {signum}. Initiating safe shutdown...")
-        # Since we disable Uvicorn's handlers, we must manually exit.
-        # sys.exit(0) triggers standard Python shutdown (finally blocks, atexit).
-        sys.exit(0)
-    
-    signal.signal(signal.SIGTERM, handle_exit)
-    signal.signal(signal.SIGINT, handle_exit)
-
     # 3. Import Main App
     try:
         import uvicorn
         from api.main import app
+        import threading
+        import time
         logger.info("FastAPI app imported.")
-        
-        # Run Uvicorn without default handlers (Tauri/Safe Exit handles this)
-        # Note: older Uvicorn versions don't support install_signal_handlers, 
-        # so we rely on our signal handlers overriding defaults or just let them race.
-        # But 'server.run' is better if we need fine control. For now, revert simple run.
-        uvicorn.run(app, host="127.0.0.1", port=8000, log_config=None)
+
+        # --- PROFESSIONAL LIFECYCLE MANAGEMENT (Stdin Monitor) ---
+        # Robust Dead Man's Switch: Monitor stdin for EOF.
+        # When the parent (Tauri) process dies, it closes the pipe to our stdin.
+        def monitor_stdin():
+            try:
+                # Read 1 byte. blocks until input or EOF.
+                # If EOF (parent dead), it returns empty bytes b''.
+                if not sys.stdin.read(1):
+                    logger.warning("Stdin closed (Parent died). Self-destructing...")
+                    os._exit(0)
+            except Exception as e:
+                logger.error(f"Stdin monitor error: {e}")
+                # If reading standard input fails, safer to assume we are detached
+                os._exit(0)
+
+        # Start monitoring in a background thread
+        monitor_thread = threading.Thread(target=monitor_stdin, daemon=True)
+        monitor_thread.start()
+        # -------------------------------------------------------------
+
+        config = uvicorn.Config(app, host="127.0.0.1", port=8000, log_config=None)
+        server = uvicorn.Server(config)
+
+        # Update handler to tell Uvicorn to stop
+        def handle_exit(signum, frame):
+            logger.info(f"Received signal {signum}. Stopping Uvicorn server...")
+            server.should_exit = True
+            
+        signal.signal(signal.SIGTERM, handle_exit)
+        signal.signal(signal.SIGINT, handle_exit)
+
+        server.run()
         
     except Exception as e:
         logger.critical(f"CRITICAL FAILURE: {e}", exc_info=True)
