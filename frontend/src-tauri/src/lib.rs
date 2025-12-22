@@ -16,18 +16,25 @@ pub fn run() {
             let handle = app.handle().clone();
             
             tauri::async_runtime::spawn(async move {
-                let (mut rx, mut _child) = handle.shell().sidecar("migraine-navigator-api")
-                    .expect("Failed to create sidecar")
-                    .spawn()
-                    .expect("Failed to spawn sidecar");
+                // ONLY spawn sidecar in Release mode (Packaged App)
+                #[cfg(not(debug_assertions))]
+                {
+                    let (mut rx, mut _child) = handle.shell().sidecar("migraine-navigator-api")
+                        .expect("Failed to create sidecar")
+                        .spawn()
+                        .expect("Failed to spawn sidecar");
 
-                // CRITICAL: We must keep '_child' alive to keep stdin open.
-                // If this block exits, _child is dropped, stdin closes, and Python self-destructs.
-                // We also listen for events to prevent buffer filling.
-                while let Some(event) = rx.recv().await {
-                   // Just consume events
-                   // println!("Event: {:?}", event);
+                    // CRITICAL: We must keep '_child' alive to keep stdin open.
+                    // If this block exits, _child is dropped, stdin closes, and Python self-destructs.
+                    // We also listen for events to prevent buffer filling.
+                    while let Some(event) = rx.recv().await {
+                       // Just consume events
+                       // println!("Event: {:?}", event);
+                    }
                 }
+                
+                // In Debug/Dev mode, we do nothing here. 
+                // The user is expected to run 'uvicorn' manually.
                 
                 // If event loop ends (sidecar died?), we can exit task.
             });
@@ -38,3 +45,4 @@ pub fn run() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
+

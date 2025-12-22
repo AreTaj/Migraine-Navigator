@@ -55,6 +55,8 @@ scripts/*
 !scripts/api_entry.py
 !scripts/package_app.sh
 !scripts/robust_upload.sh
+!scripts/debug_path.py
+
 
 # Logs
 server.log

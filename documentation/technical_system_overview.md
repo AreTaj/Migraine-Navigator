@@ -69,3 +69,21 @@ The analytics engine transforms raw logs into actionable intelligence on the cli
 *   **Core ML**: `scikit-learn`, `numpy`, `pandas`, `joblib`.
 *   **Server**: `uvicorn`, `fastapi`, `pydantic`.
 *   **External Data**: Open-Meteo (Free, Non-Commercial License compatible for personal tools).
+
+## 5. Process Management & Deployment
+
+To ensure robustness across both **Development** and **Production** environments without manual configuration, the system employs an automated build-profile detection strategy.
+
+### 5.1 Automated Sidecar Management
+The Tauri frontend (`src-tauri/src/lib.rs`) effectively operates as a process manager for the Python backend. It utilizes Rust's conditional compilation features (`#[cfg(not(debug_assertions))]`) to determine the environment:
+
+*   **Development Profile (Debug)**:
+    *   **Sidecar**: DISABLED. The Rust shell command to spawn the backend is compiled out.
+    *   **Backend**: Developer manually executes `uvicorn api.main:app` (hot-reloading enabled).
+    *   **Database**: Resolves to `<ProjectRoot>/data/migraine_log.db`.
+
+*   **Release Profile (Production)**:
+    *   **Sidecar**: ENABLED. The application automatically spawns the compiled/frozen backend binary (`migraine-navigator-api`).
+    *   **Stdin Monitoring**: The backend listens to `sys.stdin`. If the parent Tauri process closes the pipe (i.e., app exit or crash), the Python backend self-terminates instantly, preventing "zombie" processes.
+    *   **Database**: automatically resolves to the User Data Directory (e.g., `~/Library/Application Support/MigraineNavigator/migraine_log.db` on macOS) to comply with OS sandboxing and persistence standards.
+
