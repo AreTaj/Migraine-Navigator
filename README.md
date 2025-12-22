@@ -26,7 +26,7 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
 - **Modern Architecture:** 
     - Built on robust SQLite database.
     - **Reactive Caching**: Instant dashboard updates upon data modification, with 1-hour caching for stability.
-    - Fast and lightweight Desktop experience (~180MB optimized DMG).
+    - Fast and lightweight Desktop experience (~190MB optimized DMG).
     - **Robust Sidecar Management**: Uses "Stdin Monitoring" (Dead Man's Switch) to ensure zero zombie processes.
 
 ## Screenshots
@@ -113,6 +113,14 @@ Migraine Navigator/
 └── ...
 ```
 
+## Release Process
+1.  **Build**: Run `./scripts/package_app.sh` to generate the DMG.
+2.  **Verify**: Check `releases/` for the new artifact.
+3.  **Upload**: Use the robust upload script to handle network instability:
+    ```bash
+    ./scripts/robust_upload.sh v0.1.0 releases/Migraine_Navigator_0.1.0_aarch64.dmg
+    ```
+
 ## Testing
 
 Backend tests are available to verify API functionality:
@@ -120,9 +128,8 @@ Backend tests are available to verify API functionality:
 python -m unittest discover tests
 ```
 
-## Future Roadmap (v1.2)
+## Future Roadmap (v0.1.2)
 - **Dashboard Sequencing**: Improved visual loading (Issue #38).
-- **Cloud Sync**: Optional encrypted backup.
 
 ## License
 
