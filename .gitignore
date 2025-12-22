@@ -51,9 +51,10 @@ data/*
 !frontend/public/favicon.ico
 
 # Ignore local scripts
-scripts/
+scripts/*
 !scripts/api_entry.py
 !scripts/package_app.sh
+!scripts/robust_upload.sh
 
 # Logs
 server.log
