@@ -155,9 +155,10 @@ function Dashboard() {
             }
         };
 
-        // Fire both, but only await core data for the main loader
-        fetchCoreData();
-        fetchPredictions();
+        // Serialize requests to unblock the backend for critical data first
+        fetchCoreData().then(() => {
+            fetchPredictions();
+        });
     }, []);
 
     // --- Actions ---
@@ -627,14 +628,7 @@ function Dashboard() {
                     <h3>Avg Days/Mo (12mo)</h3>
                     <p className="stat-value">{stats.avgDaysPerMonth}</p>
                 </div>
-                <div className="stat-card">
-                    <h3>Average Pain</h3>
-                    <p className="stat-value">{stats.avg_pain || stats.avgPain}</p>
-                </div>
-                <div className="stat-card">
-                    <h3>Highest Pain</h3>
-                    <p className="stat-value">{stats.maxPain}</p>
-                </div>
+
             </div>
 
             <div className="charts-grid">
