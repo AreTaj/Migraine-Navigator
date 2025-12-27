@@ -564,23 +564,85 @@ function Dashboard() {
                     )}
 
                     {/* 3. Periodic Reminders */}
-                    {showReminders && dueMeds.map((med, i) => (
-                        <div className="smart-card reminder" key={i}>
-                            <div className="card-header">
-                                <h3><Clock color="#c4b5fd" /> {med.name} Reminder</h3>
-                                <p>
-                                    {med.dueDays <= 0 ?
-                                        `Overdue by ${Math.abs(med.dueDays)} days!` :
-                                        `Due in ${med.dueDays} days (${med.nextDate})`}
-                                </p>
+                    {showReminders && dueMeds
+                        .filter(med => {
+                            const snoozeDate = localStorage.getItem(`snooze_${med.name}`);
+                            if (!snoozeDate) return true;
+                            return new Date() > new Date(snoozeDate);
+                        })
+                        .map((med, i) => (
+                            <div className="smart-card reminder" key={i}>
+                                <div className="card-header">
+                                    <h3><Clock color="#c4b5fd" /> {med.display_name || med.name} Reminder</h3>
+                                    <p>
+                                        {med.dueDays <= 0 ?
+                                            `Overdue by ${Math.abs(med.dueDays)} days!` :
+                                            `Due in ${med.dueDays} days (${med.nextDate})`}
+                                    </p>
+                                </div>
+                                <div className="card-actions">
+                                    <button className="action-btn" onClick={() => navigate('/log')}>
+                                        Log Injection
+                                    </button>
+                                    <div className="snooze-actions" style={{ position: 'relative', display: 'inline-block' }}>
+                                        <button
+                                            className="action-btn secondary"
+                                            onClick={(e) => {
+                                                const menu = e.currentTarget.nextElementSibling;
+                                                menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                                            }}
+                                        >
+                                            Snooze...
+                                        </button>
+                                        <div className="snooze-menu" style={{
+                                            display: 'none',
+                                            position: 'absolute',
+                                            bottom: '100%',
+                                            left: '0',
+                                            background: '#333',
+                                            border: '1px solid #555',
+                                            borderRadius: '6px',
+                                            padding: '8px',
+                                            zIndex: 100,
+                                            minWidth: '120px',
+                                            boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
+                                        }}>
+                                            <div style={{ fontSize: '0.8rem', color: '#ccc', marginBottom: '6px', paddingBottom: '4px', borderBottom: '1px solid #444' }}>Snooze until:</div>
+                                            {[
+                                                { label: 'Tomorrow', days: 1 },
+                                                { label: 'Next Week', days: 7 },
+                                                { label: '2 Weeks', days: 14 }
+                                            ].map(opt => (
+                                                <button
+                                                    key={opt.days}
+                                                    style={{
+                                                        display: 'block',
+                                                        width: '100%',
+                                                        textAlign: 'left',
+                                                        background: 'none',
+                                                        border: 'none',
+                                                        color: '#fff',
+                                                        padding: '6px 4px',
+                                                        cursor: 'pointer',
+                                                        fontSize: '0.85rem'
+                                                    }}
+                                                    onClick={() => {
+                                                        const d = new Date();
+                                                        d.setDate(d.getDate() + opt.days);
+                                                        localStorage.setItem(`snooze_${med.name}`, d.toISOString());
+                                                        // Force re-render by updating dummy state or reloading window logic? 
+                                                        // Simplest for hotfix: reload or update 'dueMeds' local state.
+                                                        setDueMeds(prev => prev.filter(m => m.name !== med.name));
+                                                    }}
+                                                >
+                                                    {opt.label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="card-actions">
-                                <button className="action-btn" onClick={() => navigate('/log')}>
-                                    Log Injection
-                                </button>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
 
                 </div>
             )}
