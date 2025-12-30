@@ -2,7 +2,6 @@
 
 Migraine Navigator is a comprehensive tool designed to help users **track**, **analyze**, and **predict** migraine occurrences. 
 
-> **Alpha v0.1.0 Update**: The application has been migrated from a legacy Python GUI to a modern **Desktop Application** powered by **Tauri**, **React**, and **FastAPI**.
 
 > **Disclaimer:** This software and its outputs are for informational and educational purposes only and are not intended to diagnose, treat, cure, or prevent any disease. Always consult a qualified healthcare provider for medical advice.
 
@@ -126,7 +125,7 @@ Migraine Navigator/
     ./scripts/robust_upload.sh v0.1.0 releases/Migraine_Navigator_0.1.0_aarch64.dmg
     ```
 
-- **Advanced Prediction Engine (v0.2.0):**
+- **Advanced Prediction Engine:**
     - **Hybrid Architecture**:
         - **Bayesian Heuristic Engine (New Users)**: Provides immediate, personalized predictions from Day 1. It bridges the "Cold Start" gap by using your calibrated settings (sensitivity to Weather, Sleep, Stress) until sufficient history exists.
         - **Gradient Boosting ML (Established Users)**: Automatically takes over once enough data is collected to detect complex, non-linear patterns unique to your biology.
@@ -153,6 +152,9 @@ The development plan is organized into feature clusters:
 - **[Issue #28] Global Feature Importance**: Overall correlation analysis to identify a user's primary long-term triggers.
 - **[Issue #27] Medication Efficacy**: Statistical analysis of pain reduction following specific acute medication doses.
 - **[Issue #30] Migraine Simulator**: "What-If" analysis tool allowing users to adjust sliders (e.g. Sleep, Activity) to see how it impacts their immediate risk.
+
+## Changelog
+See [CHANGELOG.md](CHANGELOG.md) for a detailed history of changes.
 
 ## License
 
