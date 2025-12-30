@@ -158,10 +158,13 @@ See [CHANGELOG.md](CHANGELOG.md) for a detailed history of changes.
 
 ## License
 
-Copyright © 2025 Aresh Tajvar. All Rights Reserved.
+Copyright © 2025 Aresh Tajvar.
 
-Unauthorized copying of this file, via any medium is strictly prohibited.
-The software is proprietary and confidential.
+This program is free software: you can redistribute it and/or modify it under the terms of the **GNU General Public License** as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but **WITHOUT ANY WARRANTY**; without even the implied warranty of **MERCHANTABILITY** or **FITNESS FOR A PARTICULAR PURPOSE**. See the GNU General Public License for more details.
+
+See the [LICENSE](LICENSE) file for the full text.
 
 ## Acknowledgements
 
