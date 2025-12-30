@@ -1,11 +1,15 @@
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, PlusCircle, History, Pill } from "lucide-react";
+import { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
+import { LayoutDashboard, PlusCircle, History, Pill, Settings } from "lucide-react";
 import "./App.css";
 
 import Dashboard from "./pages/Dashboard";
 import LogEntry from "./pages/LogEntry";
 import HistoryPage from "./pages/History";
 import Medications from "./pages/Medications";
+import SettingsPage from "./pages/Settings";
+import ImportData from "./pages/ImportData";
+import Onboarding from "./pages/Onboarding";
 
 function NavItem({ to, icon: Icon, label }) {
   const location = useLocation();
@@ -18,10 +22,21 @@ function NavItem({ to, icon: Icon, label }) {
   );
 }
 
-function App() {
+function AppContent() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isOnboarding = location.pathname === "/onboarding";
+
+  useEffect(() => {
+    const done = localStorage.getItem("onboarding_completed");
+    if (!done && !isOnboarding) {
+      navigate("/onboarding");
+    }
+  }, [isOnboarding, navigate]);
+
   return (
-    <Router>
-      <div className="app-container">
+    <div className="app-container">
+      {!isOnboarding && (
         <aside className="sidebar">
           <div className="logo-area">
             <h1>Migraine Navigator</h1>
@@ -31,17 +46,29 @@ function App() {
             <NavItem to="/log" icon={PlusCircle} label="Log Entry" />
             <NavItem to="/medications" icon={Pill} label="Medications" />
             <NavItem to="/history" icon={History} label="History" />
+            <NavItem to="/settings" icon={Settings} label="Settings" />
           </nav>
         </aside>
-        <main className="content">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/log" element={<LogEntry />} />
-            <Route path="/medications" element={<Medications />} />
-            <Route path="/history" element={<HistoryPage />} />
-          </Routes>
-        </main>
-      </div>
+      )}
+      <main className="content" style={isOnboarding ? { padding: 0, width: "100%", maxWidth: "100%" } : {}}>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/log" element={<LogEntry />} />
+          <Route path="/medications" element={<Medications />} />
+          <Route path="/history" element={<HistoryPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/import" element={<ImportData />} />
+          <Route path="/onboarding" element={<Onboarding />} />
+        </Routes>
+      </main>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }

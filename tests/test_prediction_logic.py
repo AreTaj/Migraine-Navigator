@@ -7,7 +7,7 @@ import os
 # Add project root to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from prediction.data_processing import process_combined_data
+from forecasting.data_processing import process_combined_data
 
 def test_lag_features_logic():
     """

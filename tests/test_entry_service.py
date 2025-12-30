@@ -69,17 +69,16 @@ class TestEntryService(unittest.TestCase):
         }
         EntryService.add_entry(data, self.db_path)
         
-        df = EntryService.get_entries_from_db(self.db_path)
-        self.assertIsInstance(df, pd.DataFrame)
-        self.assertEqual(len(df), 1)
-        self.assertEqual(df.iloc[0]['Notes'], 'Retrieved')
+        entries = EntryService.get_entries_from_db(self.db_path)
+        self.assertIsInstance(entries, list)
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]['Notes'], 'Retrieved')
 
     def test_retrieval_no_table(self):
-        # Should return empty DataFrame, not raise error
-        df = EntryService.get_entries_from_db(self.db_path)
-        self.assertIsInstance(df, pd.DataFrame)
-        self.assertTrue(df.empty)
-        self.assertIn('Date', df.columns)
+        # Should return empty list, not raise error
+        entries = EntryService.get_entries_from_db(self.db_path)
+        self.assertIsInstance(entries, list)
+        self.assertEqual(len(entries), 0)
 
 if __name__ == '__main__':
     unittest.main()

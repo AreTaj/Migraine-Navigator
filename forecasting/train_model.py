@@ -6,6 +6,8 @@ from sklearn.model_selection import TimeSeriesSplit
 
 from sklearn.ensemble import HistGradientBoostingRegressor, HistGradientBoostingClassifier
 from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_score, classification_report
+import matplotlib
+matplotlib.use('Agg') # Prevent GUI crash on MacOS/Server
 import matplotlib.pyplot as plt
 
 # Import data processing

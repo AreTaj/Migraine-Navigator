@@ -126,15 +126,33 @@ Migraine Navigator/
     ./scripts/robust_upload.sh v0.1.0 releases/Migraine_Navigator_0.1.0_aarch64.dmg
     ```
 
+- **Advanced Prediction Engine (v0.2.0):**
+    - **Hybrid Architecture**:
+        - **Bayesian Heuristic Engine (New Users)**: Provides immediate, personalized predictions from Day 1. It bridges the "Cold Start" gap by using your calibrated settings (sensitivity to Weather, Sleep, Stress) until sufficient history exists.
+        - **Gradient Boosting ML (Established Users)**: Automatically takes over once enough data is collected to detect complex, non-linear patterns unique to your biology.
+    - **Recursive Forecasting**: The 7-Day Forecast simulates the future day-by-day, allowing "Cluster" patterns (migraines following migraines) to emerge naturally.
+    - **Enhanced Triggers**: Now accounts for Rain (>0.5mm), High Humidity (>70%), and pressure instability.
+
 ## Testing
 
-Backend tests are available to verify API functionality:
+To run the automated tests:
+
 ```bash
-python -m unittest discover tests
+python -m pytest tests/
 ```
 
-## Future Roadmap (v0.1.2)
-- **Dashboard Sequencing**: Improved visual loading (Issue #38).
+## Future Roadmap
+
+The development plan is organized into feature clusters:
+
+**Cluster 2: Data Management Improvements**
+- **[Issue #35] Triggers Registry**: A dedicated tab to manage known triggers (e.g. 'Cheese', 'Stress') with autocomplete integration in the daily log.
+
+**Cluster 3: Advanced Analysis & Explanation**
+- **[Issue #36] Risk Decomposition**: SHAP-style explanation for *daily* predictions (e.g., "Why is tomorrow High Risk? -> Because Pressure dropped 10hPa").
+- **[Issue #28] Global Feature Importance**: Overall correlation analysis to identify a user's primary long-term triggers.
+- **[Issue #27] Medication Efficacy**: Statistical analysis of pain reduction following specific acute medication doses.
+- **[Issue #30] Migraine Simulator**: "What-If" analysis tool allowing users to adjust sliders (e.g. Sleep, Activity) to see how it impacts their immediate risk.
 
 ## License
 

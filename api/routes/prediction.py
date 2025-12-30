@@ -39,31 +39,10 @@ async def get_weekly_forecast():
         start_date = datetime.now() + timedelta(days=1)
         forecasts = []
         
-        # 1. Fetch Weather Batch (Optimize speed)
-        # 1. Fetch Weather Batch (Optimize speed)
-        from forecasting.predict_future import get_prediction_for_date, fetch_weekly_weather_forecast, get_latest_location_from_db
+        # 1. Use Recursive Forecasting Logic to ensure future lags are populated
+        from forecasting.predict_future import get_weekly_forecast_recursive
         
-        lat, lon = get_latest_location_from_db() 
-        if not lat:
-             lat, lon = 34.05, -118.25 # Default: Los Angeles
-             
-        weather_map = fetch_weekly_weather_forecast(start_date, lat, lon)
-        
-        for i in range(7):
-            target_date = start_date + timedelta(days=i)
-            date_str = target_date.strftime("%Y-%m-%d")
-            
-            # Use pre-fetched weather if available
-            day_weather = weather_map.get(date_str)
-            
-            pred = get_prediction_for_date(date_str, weather_override=day_weather)
-            
-            forecasts.append({
-                "date": date_str,
-                "risk_probability": pred.get("probability", 0),
-                "risk_level": pred.get("risk_level", "Unknown"),
-                "source": pred.get("source", "unknown")
-            })
+        forecasts = get_weekly_forecast_recursive(start_date)
             
         return forecasts
     except Exception as e:

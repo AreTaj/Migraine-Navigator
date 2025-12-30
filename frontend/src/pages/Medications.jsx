@@ -198,7 +198,7 @@ function Medications() {
             if (payload.period_days === "") payload.period_days = null;
             if (payload.period_days) payload.period_days = parseInt(payload.period_days);
 
-            console.log("Saving payload:", payload); // Debug log
+
 
             await axios.put(`/api/v1/medications/${editingId}`, payload);
 

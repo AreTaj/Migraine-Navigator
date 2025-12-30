@@ -78,3 +78,100 @@ h2 {
   margin-bottom: 1rem;
   color: #fff;
 }
+
+/* Utilities */
+.card {
+  background-color: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.primary-btn {
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.primary-btn:hover {
+  opacity: 0.9;
+}
+
+.primary-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.secondary-btn {
+  background-color: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.secondary-btn:hover {
+  color: var(--text-main);
+  border-color: var(--text-muted);
+}
+
+.btn-option {
+  background-color: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+  font-size: 1rem;
+}
+
+.btn-option:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--text-muted);
+}
+
+.btn-option.selected {
+  border-color: var(--primary);
+  background-color: rgba(77, 171, 247, 0.1);
+  color: var(--primary);
+}
+
+.badge {
+  background: var(--primary);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Form Elements */
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--primary);
+}
