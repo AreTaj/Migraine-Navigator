@@ -23,6 +23,7 @@ All notable changes to the "Migraine Navigator" project will be documented in th
 ### Changed
 - **Testing**: Overhauled test suite to 18 robust integration tests (100% pass rate).
 - **Architecture**: Separated `forecasting.heuristic_predictor` into its own module for easier maintenance.
+- **License**: Adopted GNU GPLv3 to protect open-source nature while allowing for portfolio showcase.
 
 ## [v0.1.3] - 2025-12-25
 ### Added
