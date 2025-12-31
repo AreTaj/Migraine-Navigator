@@ -160,11 +160,24 @@ See [CHANGELOG.md](CHANGELOG.md) for a detailed history of changes.
 
 Copyright © 2025 Aresh Tajvar.
 
-This program is free software: you can redistribute it and/or modify it under the terms of the **GNU General Public License** as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This project is licensed under the **PolyForm Noncommercial License 1.0.0**.
 
-This program is distributed in the hope that it will be useful, but **WITHOUT ANY WARRANTY**; without even the implied warranty of **MERCHANTABILITY** or **FITNESS FOR A PARTICULAR PURPOSE**. See the GNU General Public License for more details.
+*   **Personal & Educational Use**: You are free to download, run, and study this code for personal or educational purposes.
+*   **Commercial Use**: Commercial use, redistribution, or monetization of this software—in whole or in part—is strictly prohibited.
 
-See the [LICENSE](LICENSE) file for the full text.
+This project serves as a technical portfolio piece and a "proof of concept" for future cross-platform development. For inquiries regarding commercial licensing or professional collaboration, please reach out via [LinkedIn](https://linkedin.com/in/aresh-tajvar).
+
+See the [LICENSE](LICENSE) file for the full legal text.
+
+### Why this License? (Developer Note)
+
+As the sole author of Migraine Navigator, I have chosen a "Source-Available" (Non-Commercial) license rather than a standard Open Source license (like GPL or MIT).
+
+**My Strategy:**
+
+*   **Transparency**: I want to demonstrate that sophisticated AI can be fully effective entirely on-device. This codebase opens the "black box" on a **Privacy-First ML Architecture**—featuring a **Dual-Stage Hurdle Model** (GBDT), **Cyclical Temporal Encoding**, and purely local processing—proving that personal health data never needs to leave the user's machine to deliver powerful insights.
+*   **IP Protection**: This desktop application is a "loss leader" intended to demonstrate the viability of the ML pipeline. I am retaining all commercial rights to ensure that future mobile adaptations (Cloud/SaaS) remain proprietary and protected from low-effort commercial clones.
+*   **Integrity**: This license ensures that this portfolio piece remains a pure representation of my work and cannot be exploited by third parties for profit.
 
 ## Acknowledgements
 
