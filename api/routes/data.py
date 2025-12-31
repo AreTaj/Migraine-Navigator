@@ -1,7 +1,7 @@
 from fastapi import APIRouter, File, UploadFile, HTTPException, Depends
 from fastapi.responses import JSONResponse
-import pandas as pd
-import io
+# import pandas as pd # Moved to lazy load
+# import io # Moved to lazy load
 import sqlite3
 import shutil
 import os
@@ -22,6 +22,8 @@ async def import_csv(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="File must be a CSV.")
     
     try:
+        import pandas as pd
+        import io
         content = await file.read()
         df = pd.read_csv(io.BytesIO(content))
         
@@ -101,6 +103,7 @@ async def import_db(file: UploadFile = File(...)):
         """)
         
         conn.commit()
+        import pandas as pd
         total_rows = pd.read_sql("SELECT COUNT(*) as c FROM migraine_log", conn)['c'][0]
         conn.detach("source_db") # Detach immediately
         conn.close()

@@ -24,7 +24,7 @@ apiClient.interceptors.response.use(null, async (error) => {
         config.retryCount = 0;
     }
 
-    const MAX_RETRIES = 10; // Try for ~20-30 seconds total
+    const MAX_RETRIES = 15; // Try for ~45 seconds total
 
     if (config.retryCount < MAX_RETRIES && (!error.response || error.code === 'ERR_NETWORK')) {
         config.retryCount += 1;

@@ -31,6 +31,8 @@ const Settings = () => {
             setLoading(false);
         } catch (err) {
             console.error(err);
+            setLoading(false);
+            alert("Failed to load settings. Is the backend running?");
         }
     };
 

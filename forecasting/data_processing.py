@@ -1,7 +1,10 @@
-import pandas as pd
-import numpy as np
 import os
 import sqlite3
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import pandas as pd
+    import numpy as np
 
 # Define paths
 from api.utils import get_data_dir
@@ -16,6 +19,7 @@ def load_migraine_log_from_db(db_path=None):
     """
     Loads migraine log data from the SQLite database into a pandas DataFrame.
     """
+    import pandas as pd
     from api.utils import get_db_path
     if db_path is None:
         db_path = get_db_path()
@@ -34,6 +38,7 @@ def merge_migraine_and_weather_data(migraine_log_file=migraine_data_filename, we
     Note: Reads from SQLite DB by default now, though allows file override if needed (but we ignore csv arg mostly).
     """
     # Load from DB instead of CSV
+    import pandas as pd
     migraine_data = load_migraine_log_from_db(db_path)
     if os.path.exists(weather_data_file):
         weather_data = pd.read_csv(weather_data_file)
@@ -91,6 +96,7 @@ def merge_migraine_and_weather_data(migraine_log_file=migraine_data_filename, we
     return combined
 
 def convert_time_to_minutes(time_str):
+    import pandas as pd
     if pd.isna(time_str):
         return 0
     try:
@@ -104,6 +110,8 @@ def process_combined_data(combined_data_filename=combined_data_filename, input_d
     Loads combined data, performs feature engineering including lags and rolling means.
     Can accept a direct DataFrame for testing/pipeline integration without reading from CSV.
     """
+    import pandas as pd
+    import numpy as np
     if input_df is not None:
         df = input_df.copy()
     else:

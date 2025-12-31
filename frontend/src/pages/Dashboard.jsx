@@ -64,7 +64,6 @@ function Dashboard() {
                 setMeds(allMeds);
 
                 // --- SMART LOGIC (Synchronous) ---
-                // Use local date for "today"
                 const now = new Date();
                 const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
                 const dailyMedList = allMeds.filter(m => m.frequency === 'daily');
@@ -119,12 +118,11 @@ function Dashboard() {
                     }
                 });
                 setDueMeds(dueList);
+                setLoading(false); // Critical UI Ready
 
             } catch (err) {
                 console.error("Error fetching dashboard data:", err);
-                setError("Failed to load dashboard data.");
-            } finally {
-                // Critical data done -> Show UI
+                setError(`Failed to load dashboard data: ${err.message}`);
                 setLoading(false);
             }
         };
@@ -155,10 +153,9 @@ function Dashboard() {
             }
         };
 
-        // Serialize requests to unblock the backend for critical data first
-        fetchCoreData().then(() => {
-            fetchPredictions();
-        });
+        // Independent executions
+        fetchCoreData();
+        fetchPredictions();
     }, []);
 
     // --- Actions ---

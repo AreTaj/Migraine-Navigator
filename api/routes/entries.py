@@ -11,14 +11,35 @@ import os
 router = APIRouter()
 
 from api.utils import get_db_path
+import logging
+import os
+from api.utils import get_data_dir
+
+# Setup logger
+logger = logging.getLogger("entries_route")
+handler = logging.FileHandler(os.path.join(get_data_dir(), "api_debug.log"))
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.DEBUG)
+
 @router.get("/entries", response_model=List[MigraineEntry])
 def get_entries(start_date: str = Query(None, description="Filter start date (YYYY-MM-DD)"), 
-                end_date: str = Query(None, description="Filter end date (YYYY-MM-DD)")):
+                end_date: str = Query(None, description="Filter end date (YYYY-MM-DD)"),
+                limit: int = Query(None, description="Limit number of entries")):
     try:
+        logger.info(f"GET /entries request. Limit: {limit}, Start: {start_date}, End: {end_date}")
         entries_data = EntryService.get_entries_from_db(get_db_path(), start_date, end_date)
+        logger.info(f"Retrieved {len(entries_data)} entries from DB")
+        
+        # Apply limit manually if service doesn't support it yet
+        if limit and len(entries_data) > limit:
+             entries_data = entries_data[:limit]
         
         processed_entries = []
-        for entry in entries_data:
+        for i, entry in enumerate(entries_data):
+            # logger.debug(f"Processing entry {i}: {entry.get('id')}") # Verbose
+            
             # Handle missing numeric values (Pain Level default 0)
             try:
                 if entry.get('Pain Level') is not None:
@@ -30,33 +51,42 @@ def get_entries(start_date: str = Query(None, description="Filter start date (YY
             
             # Use 'entry' directly since it's already a dict
             # Map 'Pain Level' (DB) to 'Pain_Level' (Model)
-            # Create a new dict for the model to avoid mutating the original if reused
             model_entry = entry.copy()
             
             model_entry['Pain_Level'] = model_entry.pop('Pain Level', 0)
             model_entry['Physical_Activity'] = model_entry.pop('Physical Activity', "")
             
-            # Map legacy column names if they exist and aren't None, else default to None or ""
-            # The DB returns keys as they are in the columns (e.g. "Physical Activity")
+            # --- ROBUST SANITIZATION (Fix for Issue #758) ---
+            # 1. Fix Medications: Must be a list of objects. 
+            # If DB has garbage (e.g. int/str), force empty list to prevent Pydantic 500.
+            if not isinstance(model_entry.get('Medications'), list):
+                # logger.warning(f"Sanitizing invalid Medications: {model_entry.get('Medications')}")
+                model_entry['Medications'] = []
             
-            # Fix for empty strings in float fields
-            if model_entry.get('Latitude') == '':
-                model_entry['Latitude'] = None
-            if model_entry.get('Longitude') == '':
-                model_entry['Longitude'] = None
-                
-            # Replace None strings with empty strings for text fields if needed, 
-            # though Pydantic usually handles Optional[str] fine.
-            # But the original code did df.fillna(""), so we replicate that behavior 
-            # for string fields primarily.
+            # 2. Fix Geo Fields: Must be float or None. 
+            # If DB has garbage (e.g. '[]', empty string), force None.
+            for geo in ['Latitude', 'Longitude']:
+                val = model_entry.get(geo)
+                if val == '' or val == '[]' or val is None:
+                    model_entry[geo] = None
+                else:
+                    try:
+                        model_entry[geo] = float(val)
+                    except (ValueError, TypeError):
+                        # logger.warning(f"Sanitizing invalid {geo}: {val}")
+                        model_entry[geo] = None
+
+            # 3. Fix general text fields
             for k, v in model_entry.items():
-                if v is None and k not in ['Latitude', 'Longitude', 'Pain_Level']:
+                if v is None and k not in ['Latitude', 'Longitude', 'Pain_Level', 'Medications']:
                     model_entry[k] = ""
                 
             processed_entries.append(model_entry)
             
+        logger.info(f"Successfully processed {len(processed_entries)} entries")
         return processed_entries
     except Exception as e:
+        logger.error(f"Error in get_entries: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/entries")

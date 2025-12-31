@@ -8,8 +8,20 @@ import os
 
 router = APIRouter(prefix="/prediction", tags=["prediction"])
 
+import logging
+import os
+from api.utils import get_data_dir
+
+# Setup logger
+logger = logging.getLogger("prediction_route")
+handler = logging.FileHandler(os.path.join(get_data_dir(), "api_debug.log"))
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.DEBUG)
+
 @router.get("/future")
-async def get_future_prediction(date: str = Query(None, description="Date in YYYY-MM-DD format. Defaults to tomorrow.")):
+def get_future_prediction(date: str = Query(None, description="Date in YYYY-MM-DD format. Defaults to tomorrow.")):
     """
     Get migraine risk prediction for a specific date.
     """
@@ -18,20 +30,27 @@ async def get_future_prediction(date: str = Query(None, description="Date in YYY
         date = tomorrow.strftime("%Y-%m-%d")
     
     try:
+        logger.info(f"GET /prediction/future request for {date}")
         # Validate date format
         datetime.strptime(date, "%Y-%m-%d")
         
+        logger.debug("Importing predict_future...")
         from forecasting.predict_future import get_prediction_for_date
+        logger.debug("Calling get_prediction_for_date...")
+        
         result = get_prediction_for_date(date)
+        logger.info("Prediction successful")
         return result
     except ValueError:
+        logger.warning(f"Invalid date format: {date}")
         raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD.")
     except Exception as e:
+        logger.error(f"Prediction Error: {str(e)}", exc_info=True)
         print(f"Prediction Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/forecast")
-async def get_weekly_forecast():
+def get_weekly_forecast():
     """
     Get migraine risk prediction for the next 7 days (Starting Tomorrow).
     """

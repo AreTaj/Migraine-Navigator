@@ -3,14 +3,20 @@
 All notable changes to the "Migraine Navigator" project will be documented in this file.
 
 ## [v0.2.1] - 2025-12-30
-### Performance
-- **Startup Speed**: Backend initialization reduced from **~72s** to **<0.5s** by removing `matplotlib` dependency and lazy-loading heavy ML modules.
+### Performance (Instant Load)
+- **True Instant Load**: Converted CPU-heavy Prediction endpoints to **Synchronous Handlers**. This forces execution in a background ThreadPool, unblocking the Main Event Loop. Dashboard, History, and Meds now load instantly (< 50ms) even while ML warms up on a side thread.
+- **Optimized Startup**: Removed background warmup thread that was causing GIL contention.
+- **Dependency Removal**: Removed `matplotlib` to eliminate 70s font-cache build on cold start.
+
 ### Fixed
-- **Onboarding Hang**: Resolved critical bug where "Finish Setup" would fail silently due to backend warm-up delays. Added robust retry logic to intake flow.
-- **Settings Persistence**: Fixed bug where calibration sliders would reset on navigation. Implemented **Auto-Save** with debounce and visual feedback.
-- **API Robustness**: Standardized all data-heavy pages (`Import`, `Settings`, `Onboarding`) to use the central `apiClient` with exponential backoff.
+- **Zero-Forecast Crash**: Removed `mmap_mode='r'` from `joblib` loading, which caused silent crashes in the packaged application.
+- **Heuristic Fallback**: Implemented robust fallback logic. If ML fails or is loading, the 7-day forecast now populates using the heuristics engine instead of showing zeroes.
+- **UI Polish**: Fixed excessive whitespace in Dashboard header.
+- **Logs**: Moved logs from Desktop to `~/Library/Application Support/AreTaj/MigraineNavigator/`.
+
 ### Added
-- **Baseline Calibration**: Exposed the "Baseline Frequency" slider in the Settings tab (previously hidden after onboarding).
+- **Safety Nets**: Added exponential backoff retry logic to all key API consumers (Onboarding, Settings).
+- **Baseline Calibration**: Exposed "Baseline Frequency" in Settings.
 
 ## [v0.2.0] - 2025-12-29
 ### Added

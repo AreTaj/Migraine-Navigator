@@ -31,3 +31,7 @@ app.include_router(data.router, prefix="/api/v1")
 @app.get("/")
 def read_root():
     return {"message": "Welcome to Migraine Navigator API"}
+
+@app.get("/api/v1/health")
+def health_check():
+    return {"status": "ok", "service": "migraine-navigator-api"}

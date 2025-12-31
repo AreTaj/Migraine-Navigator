@@ -69,7 +69,7 @@ function HistoryPage() {
             setEntries(response.data);
         } catch (err) {
             console.error(err);
-            setError("Failed to load history.");
+            setError(`Failed to load history: ${err.message}`);
         } finally {
             setLoading(false);
         }

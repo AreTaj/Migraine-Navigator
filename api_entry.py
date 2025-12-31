@@ -3,16 +3,19 @@ import os
 import logging
 import multiprocessing
 import signal
+from api.utils import get_data_dir
 
 # 1. SETUP LOGGING
-desktop_log = os.path.expanduser("~/Desktop/migraine_debug.log")
+log_dir = get_data_dir()
+os.makedirs(log_dir, exist_ok=True)
+log_file = os.path.join(log_dir, "migraine_debug.log")
 
 if __name__ == "__main__":
     multiprocessing.freeze_support()
     
     # Configure Logging
     logging.basicConfig(
-        filename=desktop_log,
+        filename=log_file,
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         filemode='w'
@@ -20,7 +23,7 @@ if __name__ == "__main__":
     logger = logging.getLogger("api_entry")
     
     # Capture Uvicorn logs
-    logging.getLogger("uvicorn").addHandler(logging.FileHandler(desktop_log))
+    logging.getLogger("uvicorn").addHandler(logging.FileHandler(log_file))
     
     logger.info("Backend starting... (Lazy Loading Enabled)")
     logger.info(f"CWD: {os.getcwd()}")

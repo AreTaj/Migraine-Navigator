@@ -1,5 +1,4 @@
 import sqlite3
-import pandas as pd
 import os
 from typing import List
 from api.models import Medication
