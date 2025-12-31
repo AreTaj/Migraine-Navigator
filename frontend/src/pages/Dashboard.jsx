@@ -4,6 +4,7 @@ import { Loader2, Pill, CalendarCheck, CheckCircle2, Clock, XCircle, AlertTriang
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label, LineChart, Line } from 'recharts';
 import axios from '../services/apiClient';
 import HourlyForecastGraph from '../components/HourlyForecastGraph';
+import AllCaughtUpCard from '../components/AllCaughtUpCard';
 import { useMigraineStats } from '../utils/useMigraineStats';
 import './Dashboard.css';
 
@@ -28,6 +29,10 @@ function Dashboard() {
     const [forecast, setForecast] = useState([]); // 7-day forecast
     const [error, setError] = useState(null);
     const [timeRange, setTimeRange] = useState('1y'); // '1m', '1y', '2y'
+    // New State for Hourly Forecast (Lifted Up)
+    const [hourlyData, setHourlyData] = useState([]);
+    const [hourlyLoading, setHourlyLoading] = useState(true);
+    const [priors, setPriors] = useState(null);
 
     const navigate = useNavigate();
     const [meds, setMeds] = useState([]);
@@ -54,15 +59,21 @@ function Dashboard() {
         const fetchCoreData = async () => {
             try {
                 // 1. Critical Data (Fast) - Loads immediately
-                const [entriesRes, medsRes] = await Promise.all([
+                const [entriesRes, medsRes, hourlyRes, priorsRes] = await Promise.all([
                     axios.get('/api/v1/entries'),
-                    axios.get('/api/v1/medications')
+                    axios.get('/api/v1/medications'),
+                    axios.get('/api/v1/prediction/hourly').catch(err => ({ data: [] })), // Fail gracefully
+                    axios.get('/api/v1/user/priors').catch(err => ({ data: { temp_unit: 'C' } }))
                 ]);
 
                 const entriesData = entriesRes.data;
                 setEntries(entriesData);
                 const allMeds = medsRes.data;
                 setMeds(allMeds);
+                setHourlyData(hourlyRes.data);
+                setHourlyLoading(false);
+                setPriors(priorsRes.data);
+
 
                 // --- SMART LOGIC (Synchronous) ---
                 const now = new Date();
@@ -440,7 +451,12 @@ function Dashboard() {
                             // Sort cards by priority (Lowest number first)
                             cards.sort((a, b) => a.priority - b.priority);
 
-                            if (cards.length === 0) return null;
+                            if (cards.length === 0) {
+                                const now = new Date();
+                                const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+                                const todayEntry = entries.find(e => e.Date === todayStr);
+                                return <AllCaughtUpCard weather={hourlyData[0]} todayEntry={todayEntry} tempUnit={priors?.temp_unit} />;
+                            }
 
                             return cards.map((card, index) => (
                                 <div key={card.id} style={{
@@ -505,7 +521,7 @@ function Dashboard() {
             {/* --- CHARTS GRID --- */}
             <div className="charts-grid">
                 {/* 1. 24-Hour Hourly Risk (Left) */}
-                <HourlyForecastGraph />
+                <HourlyForecastGraph data={hourlyData} loading={hourlyLoading} />
 
                 {/* 2. 7-Day Forecast (Right) */}
                 <div className="chart-card">

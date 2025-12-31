@@ -153,6 +153,45 @@ const Settings = () => {
                             <span>High Impact</span>
                         </div>
                     </div>
+
+                    <div className="setting-row" style={{ marginTop: '0.5rem', borderTop: '1px solid #334155', paddingTop: '1.5rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '4px' }}>Temperature Unit</label>
+                                <small style={{ color: '#888' }}>Select your preferred unit for weather display.</small>
+                            </div>
+                            <div style={{ display: 'flex', background: '#1e293b', padding: '4px', borderRadius: '8px', border: '1px solid #334155' }}>
+                                <button
+                                    onClick={() => setPriors({ ...priors, temp_unit: 'C' })}
+                                    style={{
+                                        padding: '6px 16px',
+                                        borderRadius: '6px',
+                                        border: 'none',
+                                        background: priors.temp_unit === 'C' ? '#334155' : 'transparent',
+                                        color: priors.temp_unit === 'C' ? '#fff' : '#94a3b8',
+                                        cursor: 'pointer',
+                                        fontSize: '0.85rem',
+                                        fontWeight: '500',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >Celsius</button>
+                                <button
+                                    onClick={() => setPriors({ ...priors, temp_unit: 'F' })}
+                                    style={{
+                                        padding: '6px 16px',
+                                        borderRadius: '6px',
+                                        border: 'none',
+                                        background: priors.temp_unit === 'F' ? '#334155' : 'transparent',
+                                        color: priors.temp_unit === 'F' ? '#fff' : '#94a3b8',
+                                        cursor: 'pointer',
+                                        fontSize: '0.85rem',
+                                        fontWeight: '500',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >Fahrenheit</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 

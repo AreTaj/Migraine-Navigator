@@ -11,6 +11,7 @@ class UserPriors(BaseModel):
     weather_sensitivity: float
     sleep_sensitivity: float
     strain_sensitivity: float
+    temp_unit: str = 'C'
 
 # DB Helper (Quick and dirty for now, should use a proper dependency)
 def get_db():
@@ -39,7 +40,7 @@ async def get_user_priors():
             conn.commit()
             
         # Fetch values
-        cursor.execute("SELECT key, value FROM user_settings WHERE key IN ('baseline_risk', 'weather_sensitivity', 'sleep_sensitivity', 'strain_sensitivity')")
+        cursor.execute("SELECT key, value FROM user_settings WHERE key IN ('baseline_risk', 'weather_sensitivity', 'sleep_sensitivity', 'strain_sensitivity', 'temp_unit')")
         rows = dict(cursor.fetchall())
         conn.close()
         
@@ -47,7 +48,8 @@ async def get_user_priors():
             baseline_risk=float(rows.get('baseline_risk', 0.1)),
             weather_sensitivity=float(rows.get('weather_sensitivity', 0.5)),
             sleep_sensitivity=float(rows.get('sleep_sensitivity', 0.5)),
-            strain_sensitivity=float(rows.get('strain_sensitivity', 0.5))
+            strain_sensitivity=float(rows.get('strain_sensitivity', 0.5)),
+            temp_unit=rows.get('temp_unit', 'C')
         )
         
     except Exception as e:
@@ -79,7 +81,8 @@ async def update_user_priors(priors: UserPriors):
             ('baseline_risk', str(priors.baseline_risk)),
             ('weather_sensitivity', str(priors.weather_sensitivity)),
             ('sleep_sensitivity', str(priors.sleep_sensitivity)),
-            ('strain_sensitivity', str(priors.strain_sensitivity))
+            ('strain_sensitivity', str(priors.strain_sensitivity)),
+            ('temp_unit', priors.temp_unit)
         ]
         
         cursor.executemany("INSERT OR REPLACE INTO user_settings (key, value) VALUES (?, ?)", data)

@@ -3,27 +3,10 @@ import axios from '../services/apiClient';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Label } from 'recharts';
 import { Loader2, AlertTriangle, ShieldCheck } from 'lucide-react';
 
-const HourlyForecastGraph = () => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const HourlyForecastGraph = ({ data = [], loading = false, error = null }) => {
+    // Props driven (Lifted state to Dashboard)
 
-    useEffect(() => {
-        const fetchHourly = async () => {
-            try {
-                const res = await axios.get('/api/v1/prediction/hourly');
-                setData(res.data);
-                setLoading(false);
-            } catch (err) {
-                console.error("Hourly forecast failed", err);
-                setError("Failed to load hourly forecast");
-                setLoading(false);
-            }
-        };
-        fetchHourly();
-    }, []);
-
-    if (loading) return (
+    if (loading && data.length === 0) return (
         <div className="chart-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Loader2 className="animate-spin" size={32} />
         </div>
@@ -71,7 +54,7 @@ const HourlyForecastGraph = () => {
     return (
         <div className="chart-card">
             <div className="chart-header">
-                <h3>24-Hour Hourly Risk</h3>
+                <h3>Hourly Risk</h3>
             </div>
             <div className="chart-wrapper">
                 <ResponsiveContainer width="100%" height="100%">

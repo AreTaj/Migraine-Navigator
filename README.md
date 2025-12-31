@@ -14,7 +14,7 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
     - **Offline Resilience**: Automatically falls back to the most recent known weather data if the internet is down, with visual alerts.
     - **Smart Metrics**: Track "Avg Days/Month" and pain severity trends.
     - **Interactive Trends**: Filter by 1M (Severity View), 1Y, or Full History (Frequency View).
-    - **Medication Analysis**: Consolidated view with "Donut Style" visualization, extended color palette, and "Pain-Based" usage tracking (ignores pain-free days).
+    - **Medication Analysis**: Consolidated view with pie chart visualization, extended color palette, and "Pain-Based" usage tracking (ignores pain-free days).
 - **Detailed Logging:** 
     - **Smart Geolocation**: IP-based location tagging for accurate weather correlation without intrusive permissions.
     - **Medication Management**: Dedicated registry for tracking doses, frequencies, and stock.

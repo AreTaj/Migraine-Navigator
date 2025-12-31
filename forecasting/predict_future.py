@@ -986,6 +986,9 @@ def get_hourly_forecast(start_date_str):
             "time": w['time'],
             "risk_score": risk_score, # Will be calibrated
             "risk_level": pred['risk_level'],
+            "temp": w['temp'],
+            "humidity": w['humidity'],
+            "prcp": w['prcp'],
             "details": pred['components']
         }
         forecast_result.append(entry)
