@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Upload, Database, FileSpreadsheet, Check } from 'lucide-react';
-import axios from 'axios';
+import axios from '../services/apiClient';
 import '../App.css';
-
-const API_BASE = "http://127.0.0.1:8000/api/v1";
 
 const ImportData = () => {
     const [file, setFile] = useState(null);
@@ -24,8 +22,8 @@ const ImportData = () => {
         formData.append("file", file);
 
         try {
-            const endpoint = type === 'csv' ? "/data/import/csv" : "/data/import/db";
-            const res = await axios.post(API_BASE + endpoint, formData, {
+            const endpoint = type === 'csv' ? "/api/v1/data/import/csv" : "/api/v1/data/import/db";
+            const res = await axios.post(endpoint, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             setResult(res.data);

@@ -6,7 +6,7 @@ import sqlite3
 import shutil
 import os
 from ..utils import get_db_path
-from forecasting.train_model import train_and_evaluate
+# train_and_evaluate from train_model is lazy-loaded in routes to avoid early matplotlib import
 
 router = APIRouter(prefix="/data", tags=["data"])
 
@@ -53,6 +53,7 @@ async def import_csv(file: UploadFile = File(...)):
         if total_rows > 60:
             try:
                 print("Triggering ML Training due to data import...")
+                from forecasting.train_model import train_and_evaluate
                 train_and_evaluate()
                 training_triggered = True
             except Exception as e:
@@ -112,6 +113,7 @@ async def import_db(file: UploadFile = File(...)):
             try:
                 print("Triggering ML Training due to data import...")
                 # Run synchronously for now
+                from forecasting.train_model import train_and_evaluate
                 train_and_evaluate()
                 training_triggered = True
             except Exception as e:

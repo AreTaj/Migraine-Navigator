@@ -5,7 +5,8 @@ from api.models import MigraineEntry
 from services.entry_service import EntryService
 import os
 
-from forecasting.predict_future import get_prediction_for_date, clear_prediction_cache
+# Prediction functions are lazy-loaded within routes to speed up backend startup
+# and avoid triggering ML sub-dependencies (like matplotlib) until needed.
 
 router = APIRouter()
 
@@ -69,7 +70,11 @@ def add_entry(entry: MigraineEntry):
         data['Physical Activity'] = data.pop('Physical_Activity')
         
         EntryService.add_entry(data, get_db_path())
-        clear_prediction_cache()
+        try:
+            from forecasting.predict_future import clear_prediction_cache
+            clear_prediction_cache()
+        except ImportError:
+            pass
         return {"message": "Entry added successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -78,7 +83,11 @@ def add_entry(entry: MigraineEntry):
 def delete_entry(entry_id: int):
     try:
         EntryService.delete_entry(entry_id, get_db_path())
-        clear_prediction_cache()
+        try:
+            from forecasting.predict_future import clear_prediction_cache
+            clear_prediction_cache()
+        except ImportError:
+            pass
         return {"message": f"Entry {entry_id} deleted successfully"}
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
@@ -95,7 +104,11 @@ def update_entry(entry_id: int, entry: MigraineEntry):
         if 'id' in data: del data['id'] # Don't update ID
 
         EntryService.update_entry(entry_id, data, get_db_path())
-        clear_prediction_cache()
+        try:
+            from forecasting.predict_future import clear_prediction_cache
+            clear_prediction_cache()
+        except ImportError:
+            pass
         return {"message": "Entry updated successfully"}
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))

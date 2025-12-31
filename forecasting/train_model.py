@@ -6,9 +6,14 @@ from sklearn.model_selection import TimeSeriesSplit
 
 from sklearn.ensemble import HistGradientBoostingRegressor, HistGradientBoostingClassifier
 from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_score, classification_report
-import matplotlib
-matplotlib.use('Agg') # Prevent GUI crash on MacOS/Server
-import matplotlib.pyplot as plt
+# Matplotlib is optional and only used for debug plotting during training
+try:
+    import matplotlib
+    matplotlib.use('Agg') # Prevent GUI crash on MacOS/Server
+    import matplotlib.pyplot as plt
+    HAS_MATPLOTLIB = True
+except ImportError:
+    HAS_MATPLOTLIB = False
 
 # Import data processing
 try:
@@ -145,14 +150,20 @@ def train_and_evaluate(db_path=None):
         print(f"  Classifier: Precision={prec:.3f}, Recall={rec:.3f}, F1={f1:.3f}")
         print(f"  Regressor (Pain Only): MAE={reg_mae_pain:.3f}")
 
-    # Plotting last fold results
-    plt.figure(figsize=(12, 6))
-    plt.plot(y_test_reg.index, y_test_reg, label='Actual Pain (Log)', alpha=0.7)
-    plt.plot(y_test_reg.index, y_pred_combined, label='Predicted Pain (Combined)', alpha=0.7, linestyle='--')
-    plt.title("Constraint-Aware Prediction (Last Fold)")
-    plt.legend()
-    plt.savefig(os.path.join(MODEL_DIR, 'prediction_plot.png'))
-    print(f"Plot saved to {os.path.join(MODEL_DIR, 'prediction_plot.png')}")
+    # Plotting last fold results (optional)
+    if HAS_MATPLOTLIB:
+        try:
+            plt.figure(figsize=(12, 6))
+            plt.plot(y_test_reg.index, y_test_reg, label='Actual Pain (Log)', alpha=0.7)
+            plt.plot(y_test_reg.index, y_pred_combined, label='Predicted Pain (Combined)', alpha=0.7, linestyle='--')
+            plt.title("Constraint-Aware Prediction (Last Fold)")
+            plt.legend()
+            plt.savefig(os.path.join(MODEL_DIR, 'prediction_plot.png'))
+            print(f"Plot saved to {os.path.join(MODEL_DIR, 'prediction_plot.png')}")
+        except Exception as e:
+            print(f"Warning: Could not generate debug plot: {e}")
+    else:
+        print("Skipping plot generation (matplotlib not installed).")
 
     print("\n--- Average Performance ---")
     print(f"Avg Accuracy: {np.mean(acc_scores):.4f}")

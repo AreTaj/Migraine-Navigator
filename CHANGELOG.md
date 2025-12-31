@@ -2,6 +2,16 @@
 
 All notable changes to the "Migraine Navigator" project will be documented in this file.
 
+## [v0.2.1] - 2025-12-30
+### Performance
+- **Startup Speed**: Backend initialization reduced from **~72s** to **<0.5s** by removing `matplotlib` dependency and lazy-loading heavy ML modules.
+### Fixed
+- **Onboarding Hang**: Resolved critical bug where "Finish Setup" would fail silently due to backend warm-up delays. Added robust retry logic to intake flow.
+- **Settings Persistence**: Fixed bug where calibration sliders would reset on navigation. Implemented **Auto-Save** with debounce and visual feedback.
+- **API Robustness**: Standardized all data-heavy pages (`Import`, `Settings`, `Onboarding`) to use the central `apiClient` with exponential backoff.
+### Added
+- **Baseline Calibration**: Exposed the "Baseline Frequency" slider in the Settings tab (previously hidden after onboarding).
+
 ## [v0.2.0] - 2025-12-29
 ### Added
 - **Hybrid Prediction Engine**:

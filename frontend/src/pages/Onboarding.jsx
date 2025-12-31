@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CloudRain, Moon, Activity, Check, ArrowRight, ArrowLeft } from 'lucide-react';
-import axios from 'axios';
+import axios from '../services/apiClient';
 import '../App.css';
-
-const API_BASE = "http://127.0.0.1:8000/api/v1";
 
 const Onboarding = () => {
     const navigate = useNavigate();
@@ -25,7 +23,7 @@ const Onboarding = () => {
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            await axios.post(`${API_BASE}/user/priors`, formData);
+            await axios.post('/api/v1/user/priors', formData);
             // Mark as completed in local storage for now to avoid re-check lag
             localStorage.setItem('onboarding_completed', 'true');
             navigate('/');

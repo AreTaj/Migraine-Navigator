@@ -3,7 +3,6 @@ pandas
 numpy
 scikit-learn
 joblib
-matplotlib
 
 # API & Web
 fastapi

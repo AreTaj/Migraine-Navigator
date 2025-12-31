@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Settings as SettingsIcon, Database, Save, Activity, CloudRain } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../services/apiClient';
 import '../App.css';
-
-const API_BASE = "http://127.0.0.1:8000/api/v1";
 
 const Settings = () => {
     const [priors, setPriors] = useState(null);
@@ -15,9 +13,20 @@ const Settings = () => {
         fetchPriors();
     }, []);
 
+    // Auto-save logic
+    useEffect(() => {
+        if (loading || !priors) return;
+
+        const timer = setTimeout(() => {
+            savePriors();
+        }, 800); // 800ms debounce
+
+        return () => clearTimeout(timer);
+    }, [priors, loading]);
+
     const fetchPriors = async () => {
         try {
-            const res = await axios.get(`${API_BASE}/user/priors`);
+            const res = await axios.get('/api/v1/user/priors');
             setPriors(res.data);
             setLoading(false);
         } catch (err) {
@@ -25,13 +34,13 @@ const Settings = () => {
         }
     };
 
-    const handleSave = async () => {
+    const savePriors = async () => {
         setSaving(true);
         try {
-            await axios.post(`${API_BASE}/user/priors`, priors);
-            setTimeout(() => setSaving(false), 500);
+            await axios.post('/api/v1/user/priors', priors);
+            setTimeout(() => setSaving(false), 800);
         } catch (err) {
-            alert("Failed");
+            console.error("Auto-save failed:", err);
             setSaving(false);
         }
     };
@@ -40,17 +49,48 @@ const Settings = () => {
 
     return (
         <div style={{ padding: '2rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-                <SettingsIcon size={32} />
-                <h1>Settings</h1>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <SettingsIcon size={32} />
+                    <h1>Settings</h1>
+                </div>
+                {saving && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#10b981', fontSize: '0.9rem', fontWeight: 500 }}>
+                        <Activity className="animate-pulse" size={16} /> Saving Changes...
+                    </div>
+                )}
             </div>
 
             {/* Medical Profile */}
             <section className="card" style={{ marginBottom: '2rem' }}>
-                <h3>Hybrid Engine Calibration</h3>
-                <p className="text-muted">Adjust how sensitive you are to various triggers.</p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h3>Hybrid Engine Calibration</h3>
+                </div>
+                <p className="text-muted">Adjust how sensitive you are to various triggers. Changes are saved automatically.</p>
 
                 <div style={{ display: 'grid', gap: '1.5rem', marginTop: '1.5rem' }}>
+
+                    <div className="setting-row">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                            <label>Baseline Frequency</label>
+                            <span className="badge">
+                                {priors.baseline_risk < 0.3 ? 'Rare' : priors.baseline_risk < 0.6 ? 'Frequent' : 'Chronic'}
+                            </span>
+                        </div>
+                        <small style={{ color: '#888', display: 'block', marginBottom: '0.5rem' }}>
+                            How often do you get migraines regardless of triggers?
+                        </small>
+                        <input
+                            type="range" min="0.05" max="0.95" step="0.05"
+                            value={priors.baseline_risk}
+                            onChange={(e) => setPriors({ ...priors, baseline_risk: parseFloat(e.target.value) })}
+                            style={{ width: '100%' }}
+                        />
+                        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#666', fontSize: '0.8rem' }}>
+                            <span>Rarely</span>
+                            <span>Chronic</span>
+                        </div>
+                    </div>
 
                     <div className="setting-row">
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
@@ -112,10 +152,6 @@ const Settings = () => {
                         </div>
                     </div>
                 </div>
-
-                <button className="primary-btn" onClick={handleSave} disabled={saving} style={{ marginTop: '1.5rem', width: 'auto' }}>
-                    {saving ? "Saved!" : "Update Calibration"}
-                </button>
             </section>
 
             {/* Data Management */}
