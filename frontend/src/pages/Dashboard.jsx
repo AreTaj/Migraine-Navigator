@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
-import axios from '../services/apiClient';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label, LineChart, Line } from 'recharts';
-
-
 import { useNavigate } from 'react-router-dom';
-import { Loader2, Pill, CalendarCheck, CheckCircle2, Clock, XCircle, AlertTriangle } from 'lucide-react';
+import { Loader2, Pill, CalendarCheck, CheckCircle2, Clock, XCircle, AlertTriangle, Sparkles } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label, LineChart, Line } from 'recharts';
+import axios from '../services/apiClient';
+import HourlyForecastGraph from '../components/HourlyForecastGraph';
+import { useMigraineStats } from '../utils/useMigraineStats';
 import './Dashboard.css';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#aaa'];
@@ -18,6 +18,7 @@ const parseLocalDate = (dateStr) => {
     }
     return new Date(dateStr);
 };
+
 
 function Dashboard() {
     const [entries, setEntries] = useState([]);
@@ -93,6 +94,7 @@ function Dashboard() {
                     setMissingDays(missing.reverse());
                 }
 
+
                 // 3. Periodic Reminders
                 const periodicMeds = allMeds.filter(m => m.frequency === 'periodic' && m.period_days);
                 const dueList = [];
@@ -159,7 +161,6 @@ function Dashboard() {
     }, []);
 
     // --- Actions ---
-    // --- Actions ---
     const handleStartDailyCheckin = () => {
         setCheckinStep('details');
     };
@@ -216,166 +217,40 @@ function Dashboard() {
         }
     };
 
-    const handleAddMissingEntries = async () => {
-        setMissingEntryStatus('Locating...');
-
-        try {
-            // Attempt location fetch
-            let locData = { Latitude: null, Longitude: null, Location: '' };
-            try {
-                const { latitude, longitude } = await getCurrentLocation();
-                const city = await getCityName(latitude, longitude);
-                locData = {
-                    Latitude: latitude,
-                    Longitude: longitude,
-                    Location: city || `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`
-                };
-            } catch (e) {
-                console.warn("Retroactive location fetch failed", e);
-            }
-
-            setMissingEntryStatus('Saving...');
-
-            const requests = missingDates.map(dateStr => {
-                // Get the feedback for this specific date
-                const feedback = missingEntriesData[dateStr] || { sleep: '3', activity: '2' };
-
-                return axios.post('/api/v1/entries', {
-                    Date: dateStr,
-                    Time: "12:00",
-                    Pain_Level: 0,
-                    Sleep: feedback.sleep,
-                    Physical_Activity: feedback.activity,
-                    Notes: "Retroactive Bulk Log",
-                    ...locData
-                });
-            });
-
-            await Promise.all(requests);
-
-            setMissingEntryStatus('Success!');
-            setTimeout(() => {
-                setShowMissingModal(false);
-                setMissingEntryStatus('');
-                // Refresh dashboard
-                window.location.reload();
-            }, 1000);
-
-        } catch (err) {
-            console.error(err);
-            setMissingEntryStatus('Error saving entries.');
-        }
+    // Add missing handler
+    const handleDismissRetro = () => {
+        setShowRetroCard(false);
     };
 
 
-    // --- Aggregation Logic ---
-    const stats = useMemo(() => {
-        if (!entries.length) return { yearlyCount: 0, avgPain: 0, maxPain: 0, chartData: [] };
 
-        const now = new Date();
-        const currentYear = now.getFullYear();
+    // --- Aggregation Logic (Hooks) ---
+    const stats = useMigraineStats(entries, timeRange);
 
-        // 1. Avg Days/Month (Last 12 Months)
-        const oneYearAgo = new Date();
-        oneYearAgo.setFullYear(now.getFullYear() - 1);
-
-        const last12MoEntries = entries.filter(e => {
-            const d = new Date(e.Date);
-            return d >= oneYearAgo && d <= now && Number(e.Pain_Level) > 0;
-        });
-
-        // Unique days count
-        // 1. Avg Days/Month (Last 12 Months)
-        // Calculate dynamic denominator based on data range
-        let denominator = 12;
-        if (entries.length > 0) {
-            const firstEntry = new Date(Math.min(...entries.map(e => new Date(e.Date))));
-            const dataSpanMonths = (now.getFullYear() - firstEntry.getFullYear()) * 12 + (now.getMonth() - firstEntry.getMonth()) + 1;
-            denominator = Math.min(12, Math.max(1, dataSpanMonths));
+    // Calculate Streak
+    const currentStreak = useMemo(() => {
+        if (!entries || entries.length === 0) return 0;
+        const sorted = [...entries].sort((a, b) => new Date(b.Date) - new Date(a.Date));
+        let streak = 0;
+        let checkDate = new Date();
+        // Allow streak to continue if today is not logged yet
+        const todayStr = checkDate.toISOString().split('T')[0];
+        if (!sorted.find(e => e.Date === todayStr)) {
+            checkDate.setDate(checkDate.getDate() - 1);
         }
 
-        const uniqueDays12Mo = new Set(last12MoEntries.map(e => e.Date)).size;
-        const avgDaysPerMonth = (uniqueDays12Mo / denominator).toFixed(1);
-
-        const painfulEntries = entries.filter(e => Number(e.Pain_Level) > 0);
-        const maxPain = painfulEntries.reduce((max, e) => Math.max(max, Number(e.Pain_Level)), 0);
-        const avgPain = painfulEntries.length
-            ? (painfulEntries.reduce((sum, e) => sum + Number(e.Pain_Level), 0) / painfulEntries.length).toFixed(1)
-            : 0;
-
-        // 3. Chart Data (Dynamic based on timeRange)
-        let startDate = new Date();
-        if (timeRange === '1m') startDate.setMonth(now.getMonth() - 1);
-        if (timeRange === '1y') startDate.setFullYear(now.getFullYear() - 1);
-        if (timeRange === '2y') startDate.setFullYear(now.getFullYear() - 2);
-        if (timeRange === '3y') startDate.setFullYear(now.getFullYear() - 3);
-        if (timeRange === 'all') startDate = new Date(0); // Epoch
-
-        const filteredEntries = entries.filter(e => new Date(e.Date) >= startDate);
-
-        // ... (skipping unchanged aggregation logic)
-
-        // (In JSX)
-        <div className="range-selector">
-            <button className={timeRange === '1m' ? 'active' : ''} onClick={() => setTimeRange('1m')}>1M</button>
-            <button className={timeRange === '1y' ? 'active' : ''} onClick={() => setTimeRange('1y')}>1Y</button>
-            <button className={timeRange === '2y' ? 'active' : ''} onClick={() => setTimeRange('2y')}>2Y</button>
-            <button className={timeRange === '3y' ? 'active' : ''} onClick={() => setTimeRange('3y')}>3Y</button>
-            <button className={timeRange === '5y' ? 'active' : ''} onClick={() => setTimeRange('5y')}>5Y</button>
-        </div>
-
-        // Deduplicate entries by Date (take max pain for the day)
-        // This fixes the issue of >31 entries per month
-        const dailyEntries = {};
-        filteredEntries.forEach(e => {
-            const dateStr = e.Date;
-            if (!dailyEntries[dateStr]) {
-                dailyEntries[dateStr] = e;
+        while (true) {
+            const dateStr = checkDate.toISOString().split('T')[0];
+            if (sorted.find(e => e.Date === dateStr)) {
+                streak++;
+                checkDate.setDate(checkDate.getDate() - 1);
             } else {
-                // If we have multiple entries, keep the one with higher pain, or just track existence
-                // For counting "migraine days", just existence of >0 pain is enough?
-                // But the user might want "How many entries" vs "How many days".
-                // User said: "should only be the single worst counted for each day".
-                if (Number(e.Pain_Level) > Number(dailyEntries[dateStr].Pain_Level)) {
-                    dailyEntries[dateStr] = e;
-                }
+                break;
             }
-        });
-        const uniqueDays = Object.values(dailyEntries);
-
-        // Filter out days with 0 pain (User said "0 is no migraine")
-        // Counting Pain Level >= 1 as a "Migraine Day"
-        const migraineDays = uniqueDays.filter(e => Number(e.Pain_Level) > 0);
-
-        let chartData = [];
-        if (timeRange === '1m') {
-            // Daily Grouping -> Show Pain Level
-            chartData = migraineDays
-                .sort((a, b) => parseLocalDate(a.Date) - parseLocalDate(b.Date))
-                .map(e => ({
-                    name: parseLocalDate(e.Date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
-                    value: Number(e.Pain_Level),
-                    type: 'pain'
-                }));
-        } else {
-            // Monthly Grouping (1y, 2y, all) -> Show Frequency
-            const monthlyMap = {};
-            migraineDays.forEach(e => {
-                const d = parseLocalDate(e.Date);
-                const key = `${d.getFullYear()}-${d.getMonth()}`; // Unique sortable key
-                const label = d.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
-
-                if (!monthlyMap[key]) monthlyMap[key] = { label, count: 0, sortKey: d.getTime() };
-                monthlyMap[key].count += 1;
-            });
-            // Sort by time
-            chartData = Object.values(monthlyMap)
-                .sort((a, b) => a.sortKey - b.sortKey)
-                .map(item => ({ name: item.label, value: item.count, type: 'count' }));
         }
+        return streak;
+    }, [entries]);
 
-        return { avgDaysPerMonth, avgPain, maxPain, chartData };
-    }, [entries, timeRange]);
 
     if (loading) return <div className="loading-state"><Loader2 className="animate-spin" size={48} /></div>;
     if (error) return <div className="error-state">{error}</div>;
@@ -395,263 +270,221 @@ function Dashboard() {
 
     return (
         <div className="dashboard-container">
-            <h2>Dashboard</h2>
+            {/* Header Removed */}
 
-            {/* --- SMART CARDS SECTION --- */}
-            {hasSmartCards && (
-                <div className="smart-cards-section">
+            {/* --- DASHBOARD OVERVIEW ROW (Status Center + Quick Stats) --- */}
+            <div className="dashboard-overview">
 
-                    {/* 1. Daily Check-in (Only if not logged) */}
-                    {showDailyCheckin && (
-                        <div className="smart-card">
-                            <div className="card-header">
-                                <h3><CheckCircle2 color="#4ade80" /> Daily Check-in</h3>
-                                <p>
-                                    {checkinStep === 'initial'
-                                        ? "You haven't logged an entry for today yet."
-                                        : "Great! Just a few quick details:"}
-                                </p>
-                            </div>
+                {/* 1. STATUS CENTER (Smart Cards OR "All Caught Up") */}
+                {hasSmartCards ? (
+                    <div className="smart-cards-section">
+                        {(() => {
+                            const cards = [];
+                            const hour = new Date().getHours();
+                            const isEvening = hour >= 18;
 
-                            {checkinStep === 'initial' ? (
-                                <div className="card-actions">
-                                    <button className="action-btn" onClick={handleStartDailyCheckin}>
-                                        {dailyMeds.length > 0 ? "Healthy & Medicated" : "Pain Free Day"}
-                                    </button>
-                                    <button className="action-btn secondary" onClick={() => navigate('/log')}>
-                                        Migraine Attack
-                                    </button>
-                                </div>
-                            ) : (
-                                <div className="checkin-form" style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                                        <div>
-                                            <label style={{ fontSize: '0.85rem', color: '#bfdbfe', display: 'block', marginBottom: '4px' }}>Last Night's Sleep</label>
-                                            <select
-                                                name="sleep"
-                                                value={checkinData.sleep}
-                                                onChange={handleCheckinChange}
-                                                style={{ width: '100%', padding: '8px', borderRadius: '6px', border: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
-                                            >
-                                                <option value="1">Poor</option>
-                                                <option value="2">Fair</option>
-                                                <option value="3">Good</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label style={{ fontSize: '0.85rem', color: '#bfdbfe', display: 'block', marginBottom: '4px' }}>Activity Level</label>
-                                            <select
-                                                name="activity"
-                                                value={checkinData.activity}
-                                                onChange={handleCheckinChange}
-                                                style={{ width: '100%', padding: '8px', borderRadius: '6px', border: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
-                                            >
-                                                <option value="0">None</option>
-                                                <option value="1">Light</option>
-                                                <option value="2">Moderate</option>
-                                                <option value="3">Heavy</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label style={{ fontSize: '0.85rem', color: '#bfdbfe', display: 'block', marginBottom: '4px' }}>Notes (Optional)</label>
-                                        <input
-                                            type="text"
-                                            name="notes"
-                                            value={checkinData.notes}
-                                            onChange={handleCheckinChange}
-                                            placeholder="Any notes..."
-                                            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
-                                        />
-                                    </div>
-                                    <div className="card-actions">
-                                        <button className="action-btn" onClick={handleConfirmDailyCheckin}>
-                                            Confirm Log
-                                        </button>
-                                        <button className="action-btn secondary" onClick={() => setCheckinStep('initial')}>
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    )}
+                            // 1. Retroactive Checks
+                            if (showRetroCheckin) {
+                                cards.push({
+                                    priority: 10,
+                                    id: 'retro',
+                                    content: (
+                                        <div className="smart-card" style={{ borderLeft: '4px solid #f59e0b' }}>
+                                            <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                                                <div>
+                                                    <h3><AlertTriangle color="#f59e0b" /> Missing {missingDays.length} {missingDays.length === 1 ? 'Day' : 'Days'}</h3>
+                                                    {!retroConfirming && <p>We missed logs for <b>{missingDays[0]}</b> to <b>{missingDays[missingDays.length - 1]}</b>. Were they pain-free?</p>}
+                                                </div>
+                                                <button onClick={handleDismissRetro} style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer' }}><XCircle size={18} /></button>
+                                            </div>
 
-                    {/* 2. Retroactive Check-in */}
-                    {showRetroCheckin && (
-                        <div className="smart-card">
-                            <div className="card-header">
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <h3><CalendarCheck color="#fbbf24" /> Missing {missingDays.length} Days</h3>
-                                    <div onClick={() => setShowRetroCard(false)} style={{ cursor: 'pointer' }}><XCircle size={18} /></div>
-                                </div>
-                                <p>We missed logs for <b>{missingDays[0]}</b> to <b>{missingDays[missingDays.length - 1]}</b>. Were they pain-free?</p>
-                            </div>
-
-                            {!retroConfirming ? (
-                                <div className="card-actions">
-                                    <button className="action-btn" onClick={() => {
-                                        // Initialize per-day data
-                                        const initialData = {};
-                                        missingDays.forEach(d => {
-                                            initialData[d] = { sleep: '3', activity: '2' };
-                                        });
-                                        setRetroData(initialData);
-                                        setRetroConfirming(true);
-                                    }}>
-                                        Yes, Log All
-                                    </button>
-                                </div>
-                            ) : (
-                                <div className="checkin-form" style={{ marginTop: '1rem' }}>
-                                    <p style={{ fontSize: '0.9rem', color: '#bfdbfe', marginBottom: '1rem' }}>
-                                        Confirm details for each day:
-                                    </p>
-                                    <div className="retro-days-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', maxHeight: '300px', overflowY: 'auto', marginBottom: '1rem' }}>
-                                        {missingDays.map(dateStr => (
-                                            <div key={dateStr} style={{ background: 'rgba(255,255,255,0.05)', padding: '0.8rem', borderRadius: '8px' }}>
-                                                <div style={{ fontWeight: '600', marginBottom: '0.5rem', fontSize: '0.9rem' }}>{parseLocalDate(dateStr).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</div>
-                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                                                    <div>
-                                                        <label style={{ fontSize: '0.75rem', color: '#bfdbfe', display: 'block', marginBottom: '2px' }}>Sleep (Night Before)</label>
-                                                        <select
-                                                            value={retroData[dateStr]?.sleep || '3'}
-                                                            onChange={(e) => setRetroData(prev => ({
-                                                                ...prev,
-                                                                [dateStr]: { ...prev[dateStr], sleep: e.target.value }
-                                                            }))}
-                                                            style={{ width: '100%', padding: '6px', borderRadius: '4px', border: 'none', background: 'rgba(0,0,0,0.2)', color: 'white', fontSize: '0.85rem' }}
-                                                        >
-                                                            <option value="1">Poor</option>
-                                                            <option value="2">Fair</option>
-                                                            <option value="3">Good</option>
-                                                        </select>
+                                            {!retroConfirming ? (
+                                                <div className="card-actions">
+                                                    <button className="action-btn" onClick={() => {
+                                                        const initialData = {};
+                                                        missingDays.forEach(d => { initialData[d] = { sleep: '3', activity: '2' }; });
+                                                        setRetroData(initialData);
+                                                        setRetroConfirming(true);
+                                                    }}>
+                                                        Yes, Log All
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <div className="checkin-form" style={{ marginTop: '0.2rem', width: '100%' }}>
+                                                    <p style={{ fontSize: '0.9rem', color: '#bfdbfe', marginBottom: '0.5rem' }}>Confirm details per day:</p>
+                                                    <div className="retro-days-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', maxHeight: '120px', overflowY: 'auto', marginBottom: '0.5rem' }}>
+                                                        {missingDays.map(dateStr => (
+                                                            <div key={dateStr} style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: 'rgba(255,255,255,0.05)', padding: '4px 8px', borderRadius: '4px' }}>
+                                                                <span style={{ fontSize: '0.8rem', width: '80px' }}>{parseLocalDate(dateStr).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' })}</span>
+                                                                <select
+                                                                    value={retroData[dateStr]?.sleep || '3'}
+                                                                    onChange={(e) => setRetroData(prev => ({ ...prev, [dateStr]: { ...prev[dateStr], sleep: e.target.value } }))}
+                                                                    style={{ padding: '2px', borderRadius: '4px', border: 'none', background: 'rgba(0,0,0,0.3)', color: 'white', fontSize: '0.8rem' }}
+                                                                >
+                                                                    <option value="1">Sleep: Poor</option><option value="2">Sleep: Fair</option><option value="3">Sleep: Good</option>
+                                                                </select>
+                                                                <select
+                                                                    value={retroData[dateStr]?.activity || '2'}
+                                                                    onChange={(e) => setRetroData(prev => ({ ...prev, [dateStr]: { ...prev[dateStr], activity: e.target.value } }))}
+                                                                    style={{ padding: '2px', borderRadius: '4px', border: 'none', background: 'rgba(0,0,0,0.3)', color: 'white', fontSize: '0.8rem' }}
+                                                                >
+                                                                    <option value="0">Act: None</option><option value="1">Act: Light</option><option value="2">Act: Mod</option><option value="3">Act: Heavy</option>
+                                                                </select>
+                                                            </div>
+                                                        ))}
                                                     </div>
-                                                    <div>
-                                                        <label style={{ fontSize: '0.75rem', color: '#bfdbfe', display: 'block', marginBottom: '2px' }}>Activity</label>
-                                                        <select
-                                                            value={retroData[dateStr]?.activity || '2'}
-                                                            onChange={(e) => setRetroData(prev => ({
-                                                                ...prev,
-                                                                [dateStr]: { ...prev[dateStr], activity: e.target.value }
-                                                            }))}
-                                                            style={{ width: '100%', padding: '6px', borderRadius: '4px', border: 'none', background: 'rgba(0,0,0,0.2)', color: 'white', fontSize: '0.85rem' }}
-                                                        >
-                                                            <option value="0">None</option>
-                                                            <option value="1">Light</option>
-                                                            <option value="2">Moderate</option>
-                                                            <option value="3">Heavy</option>
-                                                        </select>
+                                                    <div className="card-actions">
+                                                        <button className="action-btn" onClick={handleConfirmRetroLog}>Confirm</button>
+                                                        <button className="action-btn secondary" onClick={() => setRetroConfirming(false)}>Cancel</button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )
+                                });
+                            }
+
+                            // 2. Daily Check-in
+                            if (showDailyCheckin) {
+                                cards.push({
+                                    priority: isEvening ? 15 : 30,
+                                    id: 'daily',
+                                    content: (
+                                        <div className="smart-card">
+                                            <div className="card-header">
+                                                <h3><CheckCircle2 color="#4ade80" /> Daily Check-in</h3>
+                                                {checkinStep === 'initial' && <p>You haven't logged an entry for today yet.</p>}
+                                            </div>
+
+                                            {checkinStep === 'initial' ? (
+                                                <div className="card-actions">
+                                                    <button className="action-btn" onClick={handleStartDailyCheckin}>
+                                                        {dailyMeds.length > 0 ? "Healthy & Medicated" : "Pain Free Day"}
+                                                    </button>
+                                                    <button className="action-btn secondary" onClick={() => navigate('/log')}>
+                                                        Migraine Attack
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <div className="checkin-form" style={{ marginTop: '0.2rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                                                        <div>
+                                                            <label style={{ fontSize: '0.8rem', color: '#bfdbfe', display: 'block', marginBottom: '2px' }}>Last Night's Sleep</label>
+                                                            <select name="sleep" value={checkinData.sleep} onChange={handleCheckinChange} style={{ width: '100%', padding: '4px', borderRadius: '6px', border: 'none', background: 'rgba(255,255,255,0.1)', color: 'white', fontSize: '0.9rem' }}>
+                                                                <option value="1">Poor</option><option value="2">Fair</option><option value="3">Good</option>
+                                                            </select>
+                                                        </div>
+                                                        <div>
+                                                            <label style={{ fontSize: '0.8rem', color: '#bfdbfe', display: 'block', marginBottom: '2px' }}>Activity Level</label>
+                                                            <select name="activity" value={checkinData.activity} onChange={handleCheckinChange} style={{ width: '100%', padding: '4px', borderRadius: '6px', border: 'none', background: 'rgba(255,255,255,0.1)', color: 'white', fontSize: '0.9rem' }}>
+                                                                <option value="0">None</option><option value="1">Light</option><option value="2">Moderate</option><option value="3">Heavy</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div className="card-actions" style={{ marginTop: '0.2rem' }}>
+                                                        <button className="action-btn" onClick={handleConfirmDailyCheckin}>Confirm Log</button>
+                                                        <button className="action-btn secondary" onClick={() => setCheckinStep('initial')}>Cancel</button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )
+                                });
+                            }
+
+                            // 3. Reminders
+                            if (showReminders && dueMeds.length > 0) {
+                                const validMeds = dueMeds.filter(med => {
+                                    const snoozeDate = localStorage.getItem(`snooze_${med.name}`);
+                                    if (!snoozeDate) return true;
+                                    return new Date() > new Date(snoozeDate);
+                                });
+
+                                validMeds.forEach((med, i) => {
+                                    cards.push({
+                                        priority: 20,
+                                        id: `med-${i}`,
+                                        content: (
+                                            <div className="smart-card reminder">
+                                                <div className="card-header">
+                                                    <h3><Clock color="#c4b5fd" /> {med.display_name || med.name} Reminder</h3>
+                                                    <p>Due today! ({med.dueDays <= 0 ? `Overdue` : 'Due now'})</p>
+                                                </div>
+                                                <div className="card-actions">
+                                                    <button className="action-btn" onClick={() => navigate('/log')}>Log Injection</button>
+                                                    <div className="snooze-actions" style={{ position: 'relative', display: 'inline-block' }}>
+                                                        <button className="action-btn secondary" onClick={(e) => {
+                                                            const menu = e.currentTarget.nextElementSibling;
+                                                            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                                                        }}>Snooze</button>
+                                                        <div className="snooze-menu" style={{ display: 'none', position: 'absolute', bottom: '100%', left: '0', background: '#333', border: '1px solid #555', borderRadius: '6px', padding: '8px', zIndex: 100, minWidth: '120px' }}>
+                                                            {[{ l: 'Tomorrow', d: 1 }, { l: 'Next Week', d: 7 }].map(opt => (
+                                                                <button key={opt.d} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', color: '#fff', padding: '6px', cursor: 'pointer' }}
+                                                                    onClick={() => {
+                                                                        const d = new Date(); d.setDate(d.getDate() + opt.d);
+                                                                        localStorage.setItem(`snooze_${med.name}`, d.toISOString());
+                                                                        setDueMeds(prev => prev.filter(m => m.name !== med.name));
+                                                                    }}>
+                                                                    {opt.l}
+                                                                </button>
+                                                            ))}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        ))}
-                                    </div>
-                                    <div className="card-actions">
-                                        <button className="action-btn" onClick={handleConfirmRetroLog}>
-                                            Confirm All
-                                        </button>
-                                        <button className="action-btn secondary" onClick={() => setRetroConfirming(false)}>
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    )}
+                                        )
+                                    });
+                                });
+                            }
 
-                    {/* 3. Periodic Reminders */}
-                    {showReminders && dueMeds
-                        .filter(med => {
-                            const snoozeDate = localStorage.getItem(`snooze_${med.name}`);
-                            if (!snoozeDate) return true;
-                            return new Date() > new Date(snoozeDate);
-                        })
-                        .map((med, i) => (
-                            <div className="smart-card reminder" key={i}>
-                                <div className="card-header">
-                                    <h3><Clock color="#c4b5fd" /> {med.display_name || med.name} Reminder</h3>
-                                    <p>
-                                        {med.dueDays <= 0 ?
-                                            `Overdue by ${Math.abs(med.dueDays)} days!` :
-                                            `Due in ${med.dueDays} days (${med.nextDate})`}
-                                    </p>
+                            // Sort cards by priority (Lowest number first)
+                            cards.sort((a, b) => a.priority - b.priority);
+
+                            if (cards.length === 0) return null;
+
+                            return cards.map((card, index) => (
+                                <div key={card.id} style={{
+                                    position: index === 0 ? 'relative' : 'absolute',
+                                    top: 0, left: 0, width: '100%',
+                                    height: '100%', /* Force full height of container */
+                                    zIndex: 50 - index,
+                                    transform: `translateY(${index * 8}px) scale(${1 - index * 0.05})`,
+                                    transformOrigin: 'top center',
+                                    opacity: index === 0 ? 1 : 1 - (index * 0.3),
+                                    transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
+                                    pointerEvents: index === 0 ? 'auto' : 'none',
+                                    borderRadius: '12px', /* Fix rounding clipping */
+                                    overflow: 'hidden' // Clip background cards content
+                                }}>
+                                    {card.content}
                                 </div>
-                                <div className="card-actions">
-                                    <button className="action-btn" onClick={() => navigate('/log')}>
-                                        Log Injection
-                                    </button>
-                                    <div className="snooze-actions" style={{ position: 'relative', display: 'inline-block' }}>
-                                        <button
-                                            className="action-btn secondary"
-                                            onClick={(e) => {
-                                                const menu = e.currentTarget.nextElementSibling;
-                                                menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-                                            }}
-                                        >
-                                            Snooze...
-                                        </button>
-                                        <div className="snooze-menu" style={{
-                                            display: 'none',
-                                            position: 'absolute',
-                                            bottom: '100%',
-                                            left: '0',
-                                            background: '#333',
-                                            border: '1px solid #555',
-                                            borderRadius: '6px',
-                                            padding: '8px',
-                                            zIndex: 100,
-                                            minWidth: '120px',
-                                            boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
-                                        }}>
-                                            <div style={{ fontSize: '0.8rem', color: '#ccc', marginBottom: '6px', paddingBottom: '4px', borderBottom: '1px solid #444' }}>Snooze until:</div>
-                                            {[
-                                                { label: 'Tomorrow', days: 1 },
-                                                { label: 'Next Week', days: 7 },
-                                                { label: '2 Weeks', days: 14 }
-                                            ].map(opt => (
-                                                <button
-                                                    key={opt.days}
-                                                    style={{
-                                                        display: 'block',
-                                                        width: '100%',
-                                                        textAlign: 'left',
-                                                        background: 'none',
-                                                        border: 'none',
-                                                        color: '#fff',
-                                                        padding: '6px 4px',
-                                                        cursor: 'pointer',
-                                                        fontSize: '0.85rem'
-                                                    }}
-                                                    onClick={() => {
-                                                        const d = new Date();
-                                                        d.setDate(d.getDate() + opt.days);
-                                                        localStorage.setItem(`snooze_${med.name}`, d.toISOString());
-                                                        // Force re-render by updating dummy state or reloading window logic? 
-                                                        // Simplest for hotfix: reload or update 'dueMeds' local state.
-                                                        setDueMeds(prev => prev.filter(m => m.name !== med.name));
-                                                    }}
-                                                >
-                                                    {opt.label}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
+                            ));
+                        })()}
+                    </div>
+                ) : (
+                    // --- ALL CAUGHT UP STATE ---
+                    <div className="status-center-card">
+                        <Sparkles color="#4ade80" size={32} />
+                        <h3 style={{ margin: '0.5rem 0 0', color: '#f8fafc' }}>You're all caught up!</h3>
+                        <p style={{ margin: 0, fontSize: '0.9rem' }}>Enjoy your day.</p>
+
+                        {currentStreak > 0 && (
+                            <div className="status-streak">
+                                <span style={{ fontSize: '1.2rem' }}>🔥</span>
+                                <b>{currentStreak} Day Streak</b>
                             </div>
-                        ))}
+                        )}
+                    </div>
+                )}
 
-                </div>
-            )}
 
-            <div className="stats-grid">
-                {/* Forecast Card */}
-                <div className="stat-card forecast-card" style={{ borderLeft: prediction ? `5px solid ${getRiskColor(prediction.risk_level)}` : '5px solid #444', minHeight: '120px' }}>
+                {/* 2. RISK CARD */}
+                <div className="stat-card forecast-card" style={{ borderLeft: prediction ? `5px solid ${getRiskColor(prediction.risk_level)}` : '5px solid #444', height: '200px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     <h3>Tomorrow's Risk</h3>
                     {predLoading ? (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#888', marginTop: '1rem' }}>
                             <Loader2 className="animate-spin" size={20} />
-                            <span style={{ fontSize: '0.9rem' }}>Analyzing weather...</span>
+                            <span style={{ fontSize: '0.9rem' }}>Analyzing...</span>
                         </div>
                     ) : prediction ? (
                         <>
@@ -661,36 +494,20 @@ function Dashboard() {
                             <p className="stat-subtext" style={{ fontSize: '0.9rem', color: '#ccc' }}>
                                 {prediction.risk_level} Risk
                             </p>
-
-                            {prediction.source === 'historical_fallback' && (
-                                <div style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '6px',
-                                    marginTop: '8px',
-                                    paddingTop: '8px',
-                                    borderTop: '1px solid #333',
-                                    fontSize: '0.8rem',
-                                    color: '#fcb900' // Careful orange
-                                }}>
-                                    <AlertTriangle size={14} />
-                                    <span>Using past weather ({prediction.source_date})</span>
-                                </div>
-                            )}
                         </>
                     ) : (
                         <p style={{ fontSize: '0.9rem', color: '#888', marginTop: '1rem' }}>Data Unavailable</p>
                     )}
                 </div>
 
-                <div className="stat-card">
-                    <h3>Avg Days/Mo (12mo)</h3>
-                    <p className="stat-value">{stats.avgDaysPerMonth}</p>
-                </div>
-
             </div>
 
+            {/* --- CHARTS GRID --- */}
             <div className="charts-grid">
+                {/* 1. 24-Hour Hourly Risk (Left) */}
+                <HourlyForecastGraph />
+
+                {/* 2. 7-Day Forecast (Right) */}
                 <div className="chart-card">
                     <div className="chart-header">
                         <h3>7-Day Forecast</h3>
@@ -699,27 +516,29 @@ function Dashboard() {
                         {forecast.length > 0 ? (
                             <ResponsiveContainer width="100%" height="100%">
                                 <LineChart data={forecast}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#444" />
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#333" />
                                     <XAxis
                                         dataKey="date"
-                                        stroke="#ccc"
-                                        fontSize={12}
-                                        tickFormatter={(dateStr) => parseLocalDate(dateStr).toLocaleDateString(undefined, { weekday: 'short', month: 'numeric', day: 'numeric' })}
+                                        height={50}
+                                        tick={{ fill: '#aaa', fontSize: 11 }}
+                                        tickLine={false}
+                                        axisLine={false}
+                                        tickFormatter={(dateStr) => parseLocalDate(dateStr).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric' })}
                                     />
-                                    <YAxis stroke="#ccc" domain={[0, 100]}>
-                                        <Label
-                                            value="Risk Probability"
-                                            angle={-90}
-                                            position="insideLeft"
-                                            style={{ textAnchor: 'middle', fill: '#ccc', fontSize: '0.8rem' }}
-                                        />
-                                    </YAxis>
+                                    <YAxis
+                                        domain={[0, 100]}
+                                        tick={{ fill: '#aaa', fontSize: 11 }}
+                                        tickLine={false}
+                                        axisLine={false}
+                                        label={{ value: 'Risk Probability', angle: -90, position: 'insideLeft', fill: '#666', fontSize: 13 }}
+                                    />
                                     <Tooltip
-                                        contentStyle={{ backgroundColor: '#333', border: 'none' }}
+                                        contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }}
+                                        itemStyle={{ color: '#e2e8f0' }}
                                         formatter={(value) => [`${value.toFixed(1)}%`, 'Risk']}
                                         labelFormatter={(label) => parseLocalDate(label).toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}
                                     />
-                                    <Line type="monotone" dataKey="risk_probability" stroke="#8884d8" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
+                                    <Line type="monotone" dataKey="risk_probability" stroke="#8884d8" strokeWidth={3} dot={{ r: 4, fill: '#8884d8', strokeWidth: 0 }} activeDot={{ r: 6 }} />
                                 </LineChart>
                             </ResponsiveContainer>
                         ) : error ? (
@@ -734,50 +553,9 @@ function Dashboard() {
                         )}
                     </div>
                 </div>
-
-                <div className="chart-card">
-                    <div className="chart-header">
-                        <h3>Migraine Trends</h3>
-                        <div className="range-selector">
-                            <button className={timeRange === '1m' ? 'active' : ''} onClick={() => setTimeRange('1m')}>1M</button>
-                            <button className={timeRange === '1y' ? 'active' : ''} onClick={() => setTimeRange('1y')}>1Y</button>
-                            <button className={timeRange === '2y' ? 'active' : ''} onClick={() => setTimeRange('2y')}>2Y</button>
-                            <button className={timeRange === '3y' ? 'active' : ''} onClick={() => setTimeRange('3y')}>3Y</button>
-                            <button className={timeRange === 'all' ? 'active' : ''} onClick={() => setTimeRange('all')}>All</button>
-                        </div>
-                    </div>
-                    <div className="chart-wrapper">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={stats.chartData}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#444" />
-                                <XAxis
-                                    dataKey="name"
-                                    stroke="#ccc"
-                                    fontSize={12}
-                                    minTickGap={20}
-                                    interval="preserveStartEnd"
-                                />
-                                <YAxis stroke="#ccc" allowDecimals={false}>
-                                    <Label
-                                        value={timeRange === '1m' ? "Pain Level" : "Days"}
-                                        angle={-90}
-                                        position="insideLeft"
-                                        style={{ textAnchor: 'middle', fill: '#ccc', fontSize: '0.8rem' }}
-                                    />
-                                </YAxis>
-                                <Tooltip
-                                    contentStyle={{ backgroundColor: '#333', border: 'none' }}
-                                    itemStyle={{ color: '#fff' }}
-                                    formatter={(value, name, props) => [value, props.payload.type === 'pain' ? 'Pain Level' : 'Days']}
-                                />
-                                <Bar dataKey="value" fill="#4dabf7" radius={[4, 4, 0, 0]} />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
             </div>
-        </div>
+        </div >
     );
-}
+};
 
 export default Dashboard;

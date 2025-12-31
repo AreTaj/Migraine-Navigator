@@ -2,6 +2,19 @@
 
 All notable changes to the "Migraine Navigator" project will be documented in this file.
 
+## [v0.2.2] - 2025-12-31
+### Added
+- **24-Hour Forecast**: New hourly risk graph providing granular "Next 24 Hours" prediction alongside the 7-day view.
+- **Risk Calibration**: Implemented "Truth Propagation" logic where the (Daily ML Prediction) acts as the anchor, and the (Hourly Heuristic) curve is scaled to match it. This ensures "Tomorrow's Risk" and "Hourly Peak" are mathematically consistent.
+- **Visual Polish**: 
+    - **Midnight Boundary**: Visual indicator (Vertical Line) on the hourly graph to separate Today vs Tomorrow.
+    - **Terminology**: Renamed "Risk Probability" to "Relative Risk" to accurately reflect the conditional probability.
+    - **Console Logging**: Restored real-time terminal output for backend debugging.
+
+### Changed
+- **Dashboard Layout**: Compact "Smart Cards" (200px fixed height) with cleaner form interactions to prevent layout shifts.
+- **Graph Symmetry**: Standardized styling (Fonts, Colors, Grids) across both Dashboard charts for perfect visual balance.
+
 ## [v0.2.1] - 2025-12-30
 ### Performance (Instant Load)
 - **True Instant Load**: Converted CPU-heavy Prediction endpoints to **Synchronous Handlers**. This forces execution in a background ThreadPool, unblocking the Main Event Loop. Dashboard, History, and Meds now load instantly (< 50ms) even while ML warms up on a side thread.

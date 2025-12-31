@@ -127,21 +127,94 @@
 
 /* Smart Cards */
 .smart-cards-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    /* margin-bottom removed */
+    position: relative;
+    height: 230px;
+    /* Aligned height */
+    min-height: 150px;
+}
+
+/* Overview Row Layout */
+.dashboard-overview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    align-items: start;
+    /* Decoupled alignment */
+}
+
+@media (max-width: 900px) {
+    .dashboard-overview {
+        grid-template-columns: 1fr;
+    }
 }
 
 .smart-card {
     background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
     border: 1px solid #3b82f6;
     border-radius: 12px;
-    padding: 1.5rem;
+    padding: 1.25rem;
+    /* Reduced buffer space */
     color: white;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
+    /* Tighter spacing */
+    height: 100%;
+    /* Fill fixed container */
+    justify-content: start;
+    font-size: 1rem;
+    /* Slightly smaller base font */
+
+    /* Internal Scroll Logic */
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /* Scrollbar Styling */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.smart-card::-webkit-scrollbar {
+    width: 6px;
+}
+
+.smart-card::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.smart-card::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+}
+
+/* Status Center (Empty State) */
+.status-center-card {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 2rem;
+    color: #94a3b8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    height: 230px;
+    /* Aligned height */
+    text-align: center;
+}
+
+.status-streak {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 1rem;
+    color: #e2e8f0;
+    margin-top: 0.8rem;
 }
 
 .smart-card.reminder {
@@ -151,16 +224,20 @@
 
 .card-header h3 {
     margin: 0;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
+    /* Larger Title */
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
 }
 
 .card-header p {
-    margin: 0.5rem 0 0;
-    color: #bfdbfe;
-    font-size: 0.9rem;
+    margin: 0.6rem 0 0;
+    color: #dbeafe;
+    /* Lighter text for contrast */
+    font-size: 1rem;
+    /* Larger Body */
+    line-height: 1.5;
 }
 
 .card-actions {
@@ -170,16 +247,15 @@
 
 /* Scoped to smart-card to prevent conflicts with History.css */
 .smart-card .action-btn {
-    padding: 0.8rem 1.2rem;
+    padding: 0.6rem 1rem;
+    /* Slightly smaller to fit compact row */
     border-radius: 8px;
     border: none;
     font-weight: 600;
     cursor: pointer;
     background-color: #ffffff;
     color: #1e3a8a;
-    font-size: 1rem;
-    /* Increased size */
-    /* Dark blue text on white button */
+    font-size: 0.9rem;
     transition: all 0.2s;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     /* Ensure visibility against overrides */

@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react';
 import axios from '../services/apiClient';
 import { Loader2, Trash2, Edit } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import MigraineTrends from '../components/MigraineTrends';
+// import { useMigraineStats } from '../utils/useMigraineStats'; // No longer needed here
 import './History.css';
+
+
 
 function HistoryPage() {
     const [entries, setEntries] = useState([]);
@@ -10,8 +14,12 @@ function HistoryPage() {
     const [error, setError] = useState(null);
     const [deleteId, setDeleteId] = useState(null); // ID of entry to delete
     const [medDisplayMap, setMedDisplayMap] = useState({}); // New state for mapping
-    // Filters
+    // Filters for Table
     const [timeRange, setTimeRange] = useState('30d'); // 7d, 30d, 90d, 180d, 1y
+
+    // State for Chart (Separate TimeRange)
+    const [chartTimeRange, setChartTimeRange] = useState('1y');
+
 
     const navigate = useNavigate();
 
@@ -36,6 +44,7 @@ function HistoryPage() {
         fetchEntries();
     }, [timeRange]);
 
+
     const getDateRange = () => {
         const end = new Date();
         let start = new Date();
@@ -59,13 +68,13 @@ function HistoryPage() {
         setLoading(true);
         try {
             const { startStr, endStr } = getDateRange();
+
             let url = '/api/v1/entries';
             const params = new URLSearchParams();
             if (startStr) params.append('start_date', startStr);
             if (endStr) params.append('end_date', endStr);
 
             const response = await axios.get(url, { params });
-            // API now returns sorted data, but double check
             setEntries(response.data);
         } catch (err) {
             console.error(err);
@@ -74,6 +83,32 @@ function HistoryPage() {
             setLoading(false);
         }
     };
+
+    // Client-side filtered entries for Table
+    const tableEntries = entries.filter(e => {
+        const d = new Date(e.Date); // Local parsing handled by string comparison usually ok for ISO, but best to use logic
+        // Use logic matching getDateRange
+        const now = new Date();
+        const cutoff = new Date();
+
+        switch (timeRange) {
+            case '7d': cutoff.setDate(now.getDate() - 7); break;
+            case '30d': cutoff.setDate(now.getDate() - 30); break;
+            case '90d': cutoff.setDate(now.getDate() - 90); break;
+            case '180d': cutoff.setDate(now.getDate() - 180); break;
+            case '1y': cutoff.setFullYear(now.getFullYear() - 1); break;
+            default: cutoff.setDate(now.getDate() - 30);
+        }
+        // Normalize time
+        cutoff.setHours(0, 0, 0, 0);
+
+        // Parse entry date
+        const [y, m, day] = e.Date.split('-').map(Number);
+        const entryDate = new Date(y, m - 1, day);
+
+        return entryDate >= cutoff;
+    });
+
 
     const confirmDelete = (e, id) => {
         e.stopPropagation();
@@ -146,7 +181,14 @@ function HistoryPage() {
 
     return (
         <div className="history-container">
+            {/* Trends Chart Section */}
+            <div style={{ marginBottom: '2rem' }}>
+                <StatsContainer chartRange={chartTimeRange} setChartRange={setChartTimeRange} />
+            </div>
+
+
             <div className="history-header">
+
                 <h2>Migraine History</h2>
                 <div className="filter-controls">
                     <label>Period:</label>
@@ -277,5 +319,65 @@ function HistoryPage() {
         </div>
     );
 }
+
+// Helper component to separate chart stats logic from table 
+const StatsContainer = ({ chartRange, setChartRange }) => {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchTrends = async () => {
+            setLoading(true);
+            try {
+                // Explicitly log for debugging
+                console.log(`Fetching trends for ${chartRange}...`);
+                const res = await axios.get('/api/v1/analysis/trends', {
+                    params: { range: chartRange }
+                });
+                console.log("Trends data:", res.data);
+                setData(res.data);
+            } catch (e) {
+                console.error("Trends fetch failed", e);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchTrends();
+    }, [chartRange]);
+
+    if (loading) return (
+        <div className="chart-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '400px' }}>
+            <Loader2 className="animate-spin" size={32} color="#aaa" />
+        </div>
+    );
+
+    if (!data || data.length === 0) return (
+        <div className="chart-card" style={{ display: 'flex', flexDirection: 'column', minHeight: '400px' }}>
+            <div className="chart-header">
+                <h3>Migraine Trends</h3>
+                {/* Keep buttons visible so user can switch range */}
+                <div className="range-selector">
+                    <button className={chartRange === '1m' ? 'active' : ''} onClick={() => setChartRange('1m')}>1M</button>
+                    <button className={chartRange === '1y' ? 'active' : ''} onClick={() => setChartRange('1y')}>1Y</button>
+                    <button className={chartRange === '2y' ? 'active' : ''} onClick={() => setChartRange('2y')}>2Y</button>
+                    <button className={chartRange === '3y' ? 'active' : ''} onClick={() => setChartRange('3y')}>3Y</button>
+                    <button className={chartRange === 'all' ? 'active' : ''} onClick={() => setChartRange('all')}>All</button>
+                </div>
+            </div>
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#666' }}>
+                <p>No migraine data found for this period.</p>
+            </div>
+        </div>
+    );
+
+    return (
+        <MigraineTrends
+            data={data}
+            timeRange={chartRange}
+            onTimeRangeChange={setChartRange}
+        />
+    );
+};
+
 
 export default HistoryPage;

@@ -2,7 +2,8 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    height: 100%;
+    /* Removed height: 100% to allow full page scroll */
+    padding-bottom: 2rem;
 }
 
 .history-header {
@@ -52,7 +53,7 @@
     background-color: #2b2b2b;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    flex: 1;
+    /* Removed flex: 1 to let it expand naturally */
 }
 
 .history-table {
@@ -235,4 +236,62 @@
     border-radius: 4px;
     font-size: 0.85rem;
     border: 1px solid #444;
+}
+
+/* --- Copied from Dashboard.css for MigraineTrends --- */
+.chart-card {
+    background-color: var(--bg-card);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.chart-card h3 {
+    margin: 0;
+    color: var(--text-main);
+}
+
+.range-selector {
+    display: flex;
+    gap: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.range-selector button {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.range-selector button:hover {
+    color: var(--text-main);
+}
+
+.range-selector button.active {
+    background-color: var(--bg-dark);
+    color: var(--primary);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.chart-wrapper {
+    flex: 1;
+    min-height: 300px;
 }

@@ -72,3 +72,81 @@ class AnalysisService:
             "avg_pain": round(avg_pain, 1),
             "max_pain": int(max_pain)
         }
+
+    @staticmethod
+    def get_trends_data(db_path: str, range_type: str = '1y'):
+        """
+        Returns formatted data for Recharts (Frontend).
+        range_type: '1m', '1y', 'all'
+        """
+        data = EntryService.get_entries_from_db(db_path)
+        if not data:
+            return []
+
+        import pandas as pd
+        df = pd.DataFrame(data)
+        if df.empty:
+            return []
+
+        # Standardize Date
+        df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d', errors='coerce')
+        df = df.dropna(subset=['Date'])
+        # Pain to numeric
+        df['Pain Level'] = pd.to_numeric(df['Pain Level'], errors='coerce').fillna(0)
+
+        now = datetime.now()
+        
+        # Filter Logic
+        if range_type == '1m':
+            # Last 30 Days -> Daily View (Pain Level)
+            start_date = now - pd.DateOffset(days=30)
+            filtered = df[df['Date'] >= start_date].copy()
+            
+            # Keep max pain per day
+            daily = filtered.sort_values('Pain Level', ascending=False).drop_duplicates('Date').sort_values('Date')
+            # Filter > 0 pain
+            daily = daily[daily['Pain Level'] > 0]
+            
+            return [{
+                "name": d.strftime('%b %-d'), 
+                "value": p, 
+                "type": "pain"
+            } for d, p in zip(daily['Date'], daily['Pain Level'])]
+            
+        else:
+            # Monthly View (Frequency)
+            # Filter Date Range
+            if range_type == '1y':
+                start_date = now - pd.DateOffset(months=12)
+                # First day of that month
+                start_date = start_date.replace(day=1)
+                df = df[df['Date'] >= start_date]
+            elif range_type == 'all':
+                pass # No filter
+            
+            # Count Migraine Days (Pain > 0)
+            migraine_days = df[df['Pain Level'] > 0].copy()
+            # Drop duplicates (if multiple entries per day, count as 1 day)
+            migraine_days = migraine_days.drop_duplicates(subset='Date')
+            
+            # Group by Month
+            # Use period 'M' to group (e.g., 2025-01)
+            monthly = migraine_days.groupby(migraine_days['Date'].dt.to_period('M')).size()
+            
+            # Ensure all months in range are present? 
+            # Recharts handles missing, but nicer to have 0s.
+            # Using simple conversion for now.
+            
+            result = []
+            for period, count in monthly.items():
+                # Format: "Jan 2025" or "Jan"
+                label = period.strftime('%b %Y') if range_type != 'current_year' else period.strftime('%b')
+                result.append({
+                    "name": label,
+                    "value": int(count),
+                    "type": "count",
+                    "sortKey": period.start_time.timestamp() # Helper for sorting if needed, but dict order usually ok in recent python
+                })
+            
+            return result
+

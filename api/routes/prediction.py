@@ -18,6 +18,11 @@ handler = logging.FileHandler(os.path.join(get_data_dir(), "api_debug.log"))
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
+
+# Also log to Console
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setFormatter(formatter)
+logger.addHandler(console_handler)
 logger.setLevel(logging.DEBUG)
 
 @router.get("/future")
@@ -46,7 +51,7 @@ def get_future_prediction(date: str = Query(None, description="Date in YYYY-MM-D
         raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD.")
     except Exception as e:
         logger.error(f"Prediction Error: {str(e)}", exc_info=True)
-        print(f"Prediction Error: {e}")
+
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/forecast")
@@ -65,5 +70,24 @@ def get_weekly_forecast():
             
         return forecasts
     except Exception as e:
-        print(f"Forecast Error: {e}")
+        logger.error(f"Forecast Error: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/hourly")
+def get_hourly_prediction(date: str = Query(None, description="Start date/time in YYYY-MM-DD HH:MM format (optional)"), hours: int = 24):
+    """
+    Get hourly risk forecast for the next 24 (or N) hours.
+    """
+    try:
+        from forecasting.predict_future import get_hourly_forecast
+        
+        # If date is not provided, use current time
+        # The underlying function handles None/empty string by using now()
+        
+        forecast = get_hourly_forecast(date)
+        return forecast
+        
+    except Exception as e:
+        logger.error(f"Hourly Forecast Error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+

@@ -57,7 +57,73 @@ def get_recent_history(db_path=None, days=60):
 
     # Sort and take recent
     df = df.sort_values('Date').tail(days).reset_index(drop=True)
+    df = df.sort_values('Date').tail(days).reset_index(drop=True)
     return df
+
+def get_circadian_priors(db_path=None):
+    """
+    Analyzes all historical migraine start times to build a 24-hour probability distribution.
+    Returns a list of 24 floats (0.0-1.0) representing risk probability for each hour of the day.
+    """
+    import pandas as pd
+    import numpy as np
+    
+    df = load_migraine_log_from_db(db_path)
+    if df.empty:
+        return [0.1] * 24 # Flat prior if no data
+        
+    # Filter for entries with Pain > 0
+    pain_df = df[pd.to_numeric(df['Pain Level'], errors='coerce') > 0].copy()
+    if pain_df.empty:
+        return [0.1] * 24
+        
+    # Extract Hour
+    # Check format of 'Time'. Assuming HH:MM or similar.
+    # We need to robustly parse 'Time'.
+    valid_hours = []
+    for t_str in pain_df['Time']:
+        try:
+            if pd.isna(t_str): continue
+            # Handle "10:30" or "10:30:00"
+            h = int(str(t_str).split(':')[0])
+            valid_hours.append(h)
+        except:
+            continue
+            
+    if not valid_hours:
+        return [0.1] * 24
+        
+    # Build Histogram
+    counts = np.bincount(valid_hours, minlength=24)
+    total = len(valid_hours)
+    
+    # Raw Probability
+    probs = counts / total
+    
+    # Smoothing (Gaussian-like rolling window)
+    # Because "10:00" is close to "11:00", risk should bleed over.
+    smoothed_probs = np.zeros(24)
+    for i in range(24):
+        # Weighted sum of i-1, i, i+1 (wrapping around)
+        prev_i = (i - 1) % 24
+        next_i = (i + 1) % 24
+        
+        # Weights: Center=0.6, Neighbors=0.2
+        p = (probs[prev_i]*0.2) + (probs[i]*0.6) + (probs[next_i]*0.2)
+        smoothed_probs[i] = p
+        
+    # Normalize to a 0-1 "Risk Factor"
+    # Identify the "Peak Hour" probability to scale others relative to it?
+    # Or just use the raw probability scaled up? 
+    # Let's scale so that the Peak Hour = 0.8 (High Risk)
+    max_p = np.max(smoothed_probs)
+    if max_p > 0:
+        smoothed_probs = (smoothed_probs / max_p) * 0.8
+    else:
+        smoothed_probs = np.full(24, 0.1)
+        
+    return smoothed_probs
+
 
 import requests
 
@@ -78,7 +144,7 @@ def get_latest_location_from_db(db_path=None):
         latest = df.sort_values('Date', ascending=False).iloc[0]
         return latest['Latitude'], latest['Longitude']
     except Exception as e:
-        print(f"Error fetching location: {e}")
+        logger.error(f"Error fetching location: {e}")
         return None, None
 
 def fetch_weather_forecast(target_date, lat, lon):
@@ -108,7 +174,7 @@ def fetch_weather_forecast(target_date, lat, lon):
         response = requests.get(url, params=params, timeout=5)
         # Check for error details before raising
         if response.status_code >= 400:
-            print(f"Open-Meteo Error: {response.text}")
+            logger.error(f"Open-Meteo Error: {response.text}")
         response.raise_for_status()
         data = response.json()
         
@@ -193,8 +259,84 @@ def fetch_weather_forecast(target_date, lat, lon):
         }
         
     except Exception as e:
-        print(f"Weather API Error (Open-Meteo): {e}")
+        logger.error(f"Weather API Error (Open-Meteo): {e}")
         return None
+
+def fetch_hourly_weather(start_datetime, lat, lon, hours=24):
+    """
+    Fetches raw hourly weather for [start_datetime, start_datetime + hours].
+    Returns list of dicts.
+    """
+    # ... reused logic from fetch_weather_forecast but returning list ...
+    try:
+        start_str = start_datetime.strftime('%Y-%m-%d')
+        end_dt = start_datetime + timedelta(hours=hours) # Ideally +1 day to cover overlap
+        end_str = (end_dt + timedelta(days=1)).strftime('%Y-%m-%d')
+        
+        # We need T-3 context for pressure change.
+        # So request start_date - 1 day
+        req_start = (start_datetime - timedelta(days=1)).strftime('%Y-%m-%d')
+        
+        url = "https://api.open-meteo.com/v1/forecast"
+        params = {
+            "latitude": lat,
+            "longitude": lon,
+            "start_date": req_start,
+            "end_date": end_str,
+            "hourly": "temperature_2m,relative_humidity_2m,surface_pressure,precipitation,wind_speed_10m",
+            "timezone": "auto"
+        }
+        
+        response = requests.get(url, params=params, timeout=5)
+        response.raise_for_status()
+        data = response.json()
+        
+        hourly = data.get('hourly', {})
+        times = hourly.get('time', [])
+        
+        result_hours = []
+        
+        # Find start index
+        # Time format is usually ISO: "2025-12-31T10:00"
+        # We want to start exactly at the hour of start_datetime
+        target_iso_start = start_datetime.strftime('%Y-%m-%dT%H:00')
+        
+        start_idx = -1
+        for i, t in enumerate(times):
+            if t >= target_iso_start:
+                start_idx = i
+                break
+                
+        if start_idx == -1: return []
+        
+        # Collect 'hours' amount of data points
+        for i in range(start_idx, min(start_idx + hours, len(times))):
+            # Calculate 3h Pressure Change
+            # P_t - P_{t-3}
+            # We need to ensure i-3 is valid
+            pres_change_3h = 0.0
+            if i >= 3:
+                curr_p = hourly['surface_pressure'][i] or 1015
+                prev_p = hourly['surface_pressure'][i-3] or 1015
+                pres_change_3h = curr_p - prev_p
+            
+            w_dict = {
+                'time': times[i],
+                'temp': hourly['temperature_2m'][i],
+                'humidity': hourly['relative_humidity_2m'][i],
+                'pressure': hourly['surface_pressure'][i],
+                'pressure_change_3h': pres_change_3h,
+                'prcp': hourly['precipitation'][i],
+                'wind': hourly['wind_speed_10m'][i]
+            }
+            result_hours.append(w_dict)
+            
+        return result_hours
+        
+    except Exception as e:
+        logger.error(f"Hourly Weather Error: {e}")
+        return []
+
 
 def fetch_weekly_weather_forecast(start_date, lat, lon):
     import requests
@@ -297,7 +439,7 @@ def fetch_weekly_weather_forecast(start_date, lat, lon):
         return daily_map
 
     except Exception as e:
-        print(f"Batch Weather Error: {e}")
+        logger.error(f"Batch Weather Error: {e}")
         return {}
 
 
@@ -344,7 +486,7 @@ def construct_features(target_date, history_df, manual_weather=None):
                 if 'source' not in weather:
                     weather['source'] = 'live'
             except Exception as e:
-                print(f"Weather API unavailable ({e}). Attempting DB fallback...")
+                logger.warning(f"Weather API unavailable ({e}). Attempting DB fallback...")
                 # Fallback: Get most recent weather from DB
                 try:
                     conn = sqlite3.connect(DB_PATH)
@@ -358,7 +500,7 @@ def construct_features(target_date, history_df, manual_weather=None):
                     conn.close()
                     
                     if row:
-                        print(f"Using historical weather from {row[10]}")
+                        logger.info(f"Using historical weather from {row[10]}")
                         weather = {
                             'id': -1,
                             'tavg': row[0] or 20.0,
@@ -379,7 +521,7 @@ def construct_features(target_date, history_df, manual_weather=None):
                     else:
                         raise ValueError("No historical weather in DB.")
                 except Exception as db_err:
-                    print(f"DB Fallback failed: {db_err}")
+                    logger.error(f"DB Fallback failed: {db_err}")
                     raise ValueError("Weather data unavailable (Live & DB failed).")
 
     if weather is None:
@@ -438,7 +580,7 @@ def clear_prediction_cache():
     """
     global _prediction_cache
     _prediction_cache.clear()
-    print("Prediction cache cleared.")
+    logger.info("Prediction cache cleared.")
 
 # ... imports at top ...
 from api.utils import get_data_dir
@@ -449,6 +591,11 @@ handler = logging.FileHandler(os.path.join(get_data_dir(), "api_debug.log"))
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
+
+# Also log to Console (stdout) so granular info is visible
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setFormatter(formatter)
+logger.addHandler(console_handler)
 logger.setLevel(logging.DEBUG)
 
 def get_prediction_for_date(target_date_str, weather_override=None):
@@ -527,7 +674,7 @@ def get_prediction_for_date(target_date_str, weather_override=None):
         }
 
     except (FileNotFoundError, Exception) as e:
-        print(f"ML Model unavailable ({e}). Switching to Heuristic Engine.")
+        logger.warning(f"ML Model unavailable ({e}). Switching to Heuristic Engine.")
         
         # Hybrid Fallback: Heuristic Modle
         from .heuristic_predictor import HeuristicPredictor
@@ -547,7 +694,7 @@ def get_prediction_for_date(target_date_str, weather_override=None):
                     pass
             conn.close()
         except Exception as db_err:
-            print(f"Failed to load user priors: {db_err}")
+            logger.warning(f"Failed to load user priors: {db_err}")
 
         # Initialize with User Priors (or defaults if DB fetch failed)
         predictor = HeuristicPredictor(user_priors)
@@ -724,3 +871,168 @@ if __name__ == "__main__":
     print(f"Predicting for {tomorrow}...")
     result = get_prediction_for_date(tomorrow)
     print(result)
+
+def get_hourly_forecast(start_date_str):
+    """
+    Returns a 24-hour risk forecast starting from the given date/time string.
+    """
+    import pandas as pd
+    from datetime import datetime, timedelta
+    from .heuristic_predictor import HeuristicPredictor
+    
+    # Parse Start Time (Round down to nearest hour)
+    try:
+        start_dt = pd.to_datetime(start_date_str).to_pydatetime()
+    except:
+        start_dt = datetime.now()
+        
+    # 1. Location
+    lat, lon = get_latest_location_from_db()
+    if not lat: lat, lon = 34.05, -118.25 # Default LA
+    
+    # 2. Fetch Data
+    weather_hours = fetch_hourly_weather(start_dt, lat, lon, hours=24)
+    circadian_profile = get_circadian_priors() # [p0, p1, ... p23]
+    
+    # 3. Check Medication (Last 12h)
+    # We simply check if there's a valid med taken recently relative to NOW
+    # Ideally we'd slide this window, but for a 24h forecast, the med effect decays rapidly.
+    # We will compute "Hours Since Med" for the *start* of the forecast, 
+    # and then increment it for each subsequent hour.
+    
+    # Fetch recent entries
+    # TODO: This requires a service call or DB query. 
+    # For now, simplistic DB query here.
+    medication_recency_at_start = None
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        # Look back 12 hours from start_dt
+        lookback = start_dt - timedelta(hours=12)
+        c.execute("SELECT Date, Time, Medications, Medication FROM migraine_log WHERE Date >= ?", (lookback.strftime('%Y-%m-%d'),))
+        rows = c.fetchall()
+        
+        processed_meds = []
+        import json
+        
+        for r in rows:
+            r_date, r_time, r_meds_json, r_med_legacy = r
+            entry_dt = pd.to_datetime(f"{r_date} {r_time}")
+            
+            # Check JSON
+            found = False
+            if r_meds_json:
+                try:
+                    mj = json.loads(r_meds_json)
+                    if mj: found = True
+                except:
+                    pass
+            # Check Legacy
+            if not found and r_med_legacy:
+                found = True
+                
+            if found:
+                # Calculate hours until start_dt
+                diff = (start_dt - entry_dt).total_seconds() / 3600.0
+                if 0 <= diff <= 12:
+                    processed_meds.append(diff)
+        
+        if processed_meds:
+            medication_recency_at_start = min(processed_meds) # Most recent
+            
+        conn.close()
+    except Exception as e:
+        logger.warning(f"Med check failed: {e}")
+        
+    # 4. Generate Forecast
+    predictor = HeuristicPredictor() # Default priors
+    
+    forecast_result = []
+    
+    # Temporary storage for calibration grouping
+    # date_str -> list of (index_in_result, risk_value)
+    daily_groups = {}
+    
+    for i, w in enumerate(weather_hours):
+        # Time Management
+        # w['time'] is ISO string
+        try:
+            current_hour_dt = datetime.fromisoformat(w['time'])
+        except:
+            current_hour_dt = start_dt + timedelta(hours=i)
+            
+        hour_idx = current_hour_dt.hour # 0-23
+        date_key = current_hour_dt.strftime('%Y-%m-%d')
+        
+        # Circadian
+        c_prob = circadian_profile[hour_idx]
+        
+        # Medication
+        # If med was taken T hours ago at start, it is T+i hours ago now.
+        m_recency = None
+        if medication_recency_at_start is not None:
+            m_recency = medication_recency_at_start + i
+        
+        # Predict
+        pred = predictor.predict_hourly(
+            weather_data=w,
+            circadian_probability=c_prob,
+            medication_recency=m_recency
+        )
+        
+        risk_score = pred['probability'] * 100 # 0-100
+        
+        entry = {
+            "time": w['time'],
+            "risk_score": risk_score, # Will be calibrated
+            "risk_level": pred['risk_level'],
+            "details": pred['components']
+        }
+        forecast_result.append(entry)
+        
+        if date_key not in daily_groups:
+            daily_groups[date_key] = []
+        daily_groups[date_key].append( (len(forecast_result)-1, risk_score) )
+        
+    # 5. Calibrate against Daily ML Model
+    # For each day involved in the hourly forecast, fetch the ML prediction (Anchor).
+    # If Anchor > Peak_Hourly, scale the entire day up.
+    
+    for date_key, items in daily_groups.items():
+        try:
+            # Fetch Daily ML Prediction
+            # This uses the specific date's weather + context
+            daily_pred = get_prediction_for_date(date_key)
+            if daily_pred:
+                daily_prob = daily_pred['probability'] # 0-100
+                
+                # Find Peak in this group
+                peak_hourly = max([val for idx, val in items]) if items else 0
+                
+                # If Daily Risk is significant (e.g. > 30%) and higher than hourly peak
+                # We scale up. We rarely scale down to avoid hiding specific hourly triggers.
+                if daily_prob > 30.0 and daily_prob > peak_hourly:
+                    scale_factor = daily_prob / peak_hourly if peak_hourly > 5 else 1.0
+                    
+                    # Cap scaling to avoid absurdity (e.g. don't multiply by 10x)
+                    scale_factor = min(scale_factor, 2.5) 
+                    
+                    # Apply Scaling
+                    for idx, val in items:
+                        new_score = val * scale_factor
+                        # Hard Cap at 99%
+                        new_score = min(new_score, 99.0)
+                        
+                        forecast_result[idx]['risk_score'] = round(new_score, 1)
+                        
+                        # Adjust Risk Level Label if needed
+                        if new_score >= 60: forecast_result[idx]['risk_level'] = 'High'
+                        elif new_score >= 30: forecast_result[idx]['risk_level'] = 'Moderate'
+                        
+
+                        
+        except Exception as e:
+            logger.error(f"Calibration error for {date_key}: {e}")
+            
+    return forecast_result
+

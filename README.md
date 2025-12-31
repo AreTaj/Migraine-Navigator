@@ -9,6 +9,7 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
 
 - **Enhanced Dashboard:** 
     - **Live Prediction**: See your "Tomorrow Risk" based on weather forecasts and recent history.
+    - **24-Hour Hourly Risk**: Granular hourly breakdown of risk intensity, calibrated to your daily prediction.
     - **7-Day Forecast**: Forward-looking probability chart with "Risk" scores to help plan your week ahead.
     - **Offline Resilience**: Automatically falls back to the most recent known weather data if the internet is down, with visual alerts.
     - **Smart Metrics**: Track "Avg Days/Month" and pain severity trends.
@@ -131,6 +132,11 @@ Migraine Navigator/
         - **Gradient Boosting ML (Established Users)**: Automatically takes over once enough data is collected to detect complex, non-linear patterns unique to your biology.
     - **Recursive Forecasting**: The 7-Day Forecast simulates the future day-by-day, allowing "Cluster" patterns (migraines following migraines) to emerge naturally.
     - **Enhanced Triggers**: Now accounts for Rain (>0.5mm), High Humidity (>70%), and pressure instability.
+    - **24-Hour Risk Engine (Truth Propagation)**: 
+        - Because training a pure ML model for hourly predictions requires unrealistic,massive labeled datasets with hourly log entries, we use a hybrid approach.
+        - **Step 1**: The powerful and proven Daily ML Model predicts the overall risk intensity for the day (e.g., "69% Risk") based on deep historical patterns.
+        - **Step 2**: A granular Heuristic Engine calculates the relative risk for every hour based on circadian rhythms, weather shifts, and medication half-lives.
+        - **Step 3 (Calibration)**: The hourly curve is mathematically scaled so that its peak matches the Daily ML "Truth". This provides the best of both worlds: the *accuracy* of the ML model with the *temporal resolution* of the heuristic engine.
 
 ## Testing
 
