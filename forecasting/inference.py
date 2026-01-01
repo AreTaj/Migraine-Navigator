@@ -184,9 +184,11 @@ def _run_heuristic_fallback(target_date_str, X, meta):
         "components": pred.get('components', {})
     }
 
-def get_weekly_forecast_recursive(start_date=None):
+def get_weekly_forecast(start_date=None):
     """
-    Generates a 7-day forecast using Recursive Forecasting.
+    Generates a 7-day forecast using Direct Forecasting.
+    Each day is predicted independently using the same recent history, 
+    isolating the weather impact.
     """
     import pandas as pd
     
@@ -197,7 +199,9 @@ def get_weekly_forecast_recursive(start_date=None):
     if not lat: lat, lon = 34.05, -118.25
         
     weather_map = WeatherService.fetch_weekly(start_date, lat, lon)
-    history_df = get_recent_history(DB_PATH, days=60)
+    # Get history ONCE. We will use this same history for all future days.
+    # This assumes that "Recent History" is constant relative to the forecast window.
+    base_history_df = get_recent_history(DB_PATH, days=60)
     
     forecasts = []
     current_date = start_date
@@ -212,8 +216,9 @@ def get_weekly_forecast_recursive(start_date=None):
         day_weather = weather_map.get(date_str)
         pd_date = pd.to_datetime(current_date)
         
-        # Construct features uses history_df which we will append to
-        X, meta = FeatureEngine.construct_features(pd_date, history_df, weather_data=day_weather)
+        # Construct features using the STATIC base_history_df
+        # This effectively treats every forecast day as "Tomorrow" relative to known history
+        X, meta = FeatureEngine.construct_features(pd_date, base_history_df, weather_data=day_weather)
         
         prob = 0.0
         risk = "Unknown"
@@ -231,10 +236,8 @@ def get_weekly_forecast_recursive(start_date=None):
                 pred_pain = max(0, min(10, pd.np.expm1(pred_log)))
             except: pass
         else:
-            # Simple Heuristic Fallback for recursion
-            # (Simplified for brevity, ideally use _run_heuristic_fallback but that returns dict)
-            # Just assume generic risk
-            pass
+             # Heuristic Fallback logic (omitted for brevity)
+             pass
 
         forecasts.append({
             "date": date_str,
@@ -243,13 +246,7 @@ def get_weekly_forecast_recursive(start_date=None):
             "predicted_pain": round(pred_pain, 1)
         })
         
-        # Recursive Step: Append prediction to history so next day sees it as "Past Pain"
-        new_row = {
-            'Date': pd_date,
-            'Pain Level': pred_pain if prob > 0.3 else 0.0 # Only assume pain if risk is decent
-        }
-        # pandas concat
-        history_df = pd.concat([history_df, pd.DataFrame([new_row])], ignore_index=True)
+        # NO Recursive update of history_df
         
         current_date += timedelta(days=1)
         

@@ -64,9 +64,9 @@ def get_weekly_forecast():
         forecasts = []
         
         # 1. Use Recursive Forecasting Logic to ensure future lags are populated
-        from forecasting.inference import get_weekly_forecast_recursive
+        from forecasting.inference import get_weekly_forecast
         
-        forecasts = get_weekly_forecast_recursive(start_date)
+        forecasts = get_weekly_forecast(start_date)
             
         return forecasts
     except Exception as e:
