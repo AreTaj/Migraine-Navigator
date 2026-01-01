@@ -73,12 +73,33 @@ function Triggers() {
             });
         });
 
-        const data = Object.keys(counts).map(key => ({
-            name: `${key} (${total > 0 ? ((counts[key] / total) * 100).toFixed(0) + '%' : '0%'})`,
-            value: counts[key]
-        })).sort((a, b) => b.value - a.value).slice(0, 10); // Top 10
+        // Calculate data
+        const totalTriggers = total;
+        // 1. Map to array with explicit number casting
+        const mappedData = Object.keys(counts).map(key => {
+            const count = Number(counts[key]);
+            const percentage = totalTriggers > 0 ? ((count / totalTriggers) * 100).toFixed(0) : '0';
+            return {
+                name: `${key} (${percentage}%)`,
+                value: count,
+                rawValue: count
+            };
+        });
 
-        setUsageStats(data);
+        // 2. Sort Descending (Highest Value First)
+        // Explicit comparator to avoid any ambiguity
+        mappedData.sort((a, b) => {
+            if (b.value > a.value) return 1;
+            if (b.value < a.value) return -1;
+            // Secondary sort by name if values equal (stable sort)
+            return a.name.localeCompare(b.name);
+        });
+
+        // 3. Slice Top 10
+        const finalData = mappedData.slice(0, 10);
+
+        console.log("UsageStats Sorted:", finalData);
+        setUsageStats(finalData);
     }, [entries, timeRange, triggers, groupByCategory]);
 
     const fetchTriggers = async () => {
@@ -221,31 +242,57 @@ function Triggers() {
                         <button onClick={() => setTimeRange('all')} style={{ background: timeRange === 'all' ? '#4dabf7' : 'transparent', color: timeRange === 'all' ? 'white' : '#888', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer' }}>All</button>
                     </div>
                 </div>
-                <div style={{ width: '100%', height: 300 }}>
+
+                <div style={{ width: '100%', height: 300, display: 'flex', alignItems: 'center' }}>
                     {usageStats.length > 0 ? (
-                        <ResponsiveContainer width="100%" height="100%">
-                            <PieChart>
-                                <Pie
-                                    data={usageStats}
-                                    cx="40%"
-                                    cy="50%"
-                                    outerRadius={80}
-                                    fill="#8884d8"
-                                    dataKey="value"
-                                >
-                                    {usageStats.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                    ))}
-                                </Pie>
-                                <Tooltip
-                                    contentStyle={{ backgroundColor: '#333', border: 'none', color: '#fff' }}
-                                    formatter={(value, name, props) => [`${value} times`, name]}
-                                />
-                                <Legend layout="vertical" verticalAlign="middle" align="right" wrapperStyle={{ paddingLeft: "10px" }} />
-                            </PieChart>
-                        </ResponsiveContainer>
+                        <>
+                            {/* Chart Side */}
+                            <div style={{ flex: 1, height: '100%' }}>
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie
+                                            data={usageStats}
+                                            cx="50%"
+                                            cy="50%"
+                                            outerRadius={100}
+                                            fill="#8884d8"
+                                            dataKey="value"
+                                            stroke="#fff"
+                                            strokeWidth={1}
+                                            paddingAngle={1}
+                                        >
+                                            {usageStats.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip
+                                            contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#fff' }}
+                                            formatter={(value, name) => [`${value} times`, name.split(' (')[0]]}
+                                        />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+
+                            {/* Custom Legend Side */}
+                            <div style={{ width: '220px', paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '6px', justifyContent: 'center', height: '100%', overflowY: 'auto' }}>
+                                {usageStats.map((item, index) => (
+                                    <div key={item.name} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: '#cbd5e1' }}>
+                                        <div style={{
+                                            width: '10px',
+                                            height: '10px',
+                                            backgroundColor: COLORS[index % COLORS.length],
+                                            borderRadius: '2px',
+                                            flexShrink: 0
+                                        }}></div>
+                                        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={item.name}>
+                                            {item.name}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </>
                     ) : (
-                        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#888' }}>
+                        <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#888' }}>
                             <p>No trigger data found for this period.</p>
                         </div>
                     )}
