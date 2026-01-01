@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, PlusCircle, History, Pill, Settings } from "lucide-react";
+import { LayoutDashboard, PlusCircle, History, Pill, Settings, Zap } from "lucide-react";
 import "./App.css";
 
 import Dashboard from "./pages/Dashboard";
 import LogEntry from "./pages/LogEntry";
 import HistoryPage from "./pages/History";
 import Medications from "./pages/Medications";
+import Triggers from "./pages/Triggers";
 import SettingsPage from "./pages/Settings";
 import ImportData from "./pages/ImportData";
 import Onboarding from "./pages/Onboarding";
@@ -45,6 +46,7 @@ function AppContent() {
             <NavItem to="/" icon={LayoutDashboard} label="Dashboard" />
             <NavItem to="/log" icon={PlusCircle} label="Log Entry" />
             <NavItem to="/medications" icon={Pill} label="Medications" />
+            <NavItem to="/triggers" icon={Zap} label="Triggers" />
             <NavItem to="/history" icon={History} label="History" />
             <NavItem to="/settings" icon={Settings} label="Settings" />
           </nav>
@@ -55,6 +57,7 @@ function AppContent() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/log" element={<LogEntry />} />
           <Route path="/medications" element={<Medications />} />
+          <Route path="/triggers" element={<Triggers />} />
           <Route path="/history" element={<HistoryPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/import" element={<ImportData />} />

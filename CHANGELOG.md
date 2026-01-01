@@ -2,6 +2,22 @@
 
 All notable changes to the "Migraine Navigator" project will be documented in this file.
 
+
+## [v0.2.4] - 2026-01-01
+### Added
+- **Trigger Refinement (Issue #35 follow-up)**:
+    - **Categorization**: Introduced collapsible "Category" headers (e.g., Weather, Food) to organize the triggers list.
+    - **Renaming**: Added inline "Edit Mode" (Pencil Icon) to rename triggers effortlessly.
+    - **Cascading Updates**: Renaming a trigger now automatically updates all historical log entries to match the new name, preventing data fragmentation.
+    - **Flexible Grouping**: "Top Triggers" chart can now group data by Category (e.g., see total "Weather" impact vs specific "Rain" impact).
+    - **Visual Polish**: Improved UI with chevron toggles for categories and cleaner input forms.
+- **Triggers Registry (Issue #35)**:
+    - **Dedicated Page**: Moved triggers from Settings to a new top-level `/triggers` page.
+    - **Usage Analysis**: Added pie chart visualization for most frequent triggers.
+    - **Autocomplete**: Replaced manual text entry in logs with smart autocomplete/create functionality.
+    - **Data Migration**: Auto-migrated 100+ historical triggers into the new structured format.
+    - **Management**: Full Add/Delete capabilities with confirmation safeguards.
+
 ## [v0.2.3] - 2025-12-31
 ### Performance
 - **Critical Fix**: Enforced strict `await` sequencing in Dashboard initialization. Core UI data (Entries, Meds) must now fully complete loading before the heavy AI components are even requested. This guarantees "Instant Load" regardless of backend thread availability.

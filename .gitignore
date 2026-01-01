@@ -56,6 +56,10 @@ scripts/*
 !scripts/package_app.sh
 !scripts/robust_upload.sh
 !scripts/debug_path.py
+!scripts/migrate_triggers.py
+!scripts/add_category_to_triggers_table.py
+!scripts/debug_chart_data.py
+!scripts/patch_humid.py
 
 
 # Logs

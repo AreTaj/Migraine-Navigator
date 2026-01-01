@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from '../services/apiClient';
 import { Save, MapPin, Trash2, Plus, Loader2 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import CreatableSelect from 'react-select/creatable';
 import { getCurrentLocation, getCityName } from '../utils/geolocation';
 import './LogEntry.css';
 
@@ -11,6 +12,8 @@ function LogEntry() {
     const editingEntry = location.state?.entry;
 
     const [availableMeds, setAvailableMeds] = useState([]);
+    const [availableTriggers, setAvailableTriggers] = useState([]);
+    const [selectedTriggers, setSelectedTriggers] = useState([]);
 
     // Form Data
     const [formData, setFormData] = useState({
@@ -53,11 +56,21 @@ function LogEntry() {
 
     useEffect(() => {
         fetchMedications();
+        fetchTriggers();
         // Auto-fetch location if new entry and no location set
         if (!editingEntry && !formData.Location) {
             handleGetLocation();
         }
     }, []);
+
+    const fetchTriggers = async () => {
+        try {
+            const res = await axios.get('/api/v1/triggers');
+            setAvailableTriggers(res.data.map(t => ({ value: t.name, label: t.name })));
+        } catch (err) {
+            console.error("Failed to load triggers", err);
+        }
+    };
 
     const fetchMedications = async () => {
         try {
@@ -92,6 +105,12 @@ function LogEntry() {
             } else if (editingEntry.Medication) {
                 // Old format fallback
                 initialMeds = [{ name: editingEntry.Medication, dosage: editingEntry.Dosage || '' }];
+            }
+
+            // Load Triggers State
+            if (editingEntry.Triggers) {
+                const triggerOpts = editingEntry.Triggers.split(',').map(s => s.trim()).filter(Boolean).map(t => ({ label: t, value: t }));
+                setSelectedTriggers(triggerOpts);
             }
 
             setFormData({
@@ -359,7 +378,58 @@ function LogEntry() {
 
                 <div className="form-group full">
                     <label>Triggers</label>
-                    <textarea name="Triggers" value={formData.Triggers || ''} onChange={handleChange} rows="2" placeholder="Potential triggers..." />
+                    <CreatableSelect
+                        isMulti
+                        onChange={(newValue) => {
+                            setSelectedTriggers(newValue || []);
+                            const str = (newValue || []).map(opt => opt.value).join(', ');
+                            setFormData(prev => ({ ...prev, Triggers: str }));
+                        }}
+                        onCreateOption={async (inputValue) => {
+                            const newOption = { label: inputValue, value: inputValue };
+                            setSelectedTriggers([...selectedTriggers, newOption]);
+                            const str = [...selectedTriggers, newOption].map(opt => opt.value).join(', ');
+                            setFormData(prev => ({ ...prev, Triggers: str }));
+
+                            // Save to Registry
+                            try {
+                                await axios.post('/api/v1/triggers', { name: inputValue });
+                                setAvailableTriggers(prev => [...prev, newOption]);
+                            } catch (e) {
+                                console.error("Failed to save trigger:", e);
+                            }
+                        }}
+                        options={availableTriggers}
+                        value={selectedTriggers}
+                        placeholder="Select or type to create..."
+                        className="react-select-container"
+                        classNamePrefix="react-select"
+                        formatCreateLabel={(input) => `Add "${input}"`}
+                        styles={{
+                            control: (base, state) => ({
+                                ...base,
+                                background: '#1e293b',
+                                borderColor: state.isFocused ? '#3b82f6' : '#334155',
+                                color: 'white',
+                                borderRadius: '8px',
+                                padding: '2px',
+                                boxShadow: 'none'
+                            }),
+                            menu: (base) => ({ ...base, background: '#1e293b', border: '1px solid #334155', zIndex: 100 }),
+                            option: (base, state) => ({
+                                ...base,
+                                background: state.isFocused ? '#334155' : '#1e293b',
+                                color: 'white',
+                                cursor: 'pointer'
+                            }),
+                            singleValue: (base) => ({ ...base, color: 'white' }),
+                            multiValue: (base) => ({ ...base, background: '#334155', borderRadius: '4px' }),
+                            multiValueLabel: (base) => ({ ...base, color: '#e2e8f0' }),
+                            multiValueRemove: (base) => ({ ...base, color: '#94a3b8', ':hover': { background: '#ef4444', color: 'white' } }),
+                            input: (base) => ({ ...base, color: 'white' }),
+                            placeholder: (base) => ({ ...base, color: '#64748b' })
+                        }}
+                    />
                 </div>
 
                 <div className="form-group full">

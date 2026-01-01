@@ -15,6 +15,8 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
     - **Smart Metrics**: Track "Avg Days/Month" and pain severity trends.
     - **Interactive Trends**: Filter by 1M (Severity View), 1Y, or Full History (Frequency View).
     - **Medication Analysis**: Consolidated view with pie chart visualization, extended color palette, and "Pain-Based" usage tracking (ignores pain-free days).
+    - **Triggers Registry**: Centralized management for lifestyle factors (e.g., Food, Weather) with customizable categories, robust grouping/sorting, and cascading renames.
+    - **Medication Management**: Dedicated registry for tracking doses, frequencies, and stock.
 - **Detailed Logging:** 
     - **Smart Geolocation**: IP-based location tagging for accurate weather correlation without intrusive permissions.
     - **Medication Management**: Dedicated registry for tracking doses, frequencies, and stock.
@@ -54,7 +56,7 @@ For deep dives into the system architecture and AI logic:
 
 ### Download (macOS)
 1. Go to the [Releases](https://github.com/AreTaj/Migraine-Navigator/releases) page.
-2. Download the latest `.dmg` file (e.g., `Migraine Navigator_0.1.0_aarch64.dmg`).
+2. Download the latest `.dmg` file (e.g., `Migraine Navigator_0.2.3_aarch64.dmg`).
 3. Drag the app to your Applications folder.
 
 ### Developer Setup
@@ -123,7 +125,7 @@ Migraine Navigator/
 2.  **Verify**: Check `releases/` for the new artifact.
 3.  **Upload**: Use the robust upload script to handle network instability:
     ```bash
-    ./scripts/robust_upload.sh v0.1.0 releases/Migraine_Navigator_0.1.0_aarch64.dmg
+    ./scripts/robust_upload.sh v0.2.3 releases/Migraine_Navigator_0.2.3_aarch64.dmg
     ```
 
 - **Advanced Prediction Engine:**
