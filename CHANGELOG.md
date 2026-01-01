@@ -2,6 +2,12 @@
 
 All notable changes to the "Migraine Navigator" project will be documented in this file.
 
+## [v0.2.3] - 2025-12-31
+### Performance
+- **Critical Fix**: Enforced strict `await` sequencing in Dashboard initialization. Core UI data (Entries, Meds) must now fully complete loading before the heavy AI components are even requested. This guarantees "Instant Load" regardless of backend thread availability.
+- **Hourly Optimization**: Refactored `Dashboard.jsx` to ensure the heavy "Truth Propagation" calibration never blocks the initial render.
+- **Optimized Critical Path**: `fetchCoreData` now only queries lightweight DB endpoints (Entries, Meds, Priors), ensuring the app opens essentially instantly.
+
 ## [v0.2.2] - 2025-12-31
 ### Added
 - **24-Hour Forecast**: New hourly risk graph providing granular "Next 24 Hours" prediction alongside the 7-day view.

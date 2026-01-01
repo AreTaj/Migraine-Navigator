@@ -59,10 +59,9 @@ function Dashboard() {
         const fetchCoreData = async () => {
             try {
                 // 1. Critical Data (Fast) - Loads immediately
-                const [entriesRes, medsRes, hourlyRes, priorsRes] = await Promise.all([
+                const [entriesRes, medsRes, priorsRes] = await Promise.all([
                     axios.get('/api/v1/entries'),
                     axios.get('/api/v1/medications'),
-                    axios.get('/api/v1/prediction/hourly').catch(err => ({ data: [] })), // Fail gracefully
                     axios.get('/api/v1/user/priors').catch(err => ({ data: { temp_unit: 'C' } }))
                 ]);
 
@@ -70,8 +69,6 @@ function Dashboard() {
                 setEntries(entriesData);
                 const allMeds = medsRes.data;
                 setMeds(allMeds);
-                setHourlyData(hourlyRes.data);
-                setHourlyLoading(false);
                 setPriors(priorsRes.data);
 
 
@@ -140,14 +137,15 @@ function Dashboard() {
             }
         };
 
-        const fetchPredictions = async () => {
-            // 2. Lazy Load Prediction (Slow)
+        const fetchPredictionsAndWeather = async () => {
+            // 2. Lazy Load Prediction (Slow) - Includes Hourly Calibration
             setPredLoading(true);
             try {
                 // Run in parallel
-                const [predRes, forecastRes] = await Promise.allSettled([
+                const [predRes, forecastRes, hourlyRes] = await Promise.allSettled([
                     axios.get('/api/v1/prediction/future'),
-                    axios.get('/api/v1/prediction/forecast')
+                    axios.get('/api/v1/prediction/forecast'),
+                    axios.get('/api/v1/prediction/hourly')
                 ]);
 
                 if (predRes.status === 'fulfilled') {
@@ -161,14 +159,29 @@ function Dashboard() {
                 } else {
                     console.error("Forecast fetch failed", forecastRes.reason);
                 }
+
+                if (hourlyRes.status === 'fulfilled') {
+                    setHourlyData(hourlyRes.value.data);
+                } else {
+                    console.error("Hourly fetch failed", hourlyRes.reason);
+                }
+
             } finally {
                 setPredLoading(false);
+                setHourlyLoading(false);
             }
         };
 
-        // Independent executions
-        fetchCoreData();
-        fetchPredictions();
+        // Strict Sequencing: Critical Data FIRST, then Heavy AI
+        const loadDashboard = async () => {
+            // 1. Critical UI Data (Fast) - Must finish to render Shell
+            await fetchCoreData();
+
+            // 2. Heavy AI/Weather Data (Slow) - Triggered only after UI is ready
+            fetchPredictionsAndWeather();
+        };
+
+        loadDashboard();
     }, []);
 
     // --- Actions ---
