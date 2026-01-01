@@ -17,10 +17,10 @@ except ImportError:
 
 # Import data processing
 try:
-    from forecasting.data_processing import merge_migraine_and_weather_data, process_combined_data
+    from forecasting.data_loader import merge_migraine_and_weather_data, process_combined_data
 except ImportError:
     # Fallback for running as script directly
-    from data_processing import merge_migraine_and_weather_data, process_combined_data
+    from data_loader import merge_migraine_and_weather_data, process_combined_data
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

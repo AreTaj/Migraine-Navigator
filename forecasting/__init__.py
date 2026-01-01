@@ -1,1 +1,1 @@
-from .predict_future import get_prediction_for_date
+from .inference import get_prediction_for_date

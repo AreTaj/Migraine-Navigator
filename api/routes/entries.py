@@ -101,7 +101,7 @@ def add_entry(entry: MigraineEntry):
         
         EntryService.add_entry(data, get_db_path())
         try:
-            from forecasting.predict_future import clear_prediction_cache
+            from forecasting.inference import clear_prediction_cache
             clear_prediction_cache()
         except ImportError:
             pass
@@ -114,7 +114,7 @@ def delete_entry(entry_id: int):
     try:
         EntryService.delete_entry(entry_id, get_db_path())
         try:
-            from forecasting.predict_future import clear_prediction_cache
+            from forecasting.inference import clear_prediction_cache
             clear_prediction_cache()
         except ImportError:
             pass
@@ -135,7 +135,7 @@ def update_entry(entry_id: int, entry: MigraineEntry):
 
         EntryService.update_entry(entry_id, data, get_db_path())
         try:
-            from forecasting.predict_future import clear_prediction_cache
+            from forecasting.inference import clear_prediction_cache
             clear_prediction_cache()
         except ImportError:
             pass

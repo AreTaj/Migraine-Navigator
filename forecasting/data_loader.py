@@ -178,3 +178,47 @@ def process_combined_data(combined_data_filename=combined_data_filename, input_d
     df = df.iloc[30:].reset_index(drop=True)
 
     return df
+
+def get_recent_history(db_path=None, days=60):
+    """
+    Fetches the last N days of data from the DB to calculate lags.
+    """
+    import pandas as pd
+    
+    df = load_migraine_log_from_db(db_path)
+    if df.empty:
+        return df
+        
+    df['Date'] = pd.to_datetime(df['Date'])
+    
+    # Ensure numeric types
+    for col in ['Pain Level', 'Sleep', 'Physical Activity']:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+
+    # Sort and take recent
+    df = df.sort_values('Date').tail(days).reset_index(drop=True)
+    return df
+
+def get_latest_location_from_db(db_path=None):
+    """
+    Fetches the most recent location (Lat/Lon) from the DB.
+    """
+    import pandas as pd
+    import logging
+    logger = logging.getLogger("data_loader")
+    
+    try:
+        df = load_migraine_log_from_db(db_path)
+        # Drop rows with missing location
+        df = df.dropna(subset=['Latitude', 'Longitude'])
+        if df.empty:
+            return None, None
+        
+        # Sort by Date descending
+        df['Date'] = pd.to_datetime(df['Date'])
+        latest = df.sort_values('Date', ascending=False).iloc[0]
+        return latest['Latitude'], latest['Longitude']
+    except Exception as e:
+        logger.error(f"Error fetching location: {e}")
+        return None, None

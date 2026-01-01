@@ -6,7 +6,8 @@ from datetime import datetime, timedelta
 # Add project root to path
 sys.path.append(os.getcwd())
 
-from prediction.predict_future import get_prediction_for_date, fetch_weekly_weather_forecast
+from forecasting.inference import get_prediction_for_date
+from services.weather_service import WeatherService
 
 async def verify_forecast():
     print("Verifying 7-Day Forecast logic...")
@@ -14,7 +15,7 @@ async def verify_forecast():
     
     print("1. Testing Batch Weather Fetch...")
     # lat, lon for LA
-    weekly_weather = fetch_weekly_weather_forecast(start_date, 34.05, -118.25)
+    weekly_weather = WeatherService.fetch_weekly(start_date, 34.05, -118.25)
     print(f"Batch fetch returned {len(weekly_weather)} days.")
     
     if len(weekly_weather) == 0:

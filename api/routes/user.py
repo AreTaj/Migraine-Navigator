@@ -91,7 +91,7 @@ async def update_user_priors(priors: UserPriors):
         
         # Invalidate prediction cache if we update settings
         try:
-             from forecasting.predict_future import clear_prediction_cache
+             from forecasting.inference import clear_prediction_cache
              clear_prediction_cache()
         except ImportError:
              pass # Might happen if module not loaded yet

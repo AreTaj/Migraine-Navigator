@@ -11,7 +11,7 @@ Workflow:
 - Outputs evaluation metrics.
 """
 
-from data_processing import merge_migraine_and_weather_data, process_combined_data
+from forecasting.data_loader import merge_migraine_and_weather_data, process_combined_data
 import numpy as np
 import pandas as pd
 import os

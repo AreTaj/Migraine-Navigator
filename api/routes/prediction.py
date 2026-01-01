@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import sys
 import os
 
-# from forecasting.predict_future import get_prediction_for_date, fetch_weekly_weather_forecast, get_latest_location_from_db
+# from forecasting.inference import get_prediction_for_date, fetch_weekly_weather_forecast, get_latest_location_from_db
 # Lazy loaded inside functions
 
 router = APIRouter(prefix="/prediction", tags=["prediction"])
@@ -39,8 +39,8 @@ def get_future_prediction(date: str = Query(None, description="Date in YYYY-MM-D
         # Validate date format
         datetime.strptime(date, "%Y-%m-%d")
         
-        logger.debug("Importing predict_future...")
-        from forecasting.predict_future import get_prediction_for_date
+        logger.debug("Importing inference...")
+        from forecasting.inference import get_prediction_for_date
         logger.debug("Calling get_prediction_for_date...")
         
         result = get_prediction_for_date(date)
@@ -64,7 +64,7 @@ def get_weekly_forecast():
         forecasts = []
         
         # 1. Use Recursive Forecasting Logic to ensure future lags are populated
-        from forecasting.predict_future import get_weekly_forecast_recursive
+        from forecasting.inference import get_weekly_forecast_recursive
         
         forecasts = get_weekly_forecast_recursive(start_date)
             
@@ -79,7 +79,7 @@ def get_hourly_prediction(date: str = Query(None, description="Start date/time i
     Get hourly risk forecast for the next 24 (or N) hours.
     """
     try:
-        from forecasting.predict_future import get_hourly_forecast
+        from forecasting.inference import get_hourly_forecast
         
         # If date is not provided, use current time
         # The underlying function handles None/empty string by using now()

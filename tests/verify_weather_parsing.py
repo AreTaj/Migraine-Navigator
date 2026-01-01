@@ -9,7 +9,7 @@ import os
 # Add project root
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from prediction.predict_future import fetch_weather_forecast
+from services.weather_service import WeatherService
 
 class TestWeatherParsing(unittest.TestCase):
     def test_pres_change_calculation(self):
@@ -49,7 +49,7 @@ class TestWeatherParsing(unittest.TestCase):
             mock_resp.raise_for_status.return_value = None
             mock_get.return_value = mock_resp
             
-            result = fetch_weather_forecast(target_date, 40.7, -74.0)
+            result = WeatherService.fetch_forecast(40.7, -74.0, target_date)
             
             print(f"\nTarget: {target_date.date()}")
             print(f"Result Pres: {result['pres']}")
@@ -79,7 +79,7 @@ class TestWeatherParsing(unittest.TestCase):
             mock_resp.json.return_value = mock_data
             mock_get.return_value = mock_resp
             
-            result = fetch_weather_forecast(target_date, 40.7, -74.0)
+            result = WeatherService.fetch_forecast(40.7, -74.0, target_date)
             
             print(f"\nTarget: {target_date.date()} (No History)")
             print(f"Result Pres Change: {result['pres_change']}")
