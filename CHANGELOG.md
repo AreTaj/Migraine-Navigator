@@ -4,6 +4,14 @@ All notable changes to the "Migraine Navigator" project will be documented in th
 
 
 ## [v0.2.5] - 2026-01-03
+### Added
+- **Prediction Mode Control**: Added a clear "Auto (AI) / Manual (Rules)" selector in Settings.
+    - Allows users to bypass the ML Model entirely and rely on the explicit Heuristic Engine rules.
+    - Useful for testing, low-powered devices, or users who prefer transparent rule-based logic over AI.
+- **Settings UI Polish**: 
+    - Reorganized Settings into collapsible sections ("Hybrid Engine Calibration", "App Preferences").
+    - Moved "Temperature Unit" to a cleaner location.
+
 ### Fixed
 - **Hourly Graph Flatline**: Restored "Truth Propagation" logic (calibrated scaling) which was lost in v0.2.3.
     - The Hourly Forecast now properly scales its magnitude to align with the Daily ML Risk Prediction.

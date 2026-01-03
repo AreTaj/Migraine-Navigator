@@ -130,6 +130,37 @@ class TestAPI(unittest.TestCase):
         self.assertIsNone(data[0]['Latitude'])
         self.assertIsNone(data[0]['Longitude'])
 
+    @patch('api.routes.user.get_db_path')
+    def test_user_priors(self, mock_user_db):
+        test_db = "test_api_priors.db"
+        mock_user_db.return_value = test_db
+        
+        if os.path.exists(test_db):
+            os.remove(test_db)
+            
+        # 1. Get Default Priors
+        response = client.get("/api/v1/user/priors")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertFalse(data['force_heuristic_mode'])
+        
+        # 2. Update Priors (Enable Force Mode)
+        new_priors = data
+        new_priors['force_heuristic_mode'] = True
+        new_priors['weather_sensitivity'] = 0.9
+        
+        response = client.post("/api/v1/user/priors", json=new_priors)
+        self.assertEqual(response.status_code, 200)
+        
+        # 3. Verify Persistence
+        response = client.get("/api/v1/user/priors")
+        data = response.json()
+        self.assertTrue(data['force_heuristic_mode'])
+        self.assertEqual(data['weather_sensitivity'], 0.9)
+        
+        if os.path.exists(test_db):
+            os.remove(test_db)
+
 if __name__ == '__main__':
     unittest.main()
 

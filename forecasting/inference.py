@@ -104,6 +104,22 @@ def get_prediction_for_date(target_date_str, weather_override=None):
     
     # 3. Predict (ML Inference)
     try:
+        # Check Force Heuristic Mode
+        force_heuristic = False
+        try:
+             conn = sqlite3.connect(DB_PATH)
+             cursor = conn.cursor()
+             cursor.execute("SELECT value FROM user_settings WHERE key='force_heuristic_mode'")
+             row = cursor.fetchone()
+             if row and str(row[0]).lower() == 'true':
+                 force_heuristic = True
+             conn.close()
+        except Exception: pass
+
+        if force_heuristic:
+             logger.info("Force Heuristic Mode enabled. Bypassing ML.")
+             return _run_heuristic_fallback(target_date_str, X, meta)
+
         clf, reg = load_models()
         
         # Safe column ordering

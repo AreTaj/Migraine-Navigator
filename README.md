@@ -17,6 +17,7 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
     - **Medication Analysis**: Consolidated view with pie chart visualization, extended color palette, and "Pain-Based" usage tracking (ignores pain-free days).
     - **Triggers Registry**: Centralized management for lifestyle factors (e.g., Food, Weather) with customizable categories, robust grouping/sorting, and cascading renames.
     - **Medication Management**: Dedicated registry for tracking doses, frequencies, and stock.
+    - **Prediction Mode**: Toggle between "Auto (AI)" and "Manual (Rules)" forecasting engines.
 - **Detailed Logging:** 
     - **Smart Geolocation**: IP-based location tagging for accurate weather correlation without intrusive permissions.
     - **Medication Management**: Dedicated registry for tracking doses, frequencies, and stock.

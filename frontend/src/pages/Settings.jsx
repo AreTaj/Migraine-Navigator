@@ -47,10 +47,12 @@ const Settings = () => {
         }
     };
 
+    const [isCalibrationOpen, setIsCalibrationOpen] = useState(true);
+
     if (loading) return <div className="loading">Loading...</div>;
 
     return (
-        <div style={{ padding: '2rem' }}>
+        <div style={{ padding: '2rem', paddingBottom: '4rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <SettingsIcon size={32} />
@@ -63,98 +65,141 @@ const Settings = () => {
                 )}
             </div>
 
-            {/* Medical Profile */}
+            {/* Section 1: Hybrid Engine Calibration (Collapsible) */}
             <section className="card" style={{ marginBottom: '2rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h3>Hybrid Engine Calibration</h3>
+                <div
+                    onClick={() => setIsCalibrationOpen(!isCalibrationOpen)}
+                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
+                >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <h3>Hybrid Engine Calibration</h3>
+                        <span className="badge" style={{ background: priors.force_heuristic_mode ? '#f59e0b' : '#3b82f6' }}>
+                            {priors.force_heuristic_mode ? 'Manual Rules' : 'AI Enhanced'}
+                        </span>
+                    </div>
+                    <div style={{ transform: isCalibrationOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
+                        ▼
+                    </div>
                 </div>
-                <p className="text-muted">Adjust how sensitive you are to various triggers. Changes are saved automatically.</p>
 
-                <div style={{ display: 'grid', gap: '1.5rem', marginTop: '1.5rem' }}>
+                {isCalibrationOpen && (
+                    <div style={{ marginTop: '1.5rem', display: 'grid', gap: '1.5rem', animation: 'fadeIn 0.3s ease-in-out' }}>
+                        <p className="text-muted" style={{ marginTop: '-0.5rem' }}>
+                            Adjust how sensitive the model is to various triggers.
+                        </p>
 
-                    <div className="setting-row">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                            <label>Baseline Frequency</label>
-                            <span className="badge">
-                                {priors.baseline_risk < 0.3 ? 'Rare' : priors.baseline_risk < 0.6 ? 'Frequent' : 'Chronic'}
-                            </span>
+                        {/* Force Heuristic Toggle */}
+                        <div className="setting-row">
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div>
+                                    <label style={{ display: 'block', marginBottom: '4px' }}>Prediction Mode</label>
+                                    <small style={{ color: '#888' }}>Choose between AI-enhanced or strict rule-based forecasting.</small>
+                                </div>
+                                <div style={{ display: 'flex', background: '#334155', padding: '4px', borderRadius: '8px' }}>
+                                    <button
+                                        onClick={() => setPriors({ ...priors, force_heuristic_mode: false })}
+                                        style={{
+                                            padding: '8px 16px',
+                                            borderRadius: '6px',
+                                            border: 'none',
+                                            background: !priors.force_heuristic_mode ? '#3b82f6' : 'transparent',
+                                            color: !priors.force_heuristic_mode ? '#fff' : '#94a3b8',
+                                            cursor: 'pointer',
+                                            fontWeight: 500,
+                                            transition: 'all 0.2s'
+                                        }}
+                                    >Auto (AI)</button>
+                                    <button
+                                        onClick={() => setPriors({ ...priors, force_heuristic_mode: true })}
+                                        style={{
+                                            padding: '8px 16px',
+                                            borderRadius: '6px',
+                                            border: 'none',
+                                            background: priors.force_heuristic_mode ? '#f59e0b' : 'transparent',
+                                            color: priors.force_heuristic_mode ? '#fff' : '#94a3b8',
+                                            cursor: 'pointer',
+                                            fontWeight: 500,
+                                            transition: 'all 0.2s'
+                                        }}
+                                    >Manual (Rules)</button>
+                                </div>
+                            </div>
                         </div>
-                        <small style={{ color: '#888', display: 'block', marginBottom: '0.5rem' }}>
-                            How often do you get migraines regardless of triggers?
-                        </small>
-                        <input
-                            type="range" min="0.05" max="0.95" step="0.05"
-                            value={priors.baseline_risk}
-                            onChange={(e) => setPriors({ ...priors, baseline_risk: parseFloat(e.target.value) })}
-                            style={{ width: '100%' }}
-                        />
-                        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#666', fontSize: '0.8rem' }}>
-                            <span>Rarely</span>
-                            <span>Chronic</span>
+
+                        <div className="setting-row">
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                                <label>Baseline Frequency</label>
+                                <span className="badge">
+                                    {priors.baseline_risk < 0.3 ? 'Rare' : priors.baseline_risk < 0.6 ? 'Frequent' : 'Chronic'}
+                                </span>
+                            </div>
+                            <small style={{ color: '#888', display: 'block', marginBottom: '0.5rem' }}>
+                                How often do you get migraines regardless of triggers?
+                            </small>
+                            <input
+                                type="range" min="0.05" max="0.95" step="0.05"
+                                value={priors.baseline_risk}
+                                onChange={(e) => setPriors({ ...priors, baseline_risk: parseFloat(e.target.value) })}
+                                style={{ width: '100%' }}
+                            />
+                        </div>
+
+                        <div className="setting-row">
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                                <label>Weather Sensitivity</label>
+                                <span className="badge">{(priors.weather_sensitivity * 10).toFixed(0)}</span>
+                            </div>
+                            <small style={{ color: '#888', display: 'block', marginBottom: '0.5rem' }}>
+                                Impact of pressure drops & temp swings
+                            </small>
+                            <input
+                                type="range" min="0" max="1" step="0.1"
+                                value={priors.weather_sensitivity}
+                                onChange={(e) => setPriors({ ...priors, weather_sensitivity: parseFloat(e.target.value) })}
+                                style={{ width: '100%' }}
+                            />
+                        </div>
+
+                        <div className="setting-row">
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                                <label>Sleep Sensitivity</label>
+                                <span className="badge">{(priors.sleep_sensitivity * 10).toFixed(0)}</span>
+                            </div>
+                            <small style={{ color: '#888', display: 'block', marginBottom: '0.5rem' }}>
+                                Impact of irregular sleep or debt
+                            </small>
+                            <input
+                                type="range" min="0" max="1" step="0.1"
+                                value={priors.sleep_sensitivity}
+                                onChange={(e) => setPriors({ ...priors, sleep_sensitivity: parseFloat(e.target.value) })}
+                                style={{ width: '100%' }}
+                            />
+                        </div>
+
+                        <div className="setting-row">
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                                <label>Physical/Mental Strain</label>
+                                <span className="badge">{(priors.strain_sensitivity * 10).toFixed(0)}</span>
+                            </div>
+                            <small style={{ color: '#888', display: 'block', marginBottom: '0.5rem' }}>
+                                Impact of stress or exhaustion
+                            </small>
+                            <input
+                                type="range" min="0" max="1" step="0.1"
+                                value={priors.strain_sensitivity}
+                                onChange={(e) => setPriors({ ...priors, strain_sensitivity: parseFloat(e.target.value) })}
+                                style={{ width: '100%' }}
+                            />
                         </div>
                     </div>
+                )}
+            </section>
 
+            {/* Section 2: App Preferences */}
+            <section className="card" style={{ marginBottom: '2rem' }}>
+                <h3>App Preferences</h3>
+                <div style={{ marginTop: '1rem' }}>
                     <div className="setting-row">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                            <label>Weather Sensitivity</label>
-                            <span className="badge">{(priors.weather_sensitivity * 10).toFixed(0)}</span>
-                        </div>
-                        <small style={{ color: '#888', display: 'block', marginBottom: '0.5rem' }}>
-                            Impact of pressure drops & temp swings
-                        </small>
-                        <input
-                            type="range" min="0" max="1" step="0.1"
-                            value={priors.weather_sensitivity}
-                            onChange={(e) => setPriors({ ...priors, weather_sensitivity: parseFloat(e.target.value) })}
-                            style={{ width: '100%' }}
-                        />
-                        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#666', fontSize: '0.8rem' }}>
-                            <span>Low Impact</span>
-                            <span>High Impact</span>
-                        </div>
-                    </div>
-
-                    <div className="setting-row">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                            <label>Sleep Sensitivity</label>
-                            <span className="badge">{(priors.sleep_sensitivity * 10).toFixed(0)}</span>
-                        </div>
-                        <small style={{ color: '#888', display: 'block', marginBottom: '0.5rem' }}>
-                            Impact of irregular sleep or debt
-                        </small>
-                        <input
-                            type="range" min="0" max="1" step="0.1"
-                            value={priors.sleep_sensitivity}
-                            onChange={(e) => setPriors({ ...priors, sleep_sensitivity: parseFloat(e.target.value) })}
-                            style={{ width: '100%' }}
-                        />
-                        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#666', fontSize: '0.8rem' }}>
-                            <span>Low Impact</span>
-                            <span>High Impact</span>
-                        </div>
-                    </div>
-
-                    <div className="setting-row">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                            <label>Physical/Mental Strain</label>
-                            <span className="badge">{(priors.strain_sensitivity * 10).toFixed(0)}</span>
-                        </div>
-                        <small style={{ color: '#888', display: 'block', marginBottom: '0.5rem' }}>
-                            Impact of stress or exhaustion
-                        </small>
-                        <input
-                            type="range" min="0" max="1" step="0.1"
-                            value={priors.strain_sensitivity}
-                            onChange={(e) => setPriors({ ...priors, strain_sensitivity: parseFloat(e.target.value) })}
-                            style={{ width: '100%' }}
-                        />
-                        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#666', fontSize: '0.8rem' }}>
-                            <span>Low Impact</span>
-                            <span>High Impact</span>
-                        </div>
-                    </div>
-
-                    <div className="setting-row" style={{ marginTop: '0.5rem', borderTop: '1px solid #334155', paddingTop: '1.5rem' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <div>
                                 <label style={{ display: 'block', marginBottom: '4px' }}>Temperature Unit</label>
@@ -195,7 +240,7 @@ const Settings = () => {
                 </div>
             </section>
 
-            {/* Data Management */}
+            {/* Section 3: Data Management */}
             <section className="card">
                 <h3>Data Management</h3>
                 <div style={{ marginTop: '1rem' }}>
