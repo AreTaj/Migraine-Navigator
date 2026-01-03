@@ -56,7 +56,7 @@ For deep dives into the system architecture and AI logic:
 
 ### Download (macOS)
 1. Go to the [Releases](https://github.com/AreTaj/Migraine-Navigator/releases) page.
-2. Download the latest `.dmg` file (e.g., `Migraine Navigator_0.2.3_aarch64.dmg`).
+2. Download the latest `.dmg` file (e.g., `Migraine Navigator_0.2.4_aarch64.dmg`).
 3. Drag the app to your Applications folder.
 
 ### Developer Setup
@@ -125,7 +125,7 @@ Migraine Navigator/
 2.  **Verify**: Check `releases/` for the new artifact.
 3.  **Upload**: Use the robust upload script to handle network instability:
     ```bash
-    ./scripts/robust_upload.sh v0.2.3 releases/Migraine_Navigator_0.2.3_aarch64.dmg
+    ./scripts/robust_upload.sh v0.2.4 releases/Migraine_Navigator_0.2.4_aarch64.dmg
     ```
 
 - **Advanced Prediction Engine:**
