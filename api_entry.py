@@ -25,6 +25,16 @@ if __name__ == "__main__":
     # Capture Uvicorn logs
     logging.getLogger("uvicorn").addHandler(logging.FileHandler(log_file))
     
+    # --- SSL PATCH (PyInstaller) ---
+    try:
+        import certifi
+        os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
+        os.environ["SSL_CERT_FILE"] = certifi.where()
+        logger.info(f"SSL Certs Configured: {certifi.where()}")
+    except ImportError:
+        logger.error("Certifi not found! SSL requests might fail.")
+    # -------------------------------
+
     logger.info("Backend starting... (Lazy Loading Enabled)")
     logger.info(f"CWD: {os.getcwd()}")
 

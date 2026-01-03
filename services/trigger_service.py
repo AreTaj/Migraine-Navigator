@@ -31,6 +31,63 @@ class TriggerService:
             # Order by usage count (most popular first)
             c.execute("SELECT id, name, usage_count, is_system_default, category FROM triggers ORDER BY usage_count DESC, name ASC")
             rows = c.fetchall()
+
+            # --- AUTO-MIGRATION & SYNC ---
+            # 1. Fresh Migration (Registry Empty)
+            if not rows:
+                print("Triggers registry empty. Auto-migrating...")
+                try:
+                    c.execute("SELECT Triggers FROM migraine_log WHERE Triggers IS NOT NULL AND Triggers != ''")
+                    entry_rows = c.fetchall()
+                    
+                    counts = {}
+                    for (raw_str,) in entry_rows:
+                        if raw_str:
+                            parts = [p.strip() for p in raw_str.split(',') if p.strip()]
+                            for p in parts:
+                                counts[p] = counts.get(p, 0) + 1
+                            
+                    if counts:
+                        print(f"Found {len(counts)} unique triggers. Importing with counts...")
+                        for t_name, count in counts.items():
+                            try:
+                                c.execute("INSERT INTO triggers (name, usage_count, category) VALUES (?, ?, NULL)", (t_name, count))
+                            except sqlite3.IntegrityError:
+                                pass 
+                        conn.commit()
+                        # Re-fetch
+                        c.execute("SELECT id, name, usage_count, is_system_default, category FROM triggers ORDER BY usage_count DESC, name ASC")
+                        rows = c.fetchall()
+                except Exception as mig_err:
+                    print(f"Migration failed: {mig_err}")
+
+            # 2. Fix Zero-Counts (Registry Exists but counts logic was missed)
+            # If we have triggers but TOTAL usage is 0, it's suspicious given we have history.
+            total_usage = sum(r[2] for r in rows) if rows else 0
+            if rows and total_usage == 0:
+                print("Triggers exist but usage is 0. Syncing counts from history...")
+                try:
+                    c.execute("SELECT Triggers FROM migraine_log WHERE Triggers IS NOT NULL AND Triggers != ''")
+                    entry_rows = c.fetchall()
+                    
+                    counts = {}
+                    for (raw_str,) in entry_rows:
+                        if raw_str:
+                            parts = [p.strip() for p in raw_str.split(',') if p.strip()]
+                            for p in parts:
+                                counts[p] = counts.get(p, 0) + 1
+                    
+                    if counts:
+                        for t_name, count in counts.items():
+                            c.execute("UPDATE triggers SET usage_count = ? WHERE name = ?", (count, t_name))
+                        conn.commit()
+                        # Re-fetch
+                        c.execute("SELECT id, name, usage_count, is_system_default, category FROM triggers ORDER BY usage_count DESC, name ASC")
+                        rows = c.fetchall()
+                except Exception as sync_err:
+                    print(f"Sync failed: {sync_err}")
+            # -------------------------------------------------------------------
+
             conn.close()
             
             triggers = []

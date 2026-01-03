@@ -3,20 +3,26 @@
 All notable changes to the "Migraine Navigator" project will be documented in this file.
 
 
-## [v0.2.4] - 2026-01-01
-### Added
-- **Trigger Refinement (Issue #35 follow-up)**:
-    - **Categorization**: Introduced collapsible "Category" headers (e.g., Weather, Food) to organize the triggers list.
-    - **Renaming**: Added inline "Edit Mode" (Pencil Icon) to rename triggers effortlessly.
-    - **Cascading Updates**: Renaming a trigger now automatically updates all historical log entries to match the new name, preventing data fragmentation.
-    - **Flexible Grouping**: "Top Triggers" chart can now group data by Category (e.g., see total "Weather" impact vs specific "Rain" impact).
-    - **Visual Polish**: Improved UI with chevron toggles for categories and cleaner input forms.
-- **Triggers Registry (Issue #35)**:
-    - **Dedicated Page**: Moved triggers from Settings to a new top-level `/triggers` page.
-    - **Usage Analysis**: Added pie chart visualization for most frequent triggers.
-    - **Autocomplete**: Replaced manual text entry in logs with smart autocomplete/create functionality.
-    - **Data Migration**: Auto-migrated 100+ historical triggers into the new structured format.
-    - **Management**: Full Add/Delete capabilities with confirmation safeguards.
+## [v0.2.4] - 2026-01-03
+### Critical Bug Fixes
+- **Crash on Launch (Hourly Graph)**: Fixed an `AttributeError` caused by unhandled default dates in the inference engine, resolving crashes on startup.
+- **Empty Charts (API Contract)**: Restored correct API keys (`risk_score`, `risk_probability`) to match frontend expectations, bringing back Hourly and 7-Day Forecast graphs.
+- **Missing Weather Data**: Bundled `certifi` CA certificates to resolve SSL verification errors in the packaged app, fixing "Humidity: --".
+- **Triggers Stability**:
+    - **500 Error Fix**: Resolved crash on Triggers page due to hardcoded database path.
+    - **Invisible List Fix**: Implemented **Auto-Migration** to populate the registry from historical logs if missing.
+    - **Zero Usage Count Fix**: Added sync logic to recalculate usage frequencies from history if counts were incorrectly zeroed.
+- **Tooltip Regression**: Restored detailed risk breakdown (Weather/Circadian factors) in Hourly Graph tooltips.
+
+### Improvements
+- **Direct Forecasting**: Switched 7-Day Forecast to "Direct" mode (independent daily predictions) to fix "flatline" graphs and improve responsiveness.
+- **Build Optimization**: Optimized build size (~91MB) while ensuring the full scientific stack is bundled.
+
+### Added (Features)
+- **Trigger Refinement**:
+    - **Categorization**: Groups triggers by category (Weather, Food, etc.) with collapsible headers.
+    - **Renaming**: Inline edit mode that also updates historical log entries.
+    - **Registry**: Dedicated `/triggers` page with usage analysis and pie charts.
 
 ## [v0.2.3] - 2025-12-31
 ### Performance

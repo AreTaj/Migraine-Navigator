@@ -3,9 +3,10 @@ from pydantic import BaseModel
 from typing import List, Optional
 from services.trigger_service import TriggerService
 
-# We can import DB_PATH from a common config, but for now we follow the pattern in entries.py
-# Ideally, we should unify DB_PATH handling, but keeping consistency with existing routes
-DB_PATH = "data/migraine_log.db"
+from api.utils import get_db_path
+
+# Use centralized DB path resolution
+DB_PATH = get_db_path()
 
 router = APIRouter()
 

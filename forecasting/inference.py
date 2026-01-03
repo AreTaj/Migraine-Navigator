@@ -191,6 +191,7 @@ def get_weekly_forecast(start_date=None):
     isolating the weather impact.
     """
     import pandas as pd
+    import numpy as np
     
     if start_date is None:
         start_date = datetime.datetime.now() + timedelta(days=1)
@@ -233,15 +234,16 @@ def get_weekly_forecast(start_date=None):
                 else: risk = "Low"
                 
                 pred_log = reg.predict(X)[0]
-                pred_pain = max(0, min(10, pd.np.expm1(pred_log)))
-            except: pass
+                pred_pain = max(0, min(10, np.expm1(pred_log)))
+            except Exception as e:
+                logger.error(f"Weekly Inference Error: {e}")
         else:
              # Heuristic Fallback logic (omitted for brevity)
              pass
 
         forecasts.append({
             "date": date_str,
-            "probability": round(prob * 100, 1),
+            "risk_probability": round(prob * 100, 1),
             "risk_level": risk,
             "predicted_pain": round(pred_pain, 1)
         })
@@ -256,6 +258,9 @@ def get_hourly_forecast(start_date_str):
     import pandas as pd
     from .heuristic_predictor import HeuristicPredictor
     
+    if start_date_str is None:
+        start_date_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+
     start_dt = pd.to_datetime(start_date_str)
     lat, lon = get_latest_location_from_db(DB_PATH)
     if not lat: lat, lon = 34.05, -118.25 # Default LA
@@ -279,10 +284,12 @@ def get_hourly_forecast(start_date_str):
         
         results.append({
             "time": w_hour['time'],
-            "probability": round(pred['probability'] * 100, 1),
+            "risk_score": round(pred['probability'] * 100, 1),
             "risk_level": pred['risk_level'],
             "temp": w_hour['temp'],
-            "desc": " clear" # simplified
+            "humidity": w_hour['humidity'],
+            "desc": " clear", # simplified
+            "details": pred['components']
         })
         
     return results
