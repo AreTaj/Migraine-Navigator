@@ -3,6 +3,12 @@
 All notable changes to the "Migraine Navigator" project will be documented in this file.
 
 
+## [v0.2.5] - 2026-01-03
+### Fixed
+- **Hourly Graph Flatline**: Restored "Truth Propagation" logic (calibrated scaling) which was lost in v0.2.3.
+    - The Hourly Forecast now properly scales its magnitude to align with the Daily ML Risk Prediction.
+    - If the Daily Forecast predicts High Risk (e.g., 80%), the Hourly Graph will now peak to reflect that severity, rather than showing a flat "Low Risk" heuristic baseline.
+
 ## [v0.2.4] - 2026-01-03
 ### Added Features
 - **Advanced Triggers Registry**:
@@ -13,8 +19,14 @@ All notable changes to the "Migraine Navigator" project will be documented in th
     - **Data Consistency**: Added background synchronization to ensure usage counts always match your full log history.
 
 ### Improvements
-- **Forecast Stability**: Switched the 7-Day Forecast to a "Direct" prediction method (independent daily predictions) to eliminate long-term drift and ensure responsiveness to changing weather.
-- **Build Optimization**: Further optimized the application build size to ~91MB while maintaining full scientific stack capabilities.
+- **Direct Forecasting**: Switched 7-Day Forecast to "Direct" mode (independent daily predictions) to fix "flatline" graphs and improve responsiveness.
+- **Build Optimization**: Optimized build size (~91MB) while ensuring the full scientific stack is bundled.
+
+### Added (Features)
+- **Trigger Refinement**:
+    - **Categorization**: Groups triggers by category (Weather, Food, etc.) with collapsible headers.
+    - **Renaming**: Inline edit mode that also updates historical log entries.
+    - **Registry**: Dedicated `/triggers` page with usage analysis and pie charts.
 
 ## [v0.2.3] - 2025-12-31
 ### Performance

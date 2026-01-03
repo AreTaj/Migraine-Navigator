@@ -23,6 +23,11 @@ MODEL_DIR = os.path.join(BASE_DIR, '..', 'models')
 MODEL_CLF_PATH = os.path.join(MODEL_DIR, 'best_model_clf.pkl')
 MODEL_REG_PATH = os.path.join(MODEL_DIR, 'best_model_reg.pkl')
 
+# Calibration Constants
+# Limits how much the Daily ML Truth can inflate the Hourly Heuristic shape.
+# 2.5x allows a 20% heuristic to scale to 50%, but prevents 5% -> 50% (noise amplification).
+MAX_CALIBRATION_SCALE = 2.5
+
 DB_PATH = get_db_path()
 
 # Setup logger
@@ -292,6 +297,66 @@ def get_hourly_forecast(start_date_str):
             "details": pred['components']
         })
         
+    # 5. Calibrate against Daily ML Model (Truth Propagation)
+    # The Daily ML model contains the "Truth" (Magnitude) derived from history.
+    # The Hourly Heuristic contains the "Shape" derived from weather/circadian.
+    # We scale the Shape to match the Magnitude.
+    
+    # helper: grouping by date
+    daily_groups = {}
+    for idx, item in enumerate(results):
+        # item['time'] is ISO string or close to it
+        d_key = item['time'].split('T')[0]
+        if d_key not in daily_groups:
+            daily_groups[d_key] = []
+        daily_groups[d_key].append(idx)
+
+    for date_key, indices in daily_groups.items():
+        try:
+            # Fetch Daily ML Prediction (The Anchor)
+            # We call the main prediction function which uses ML models
+            # NOTE: Recursive check - get_prediction_for_date does NOT call get_hourly_forecast_recursive or similar
+            # so this is safe.
+            daily_pred = get_prediction_for_date(date_key)
+            
+            if daily_pred and daily_pred.get('probability') is not None:
+                daily_prob = float(daily_pred['probability']) # 0-100
+                
+                # Find Peak in this group (Raw Heuristic)
+                current_scores = [results[i]['risk_score'] for i in indices]
+                peak_hourly = max(current_scores) if current_scores else 0.1
+                
+                # Apply V0.2.2 Logic:
+                # If Daily Risk is significant (>30%) and higher than hourly peak,
+                # we scale up. We do NOT scale down (triggers are triggers).
+                if daily_prob > 30.0 and daily_prob > peak_hourly:
+                    # Calculate Scale Factor
+                    # Cap at MAX_CALIBRATION_SCALE to prevent exploding low-confidence heuristics
+                    scale_factor = daily_prob / peak_hourly if peak_hourly > 5 else 1.0
+                    scale_factor = min(scale_factor, MAX_CALIBRATION_SCALE)
+                    
+                    # Apply Scaling
+                    for idx in indices:
+                        old_score = results[idx]['risk_score']
+                        new_score = old_score * scale_factor
+                        
+                        # Hard Cap at 99%
+                        new_score = min(new_score, 99.0)
+                        
+                        results[idx]['risk_score'] = round(new_score, 1)
+                        
+                        # Update Level Label to match new score
+                        if new_score >= 60: 
+                            results[idx]['risk_level'] = 'High'
+                        elif new_score >= 30: 
+                            results[idx]['risk_level'] = 'Moderate'
+                        else:
+                            results[idx]['risk_level'] = 'Low'
+                            
+        except Exception as e:
+            # Fail silently on calibration, fallback to raw heuristics is safe
+            print(f"Calibration warning for {date_key}: {e}")
+
     return results
 
 if __name__ == "__main__":
