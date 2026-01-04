@@ -6,6 +6,47 @@ import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
+const FeatureList = [
+  {
+    title: 'Biological Intelligence',
+    description: (
+      <>
+        Track your personal biomarkers and patterns to understand your unique
+        migraine triggers using advanced analytics.
+      </>
+    ),
+  },
+  {
+    title: 'Meteorological Analysis',
+    description: (
+      <>
+        Correlate local weather data—pressure changes, temperature, and humidity—
+        with your health metrics for precise risk forecasting.
+      </>
+    ),
+  },
+  {
+    title: 'Privacy First',
+    description: (
+      <>
+        Your health data stays on your device. Migraine Navigator is a local-first
+        application that respects your privacy.
+      </>
+    ),
+  },
+];
+
+function Feature({ title, description }) {
+  return (
+    <div className={clsx('col col--4')}>
+      <div className="text--center padding-horiz--md">
+        <Heading as="h3">{title}</Heading>
+        <p>{description}</p>
+      </div>
+    </div>
+  );
+}
+
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
@@ -17,14 +58,14 @@ function HomepageHeader() {
         <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <Link
-            className={styles.goldButton}
+            className="button button--secondary button--lg"
             to="/docs/architecture">
-            View Architecture
+            System Overview
           </Link>
           <Link
-            className={styles.goldButton}
+            className="button button--primary button--lg"
             to="/blog">
-            Read "Perfect Storm" Study
+            "Perfect Storm" Study
           </Link>
         </div>
       </div>
@@ -40,24 +81,29 @@ export default function Home() {
       description="N=1 Migraine Prediction Engine">
       <HomepageHeader />
       <main>
+        {/* Dashboard Section */}
         <div className={styles.dashboardSection}>
-          <div className={styles.dashboardContainer}>
-            {/* Using Raw GitHub URL to guarantee image loads */}
-            <img
-              src="https://raw.githubusercontent.com/AreTaj/Migraine-Navigator/main/screenshots/dashboard.png"
-              alt="Migraine Navigator Dashboard"
-              className={styles.dashboardImage}
-            />
-          </div>
-
-          <div className={styles.descSection}>
-            <Heading as="h2">Biological & Meteorological Intelligence</Heading>
-            <p>
-              A local-first predictive engine that correlates
-              weather patterns with personal biomarkers to forecast risk.
-            </p>
+          <div className="container">
+            <div className={styles.dashboardContainer}>
+              <img
+                src="https://raw.githubusercontent.com/AreTaj/Migraine-Navigator/main/screenshots/dashboard.png"
+                alt="Migraine Navigator Dashboard"
+                className={styles.dashboardImage}
+              />
+            </div>
           </div>
         </div>
+
+        {/* Features Section */}
+        <section className={styles.features}>
+          <div className="container">
+            <div className="row">
+              {FeatureList.map((props, idx) => (
+                <Feature key={idx} {...props} />
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
     </Layout>
   );

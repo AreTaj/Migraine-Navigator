@@ -7,6 +7,8 @@ on:
     # Only run this if files in the 'website' folder change
     paths:
       - 'website/**'
+  workflow_dispatch:
+
 
 permissions:
   contents: write

@@ -1,27 +1,29 @@
-/* Dark & Gold Theme Enforced */
+/* Component-specific styles for Homepage */
+/* Note: Global variables like --ifm-color-primary are defined in custom.css */
+
 .heroBanner {
   padding: 4rem 0;
   text-align: center;
   position: relative;
-  background: linear-gradient(180deg, #1b1b1d 0%, #242526 100%);
-  color: #fff;
-  border-bottom: 1px solid #333;
+  /* Background corresponds to light/dark mode overrides in custom.css for .heroBanner */
 }
 
 .heroTitle {
   font-size: 3.5rem;
   font-weight: 800;
-  /* Gold Gradient Text */
-  background: linear-gradient(to right, #d4af37, #f5e4a8);
+  margin-bottom: 1rem;
+  background: linear-gradient(to right, var(--ifm-color-primary), var(--ifm-color-primary-lighter));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1rem;
 }
 
 .heroSubtitle {
   font-size: 1.5rem;
-  color: #e6c65c;
+  color: var(--color-text-secondary);
   margin-bottom: 2rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .buttons {
@@ -30,38 +32,12 @@
   gap: 20px;
 }
 
-/* --- NEW: High Contrast Gold Button --- */
-.goldButton {
-  background-color: #d4af37 !important;
-  /* Force Gold Background */
-  color: #000000 !important;
-  /* Force Black Text */
-  border: 2px solid #d4af37;
-  font-weight: 800;
-  /* Bold Text */
-  padding: 12px 30px;
-  border-radius: 8px;
-  text-decoration: none !important;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  display: inline-block;
-}
-
-.goldButton:hover {
-  transform: translateY(-2px);
-  /* Slight lift on hover */
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
-  /* Gold Glow */
-  color: #000000 !important;
-  text-decoration: none;
-}
-
-/* ------------------------------------- */
-
+/* Dashboard Section */
 .dashboardSection {
   padding: 0 1rem 4rem;
   text-align: center;
-  background-color: #1b1b1d;
-  color: #fff;
+  /* Background uses standard Docusaurus variable which creates contrast in both modes */
+  background-color: var(--ifm-background-color);
 }
 
 .dashboardContainer {
@@ -70,10 +46,14 @@
   position: relative;
   z-index: 10;
   padding: 10px;
-  background: rgba(255, 255, 255, 0.05);
+
+  /* Glassmorphism Effect */
+  background: var(--docusaurus-highlighted-code-line-bg);
+  /* Adaptive opacity */
   border-radius: 12px;
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--ifm-color-primary-light);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
   max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
@@ -85,15 +65,20 @@
   display: block;
 }
 
-.descSection {
-  max-width: 800px;
-  margin: 0 auto;
+/* Features Section */
+.features {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  width: 100%;
 }
 
-.descSection h2 {
-  color: #d4af37;
+.featureSvg {
+  height: 200px;
+  width: 200px;
 }
 
+/* Responsive adjustments */
 @media screen and (max-width: 996px) {
   .heroTitle {
     font-size: 2.5rem;
@@ -101,5 +86,10 @@
 
   .buttons {
     flex-direction: column;
+  }
+
+  .dashboardContainer {
+    margin-top: 2rem;
+    /* Remove overlap on mobile for better spacing */
   }
 }
