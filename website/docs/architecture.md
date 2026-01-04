@@ -1,11 +1,11 @@
 ---
 sidebar_position: 1
-title: System Architecture
+title: System Overview
 ---
 
 # Migraine Navigator: Technical System Overview
-**Date:** December 16, 2025
-**Scope:** Data Analytics, AI/ML Architecture, and System Design
+**Current Version:** v0.2.5
+**Scope:** Hybrid AI Architecture, Data Analytics, and System Design
 
 ---
 
@@ -25,48 +25,48 @@ The application follows a modern **Service-Oriented Architecture (SOA)** tailore
 
 ---
 
-## 2. Artificial Intelligence & Machine Learning Pipeline
-The core value proposition of Migraine Navigator is its predictive engine, which employs **Supervised Learning** to forecast migraine risk.
+## 2. Advanced Prediction Engine (Hybrid Architecture)
+The core value proposition of Migraine Navigator is its predictive engine, which employs a **Hybrid Strategy** to forecast migraine risk. This approach solves the "Cold Start" problem inherent in pure ML systems.
 
-### 2.1 Model Architecture
-We utilize a dual-model approach using **Gradient Boosting Decision Trees (GBDT)** via `scikit-learn`.
-1.  **Risk Classifier (`GradientBoostingClassifier`)**:
-    * **Task**: Binary Classification (Will a migraine occur? Yes/No).
-    * **Output**: Probability Score (P from 0 to 1).
-    * **Calibration**: Threshold-tuned (e.g., > 0.2 = Moderate Risk) based on user sensitivity.
-2.  **Severity Regressor (`GradientBoostingRegressor`)**:
-    * **Task**: Regression (Predicted Pain Level 0-10).
-    * **Target**: Log-transformed Pain Level (log(1 + y)) to handle zero-inflated targets and enforce non-negativity.
+### 2.1 Hybrid Strategy
+1.  **Bayesian Heuristic Engine (New Users)**: 
+    *   Provides immediate, personalized predictions from Day 1.
+    *   Bridges the gap until sufficient history exists by utilizing user-calibrated settings (sensitivity to Weather, Sleep, Stress).
+2.  **Gradient Boosting ML (Established Users)**: 
+    *   Automatically takes over once enough data is collected (typically ~30-50 logs).
+    *   Detects complex, non-linear patterns unique to your biology using **Gradient Boosting Decision Trees (GBDT)** via `scikit-learn`.
 
-### 2.2 Feature Engineering (`predict_future.py`)
+### 2.2 The 24-Hour Risk Engine ("Truth Propagation")
+Training a pure ML model for hourly predictions requires unrealistic, massive labeled datasets (hourly logs). We solve this with a 3-step hybrid approach:
+
+1.  **Step 1 (The Anchor)**: The proven **Daily ML Model** predicts the overall risk intensity for the day (e.g., "69% Risk") based on deep historical patterns.
+2.  **Step 2 (The Curve)**: A granular **Heuristic Engine** calculates relative risk for every hour based on circadian rhythms, real-time weather shifts (Open-Meteo), and medication half-lives.
+3.  **Step 3 (Calibration)**: The hourly curve is mathematically scaled so that its peak matches the Daily ML "Truth". 
+    *   *Result*: The **accuracy** of the ML model + the **temporal resolution** of the heuristic engine.
+
+### 2.3 Feature Engineering (`predict_future.py`)
 Raw data is transformed into a dense feature vector X containing ~24 dimensions:
 
 * **Temporal Features**:
-    * Cyclical Encoding: `DayOfWeek_sin`, `DayOfWeek_cos`, `Month_sin`, `Month_cos`. This preserves the proximity between "Sunday" (6) and "Monday" (0).
-* **Meteorological Features** (Source: Open-Meteo API):
-    * **Thermodynamics**: Temperature (T_max, T_min, T_avg), Humidity (H_rel).
-    * **Barometrics**: Surface Pressure (P_surf) and 24-hour Delta (Delta_P).
-    * **Solar**: Sunshine Duration (Minutes).
+    * Cyclical Encoding: `DayOfWeek_sin`, `DayOfWeek_cos`. Preserves the proximity between "Sunday" and "Monday".
+* **Meteorological Features**:
+    * **Thermodynamics**: Temperature (T_max, T_min), Humidity (H_rel > 70%).
+    * **Barometrics**: Surface Pressure and **Pressure Instability** (24h Delta).
 * **Autoregressive (Lag) Features**:
-    * Captures the "Memory" of the disease.
-    * **Lags**: t-1, t-2, t-3, t-7 days.
-    * **Rolling Statistics**: Rolling Mean (3-day, 7-day window) to detect flare-up clusters.
-* **Lifestyle Inputs**:
-    * Sleep Quality (Ordinal 1-3) and Physical Activity (Ordinal 0-3).
-    * *Note: Missing values are imputed with medians (`2.0`, `1.5`) to prevent model drift.*
+    * Captures the "Memory" of the disease (Lags: t-1 to t-7 days).
+    * **Rolling Statistics**: Detection of flare-up clusters.
 
 ---
 
 ## 3. Data Analytics & Visualization
-The analytics engine transforms raw logs into actionable intelligence on the client side.
 
-### 3.1 Real-time Aggregation (`Dashboard.jsx`)
-* **Dynamic Metrics**: Calculations like "Average Days/Month" are computed dynamically based on the *actual* data span (e.g., dividing by 3 months for a new user vs 12 for an existing one).
-* **Unit Consistency**: Strict type enforcement ensures alignment between Backend (Integers/Floats) and Frontend (Strings from Forms).
+### 3.1 Real-time Aggregation
+* **Dynamic Metrics**: Calculations like "Average Days/Month" are computed dynamically based on the actual data span.
+* **Medication Analysis**: "Pain-Based" usage tracking that filters out pain-free days for more accurate frequency analysis.
 
 ### 3.2 Forecasting Engine
-* **Batch Processing**: The 7-Day Forecast generates predictions in bulk. It fetches a single JSON packet from Open-Meteo containing 7 days of hourly data, processes it into 7 feature vectors, and runs batch inference in less than 0.8s.
-* **Caching Strategy**: Predictions are cached in-memory with a 1-hour TTL (Time-To-Live). This prevents API rate-limiting and ensures instant dashboard reloads.
+* **Recursive Forecasting**: The 7-Day Forecast simulates the future day-by-day, allowing "Cluster" patterns (migraines following migraines) to emerge naturally.
+* **Caching Strategy**: Predictions are cached in-memory with a 1-hour TTL (Time-To-Live) to prevent API rate-limiting.
 
 ---
 
@@ -74,3 +74,10 @@ The analytics engine transforms raw logs into actionable intelligence on the cli
 * **Core ML**: `scikit-learn`, `numpy`, `pandas`, `joblib`.
 * **Server**: `uvicorn`, `fastapi`, `pydantic`.
 * **External Data**: Open-Meteo (Free, Non-Commercial License compatible for personal tools).
+
+---
+
+## 5. Licensing
+**Source-Available (PolyForm Noncommercial 1.0.0)**
+*   **Privacy-First**: Personal health data never leaves the user's machine.
+*   **Transparency**: The codebase opens the "black box" on how the AI works, without surrendering commercial rights.
