@@ -46,6 +46,12 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
 ![Medications Registry](screenshots/medications.png)
 *Centralized registry for managing medication types, dosages, and frequencies (Acute vs. Preventative).*
 
+![Triggers Registry](screenshots/triggers.png)
+*Manage and group lifestyle triggers with color-coding and categories.*
+
+![Settings View](screenshots/settings.png)
+*Customize prediction sensitivity, theme preferences, and data management.*
+
 ## Documentation
     
 For deep dives into the system architecture and AI logic:

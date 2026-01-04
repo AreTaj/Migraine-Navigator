@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
@@ -86,7 +87,7 @@ export default function Home() {
           <div className="container">
             <div className={styles.dashboardContainer}>
               <img
-                src="https://raw.githubusercontent.com/AreTaj/Migraine-Navigator/main/screenshots/dashboard.png"
+                src={useBaseUrl('img/dashboard.png')}
                 alt="Migraine Navigator Dashboard"
                 className={styles.dashboardImage}
               />
