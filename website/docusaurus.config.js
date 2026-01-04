@@ -52,7 +52,7 @@ const config = {
         title: 'Migraine Navigator',
         logo: {
           alt: 'Migraine Navigator Logo',
-          src: 'img/favicon.ico',
+          src: 'img/logo.png',
         },
         items: [
           {
