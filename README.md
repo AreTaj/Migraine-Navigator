@@ -52,12 +52,26 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
 ![Settings View](screenshots/settings.png)
 *Customize prediction sensitivity, theme preferences, and data management.*
 
+## Technical Highlights
+
+Migraine Navigator runs deeply personalized AI **locally on your device**.
+
+### [Hybrid Prediction Engine](documentation/prediction_engine.md)
+*   **Bayesian Heuristic Engine**: Provides immediate value for new users using calibrated sensitivity settings.
+*   **Gradient Boosting ML**: Automatically takes over as your data grows to detect complex, non-linear patterns.
+
+### [24-Hour Risk Engine](documentation/prediction_engine.md)
+Uses a novel **"Truth Propagation"** technique where the daily ML prediction "anchors" a high-resolution heuristic curve, delivering granular hourly risk scores without requiring hourly user logs.
+
+> [!TIP]
+> **[Read the full Deep Dive on the Prediction Engine](documentation/prediction_engine.md)**
+
 ## Documentation
     
-For deep dives into the system architecture and AI logic:
+For deeper technical details:
 
-*   **[Technical System Overview](documentation/technical_system_overview.md)**: Details the FastAPI/Tauri architecture and the "Hurdle Model" ML strategy.
-*   **[Model Optimization Study](documentation/model_optimization_study.md)**: The "Perfect Storm" experiment finding the maximum risk triggers (N=80,640 simulations).
+*   **[Technical System Overview](documentation/technical_system_overview.md)**: Details the FastAPI/Tauri architecture.
+*   **[Model Optimization Study](documentation/model_optimization_study.md)**: The "Perfect Storm" experiment (N=80,640 simulations).
 
 ## Installation
 
@@ -66,107 +80,17 @@ For deep dives into the system architecture and AI logic:
 2. Download the latest `.dmg` file (e.g., `Migraine Navigator_0.2.5_aarch64.dmg`).
 3. Drag the app to your Applications folder.
 
-### Developer Setup
-1.  **Clone the Repository**
-2.  **Backend Setup**:
-    ```bash
-    python -m venv .venv
-    source .venv/bin/activate  # or .venv\Scripts\activate on Windows
-    pip install -r requirements.txt
-    ```
-3.  **Frontend Setup**:
-    ```bash
-    cd frontend
-    npm install
-    ```
-
 ## Usage
 
 **For Users:**
 Launch "Migraine Navigator" from your Applications folder.
 
-**For Developers (Debug Mode):**
-To run the application in development mode, you need two terminals:
+## Contributing
 
-**Terminal 1: Backend API**
-```bash
-source .venv/bin/activate
-uvicorn api.main:app --reload
-```
-*Runs on http://127.0.0.1:8000*
+Interested in building locally or understanding the code structure?
 
-**Terminal 2: Frontend App**
-```bash
-cd frontend
-npm run dev
-```
-*Launches the Desktop Window*
-
-### Automated Sidecar Management
-The application features **environment-aware** backend logic:
-*   **Development Mode (`npm run dev`)**: The bundled sidecar is **DISABLED**. The app connects to your manually running `uvicorn` instance (Terminal 1) and uses the local Project Database (`data/migraine_log.db`).
-*   **Release Mode (Packaged App)**: The sidecar is **ENABLED**. The app automatically spawns the managed backend process and uses the System Database (`~/Library/Application Support/...`).
-
-## File Structure
-
-```
-Migraine Navigator/
-├── api/                     # FastAPI Backend (Process Management: psutil)
-│   ├── routes/              # API Endpoints (Entries, Analysis)
-│   └── main.py              # Server Entry Point
-├── frontend/                # React + Tauri Frontend
-│   ├── src/                 # UI Source Code
-│   │   ├── pages/           # Dashboard, LogEntry, History
-│   │   └── App.jsx          # Main Router
-│   └── src-tauri/           # Rust Backend (Window Management)
-├── services/                # Business Logic Layer (Pure Python/SQLite)
-├── prediction/              # ML Pipeline (Training & Inference)
-├── scripts/                 # Utility Scripts (Latency, Simulation)
-├── documentation/           # Technical Reports & Architecture
-├── data/                    # Database (migraine_log.db)
-└── ...
-```
-
-## Release Process
-1.  **Build**: Run `./scripts/package_app.sh` to generate the DMG.
-2.  **Verify**: Check `releases/` for the new artifact.
-3.  **Upload**: Use the robust upload script to handle network instability:
-    ```bash
-    ./scripts/robust_upload.sh v0.2.5 releases/Migraine_Navigator_0.2.5_aarch64.dmg
-    ```
-
-- **Advanced Prediction Engine:**
-    - **Hybrid Architecture**:
-        - **Bayesian Heuristic Engine (New Users)**: Provides immediate, personalized predictions from Day 1. It bridges the "Cold Start" gap by using your calibrated settings (sensitivity to Weather, Sleep, Stress) until sufficient history exists.
-        - **Gradient Boosting ML (Established Users)**: Automatically takes over once enough data is collected to detect complex, non-linear patterns unique to your biology.
-    - **Recursive Forecasting**: The 7-Day Forecast simulates the future day-by-day, allowing "Cluster" patterns (migraines following migraines) to emerge naturally.
-    - **Enhanced Triggers**: Now accounts for Rain (>0.5mm), High Humidity (>70%), and pressure instability.
-    - **24-Hour Risk Engine (Truth Propagation)**: 
-        - Because training a pure ML model for hourly predictions requires unrealistic,massive labeled datasets with hourly log entries, we use a hybrid approach.
-        - **Step 1**: The powerful and proven Daily ML Model predicts the overall risk intensity for the day (e.g., "69% Risk") based on deep historical patterns.
-        - **Step 2**: A granular Heuristic Engine calculates the relative risk for every hour based on circadian rhythms, weather shifts, and medication half-lives.
-        - **Step 3 (Calibration)**: The hourly curve is mathematically scaled so that its peak matches the Daily ML "Truth". This provides the best of both worlds: the *accuracy* of the ML model with the *temporal resolution* of the heuristic engine.
-
-## Testing
-
-To run the automated tests:
-
-```bash
-python -m pytest tests/
-```
-
-## Future Roadmap
-
-The development plan is organized into feature clusters:
-
-**Cluster 2: Data Management Improvements**
-- **[Issue #35] Triggers Registry**: A dedicated tab to manage known triggers (e.g. 'Cheese', 'Stress') with autocomplete integration in the daily log.
-
-**Cluster 3: Advanced Analysis & Explanation**
-- **[Issue #36] Risk Decomposition**: SHAP-style explanation for *daily* predictions (e.g., "Why is tomorrow High Risk? -> Because Pressure dropped 10hPa").
-- **[Issue #28] Global Feature Importance**: Overall correlation analysis to identify a user's primary long-term triggers.
-- **[Issue #27] Medication Efficacy**: Statistical analysis of pain reduction following specific acute medication doses.
-- **[Issue #30] Migraine Simulator**: "What-If" analysis tool allowing users to adjust sliders (e.g. Sleep, Activity) to see how it impacts their immediate risk.
+*   See **[CONTRIBUTING.md](CONTRIBUTING.md)** for developer setup, file structure, and testing instructions.
+*   See **[ROADMAP.md](ROADMAP.md)** for correct future plans.
 
 ## Changelog
 See [CHANGELOG.md](CHANGELOG.md) for a detailed history of changes.
