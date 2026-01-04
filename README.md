@@ -106,7 +106,7 @@ This project is licensed under the **PolyForm Noncommercial License 1.0.0**.
 
 This project serves as a technical portfolio piece and a "proof of concept" for future cross-platform development. For inquiries regarding commercial licensing or professional collaboration, please reach out via [LinkedIn](https://linkedin.com/in/aresh-tajvar).
 
-See the [LICENSE](LICENSE) file for the full legal text.
+See the [LICENSE](LICENSE.md) file for the full legal text.
 
 ### Why this License? (Developer Note)
 
