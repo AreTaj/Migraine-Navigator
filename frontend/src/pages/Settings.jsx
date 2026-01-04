@@ -73,7 +73,10 @@ const Settings = () => {
                 >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <h3>Hybrid Engine Calibration</h3>
-                        <span className="badge" style={{ background: priors.force_heuristic_mode ? '#f59e0b' : '#3b82f6' }}>
+                        <span className="badge" style={{
+                            background: priors.force_heuristic_mode ? '#f59e0b' : '#3b82f6',
+                            color: priors.force_heuristic_mode ? '#000' : '#fff'
+                        }}>
                             {priors.force_heuristic_mode ? 'Manual Rules' : 'AI Enhanced'}
                         </span>
                     </div>
@@ -116,7 +119,7 @@ const Settings = () => {
                                             borderRadius: '6px',
                                             border: 'none',
                                             background: priors.force_heuristic_mode ? '#f59e0b' : 'transparent',
-                                            color: priors.force_heuristic_mode ? '#fff' : '#94a3b8',
+                                            color: priors.force_heuristic_mode ? '#000' : '#94a3b8',
                                             cursor: 'pointer',
                                             fontWeight: 500,
                                             transition: 'all 0.2s'
@@ -129,7 +132,10 @@ const Settings = () => {
                         <div className="setting-row">
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
                                 <label>Baseline Frequency</label>
-                                <span className="badge">
+                                <span className="badge" style={{
+                                    background: priors.force_heuristic_mode ? '#f59e0b' : '#3b82f6',
+                                    color: priors.force_heuristic_mode ? '#000' : '#fff'
+                                }}>
                                     {priors.baseline_risk < 0.3 ? 'Rare' : priors.baseline_risk < 0.6 ? 'Frequent' : 'Chronic'}
                                 </span>
                             </div>
@@ -147,7 +153,10 @@ const Settings = () => {
                         <div className="setting-row">
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
                                 <label>Weather Sensitivity</label>
-                                <span className="badge">{(priors.weather_sensitivity * 10).toFixed(0)}</span>
+                                <span className="badge" style={{
+                                    background: priors.force_heuristic_mode ? '#f59e0b' : '#3b82f6',
+                                    color: priors.force_heuristic_mode ? '#000' : '#fff'
+                                }}>{(priors.weather_sensitivity * 10).toFixed(0)}</span>
                             </div>
                             <small style={{ color: '#888', display: 'block', marginBottom: '0.5rem' }}>
                                 Impact of pressure drops & temp swings
@@ -163,7 +172,10 @@ const Settings = () => {
                         <div className="setting-row">
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
                                 <label>Sleep Sensitivity</label>
-                                <span className="badge">{(priors.sleep_sensitivity * 10).toFixed(0)}</span>
+                                <span className="badge" style={{
+                                    background: priors.force_heuristic_mode ? '#f59e0b' : '#3b82f6',
+                                    color: priors.force_heuristic_mode ? '#000' : '#fff'
+                                }}>{(priors.sleep_sensitivity * 10).toFixed(0)}</span>
                             </div>
                             <small style={{ color: '#888', display: 'block', marginBottom: '0.5rem' }}>
                                 Impact of irregular sleep or debt
@@ -179,7 +191,10 @@ const Settings = () => {
                         <div className="setting-row">
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
                                 <label>Physical/Mental Strain</label>
-                                <span className="badge">{(priors.strain_sensitivity * 10).toFixed(0)}</span>
+                                <span className="badge" style={{
+                                    background: priors.force_heuristic_mode ? '#f59e0b' : '#3b82f6',
+                                    color: priors.force_heuristic_mode ? '#000' : '#fff'
+                                }}>{(priors.strain_sensitivity * 10).toFixed(0)}</span>
                             </div>
                             <small style={{ color: '#888', display: 'block', marginBottom: '0.5rem' }}>
                                 Impact of stress or exhaustion
