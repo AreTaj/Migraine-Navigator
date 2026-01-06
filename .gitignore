@@ -55,6 +55,8 @@ data/*
 scripts/*
 !scripts/package_app.sh
 !scripts/robust_upload.sh
+!scripts/api_entry.py
+
 
 
 # Logs
