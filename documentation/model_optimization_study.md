@@ -1,4 +1,4 @@
-# Migraine Risk Model Analysis: The "Perfect Storm" Protocol
+# Migraine Risk Model Analysis: The "Perfect Storm" Simulation
 **Date:** December 16, 2025  
 **Subject:** Optimization Study of Predictive Triggers
 

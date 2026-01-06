@@ -59,9 +59,27 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'System Overview', // Fixed label
+            label: 'System Overview',
           },
-          { to: '/blog', label: 'Perfect Storm Study', position: 'left' }, // Fixed label
+          {
+            type: 'doc',
+            docId: 'patients',
+            position: 'left',
+            label: 'For Patients',
+          },
+          {
+            type: 'doc',
+            docId: 'practitioners',
+            position: 'left',
+            label: 'For Practitioners',
+          },
+          {
+            type: 'doc',
+            docId: 'researchers',
+            position: 'left',
+            label: 'For Researchers',
+          },
+          { to: '/blog', label: 'Perfect Storm Study', position: 'left' },
           {
             href: 'https://github.com/AreTaj/Migraine-Navigator',
             label: 'GitHub',

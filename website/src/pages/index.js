@@ -9,11 +9,11 @@ import styles from './index.module.css';
 
 const FeatureList = [
   {
-    title: 'Biological Intelligence',
+    title: 'Latent Pattern Recognition',
     description: (
       <>
-        Track your personal biomarkers and patterns to understand your unique
-        migraine triggers using advanced analytics.
+        Identify hidden correlations between your lifestyle, environment, and migraine
+        attacks using advanced non-linear analysis.
       </>
     ),
   },
@@ -22,7 +22,7 @@ const FeatureList = [
     description: (
       <>
         Correlate local weather data—pressure changes, temperature, and humidity—
-        with your health metrics for precise risk forecasting.
+        with your health metrics for multidimensional risk forecasting.
       </>
     ),
   },
@@ -79,7 +79,7 @@ export default function Home() {
   return (
     <Layout
       title="Home"
-      description="N=1 Migraine Prediction Engine">
+      description="Personalized Migraine Analysis">
       <HomepageHeader />
       <main>
         {/* Dashboard Section */}

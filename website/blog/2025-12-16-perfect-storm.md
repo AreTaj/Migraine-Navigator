@@ -1,6 +1,6 @@
 ---
 slug: perfect-storm
-title: The Perfect Storm Protocol
+title: The Perfect Storm Simulation
 authors:
   - name: Aresh Tajvar
     url: https://github.com/AreTaj
