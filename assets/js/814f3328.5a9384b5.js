@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkwebsite=globalThis.webpackChunkwebsite||[]).push([[472],{5513(e){e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"The Perfect Storm Protocol","permalink":"/Migraine-Navigator/blog/perfect-storm","unlisted":false,"date":"2025-12-16T00:00:00.000Z"}]}')}}]);
