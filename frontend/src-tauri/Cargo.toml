@@ -1,6 +1,6 @@
 [package]
 name = "frontend"
-version = "0.2.4"
+version = "0.2.6"
 description = "Migraine Navigator Desktop App"
 authors = ["Aresh Tajvar"]
 edition = "2021"

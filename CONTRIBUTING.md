@@ -72,5 +72,5 @@ Migraine Navigator/
 2.  **Verify**: Check `releases/` for the new artifact.
 3.  **Upload**: Use the robust upload script to handle network instability:
     ```bash
-    ./scripts/robust_upload.sh v0.2.5 releases/Migraine_Navigator_0.2.5_aarch64.dmg
+    ./scripts/robust_upload.sh v0.2.6 releases/Migraine_Navigator_0.2.6_aarch64.dmg
     ```

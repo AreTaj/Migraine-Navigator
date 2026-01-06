@@ -10,6 +10,7 @@ The application follows a modern **Service-Oriented Architecture (SOA)** tailore
 *   **Frontend (Presentation Layer)**:
     *   **Framework**: React 18 (Vite)
     *   **Visualization**: Recharts (D3-based) for high-performance time-series rendering.
+    *   **Services Layer**: Decoupled API logic (`medicationService`, `triggerService`, `entryService`) to abstract database interactions from UI components.
     *   **State Management**: React Hooks + Local Component State (optimized for reduced complexity).
 *   **Backend (Application Layer)**:
     *   **Server**: FastAPI (Python 3.10+), running as a sidecar subprocess.

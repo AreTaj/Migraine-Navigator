@@ -3,6 +3,19 @@
 All notable changes to the "Migraine Navigator" project will be documented in this file.
 
 
+## [v0.2.6] - 2026-01-05
+### Added Features
+- **Migraine-Friendly UI Redesign**:
+    - **Pain Slider**: Replaced numeric input with a large, color-coded gradient slider (Green → Red) for intuitive pain reporting.
+    - **Smart Pills**: Replaced dropdowns with single-tap toggle buttons for Medications and Triggers. Items are automatically sorted by your specific usage history.
+    - **Activity Icons**: Replaced abstract weather icons with clear physical activity metaphors (Armchair, Walk, Bike, Dumbbell).
+    - **Context Card**: Unified "Details" section that stays out of the way, auto-capturing Time/Location while keeping the interface clean.
+    - **Sticky Save**: The "Save Entry" button is now sticky at the bottom of the viewport, ensuring it's always accessible without scrolling on any device.
+
+### Technical
+- **Frontend Services Layer**: Decoupled API logic into `medicationService`, `triggerService`, and `entryService` for better separation of concerns and testability.
+- **Usage Tracking**: Backend now tracks `usage_count` for every medication and trigger, enabling smart sorting in the UI.
+
 ## [v0.2.5] - 2026-01-03
 ### Added
 - **Prediction Mode Control**: Added a clear "Auto (AI) / Manual (Rules)" selector in Settings.

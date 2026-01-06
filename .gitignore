@@ -41,6 +41,7 @@ frontend/src-tauri/binaries/
 
 # Ignore other directories
 models/
+graphics/
 
 # Ignore everything in data/
 data/*

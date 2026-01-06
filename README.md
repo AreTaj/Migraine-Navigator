@@ -20,8 +20,10 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
     - **Prediction Mode**: Toggle between "Auto (AI)" and "Manual (Rules)" forecasting engines.
 - **Detailed Logging:** 
     - **Smart Geolocation**: IP-based location tagging for accurate weather correlation without intrusive permissions.
-    - **Medication Management**: Dedicated registry for tracking doses, frequencies, and stock.
-    - **Log Date, Time, Pain Level, Sleep Quality, Physical Activity, Triggers.**
+    - **Migraine-Friendly Design**: Large, high-contrast touch targets designed for reduced cognitive load during pain.
+    - **One-Tap Logging**: "Smart Pills" for medications and triggers, sorted by your most frequent usage.
+    - **Pain Slider**: Intuitive gradient slider with dynamic labels (Mild/Moderate/Severe) and color reinforcement.
+    - **Context Awareness**: "Context Card" auto-captures time and location, expanding only when specific edits (Notes, Date) are needed.
 - **History Management:** 
     - **Performance Optimized**: Date-based filtering (Last 7 Days, 30 Days, etc.) for instant loading.
     - **TimeZone Aware**: Intelligent date handling ensuring "Today" means *your* today, regardless of when you log.
@@ -77,7 +79,7 @@ For deeper technical details:
 
 ### Download (macOS)
 1. Go to the [Releases](https://github.com/AreTaj/Migraine-Navigator/releases) page.
-2. Download the latest `.dmg` file (e.g., `Migraine Navigator_0.2.5_aarch64.dmg`).
+2. Download the latest `.dmg` file (e.g., `Migraine Navigator_0.2.6_aarch64.dmg`).
 3. Drag the app to your Applications folder.
 
 ## Usage

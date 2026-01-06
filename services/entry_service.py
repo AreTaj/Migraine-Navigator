@@ -97,8 +97,17 @@ class EntryService:
 
         # Handle Medications JSON
         if 'Medications' in data and isinstance(data['Medications'], list):
+            # Extract names for usage tracking BEFORE dumping to JSON
+            med_names = [m.get('name') for m in data['Medications'] if isinstance(m, dict) and m.get('name')]
             data['Medications'] = json.dumps(data['Medications'])
+        else:
+            med_names = []
         
+        # Extract Triggers for usage tracking
+        trigger_names = []
+        if 'Triggers' in data and data['Triggers']:
+             trigger_names = [t.strip() for t in data['Triggers'].split(',') if t.strip()]
+
         # Ensure legacy columns are empty/default
         if 'Medication' not in data: data['Medication'] = ""
         if 'Dosage' not in data: data['Dosage'] = ""
@@ -117,6 +126,22 @@ class EntryService:
             cur.execute(sql, list(data.values()))
             conn.commit()
             conn.close()
+            
+            # --- Usage Tracking Increment ---
+            try:
+                # Import services here to avoid circular dependencies if any (though typically fine at top, safer here if modules import models)
+                from services.medication_service import MedicationService
+                from services.trigger_service import TriggerService
+                
+                if med_names:
+                    MedicationService.increment_usage(med_names, db_path)
+                    
+                if trigger_names:
+                    TriggerService.increment_usage(trigger_names, db_path)
+            except Exception as usage_err:
+                print(f"Warning: Failed to increment usage counts: {usage_err}")
+                # Don't fail the entry save just because stats failed
+                
         except Exception as e:
             raise ValueError(f"Database error: {e}")
             
