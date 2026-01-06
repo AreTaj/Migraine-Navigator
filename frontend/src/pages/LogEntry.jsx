@@ -255,7 +255,7 @@ function LogEntry() {
                     <div className="pain-prompt">How bad is the pain?</div>
                     <div className="pain-display">
                         <div className="pain-value" style={{
-                            color: formData.Pain_Level >= 7 ? '#ff6b6b' : (formData.Pain_Level >= 4 ? '#ffd43b' : '#69db7c')
+                            color: formData.Pain_Level >= 7 ? '#a33b3b' : (formData.Pain_Level >= 4 ? '#d4af37' : '#5b8c5a')
                         }}>
                             {formData.Pain_Level}
                         </div>

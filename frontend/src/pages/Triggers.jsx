@@ -227,12 +227,12 @@ function Triggers() {
                         <h3>Top Triggers</h3>
                     </div>
                     <div className="range-selector" style={{ background: '#333', padding: '4px', borderRadius: '6px', display: 'flex', gap: '8px', alignItems: 'center' }}>
-                        <label style={{ fontSize: '0.8rem', color: '#888', marginRight: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                        <label style={{ fontSize: '0.8rem', color: '#888', marginRight: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
                             <input
                                 type="checkbox"
                                 checked={groupByCategory}
                                 onChange={(e) => setGroupByCategory(e.target.checked)}
-                                style={{ marginRight: '4px' }}
+                                style={{ margin: 0, width: 'auto', cursor: 'pointer' }}
                             />
                             Group
                         </label>
