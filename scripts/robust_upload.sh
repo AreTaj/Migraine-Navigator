@@ -45,7 +45,10 @@ fi
 echo "Found Release ID: $RELEASE_ID"
 echo "Starting Upload via curl (HTTP/1.1 forced)..."
 
-UPLOAD_URL="https://uploads.github.com/repos/$OWNER/$REPO/releases/$RELEASE_ID/assets?name=$FILENAME"
+# URL Encode the filename to handle spaces safely
+ENCODED_FILENAME=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "$FILENAME")
+
+UPLOAD_URL="https://uploads.github.com/repos/$OWNER/$REPO/releases/$RELEASE_ID/assets?name=$ENCODED_FILENAME"
 
 # Robust Curl Command
 # -v: Verbose (to see handshake)
