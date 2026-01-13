@@ -122,18 +122,6 @@ function HomepageHeader() {
           {siteConfig.title}
         </Heading>
         <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/architecture">
-            System Overview
-          </Link>
-          <Link
-            className="button button--primary button--lg"
-            to="/blog">
-            "Perfect Storm" Study
-          </Link>
-        </div>
       </div>
     </header>
   );
