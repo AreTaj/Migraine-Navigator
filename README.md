@@ -59,7 +59,7 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
 Migraine Navigator runs a personalized Machine Learning model **locally on your device**.
 
 ### [Hybrid Prediction Engine](documentation/prediction_engine.md)
-*   **Bayesian Heuristic Engine**: Provides immediate value for new users using calibrated sensitivity settings.
+*   **User-Configurable Heuristic Engine**: Provides immediate value for new users using calibrated sensitivity settings.
 *   **Gradient Boosting ML**: Automatically takes over as your data grows to detect complex, non-linear patterns.
 
 ### [24-Hour Risk Engine](documentation/prediction_engine.md)
@@ -74,7 +74,7 @@ For deeper technical details:
 
 *   **[Technical System Overview](documentation/technical_system_overview.md)**: Details the FastAPI/Tauri architecture.
 *   **[Model Optimization Study](documentation/model_optimization_study.md)**: The "Perfect Storm" experiment (N=80,640 simulations).
-*   **[Clinician's Overview](documentation/clinician_overview.md)**: Information for medical professionals on data utility and privacy.
+*   **[Technical Briefing for Clinicians](documentation/clinician_overview.md)**: Information for medical professionals on data utility and privacy.
 *   **[Medical Research Overview](documentation/medical_research_overview.md)**: Deep dive into the methodology, statistical validity, and N-of-1 modeling.
 
 ## Installation

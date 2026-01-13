@@ -29,9 +29,9 @@ The application follows a modern **Service-Oriented Architecture (SOA)** tailore
 The core value proposition of Migraine Navigator is its predictive engine, which employs a **Hybrid Strategy** to forecast migraine risk. This approach solves the "Cold Start" problem inherent in pure ML systems.
 
 ### 2.1 Hybrid Strategy
-1.  **Bayesian Heuristic Engine (New Users)**: 
+1.  **User-Configurable Heuristic Engine (New Users)**: 
     *   Provides immediate, personalized predictions from Day 1.
-    *   Bridges the gap until sufficient history exists (< 60 entries) by utilizing user-calibrated settings (sensitivity to Weather, Sleep, Stress).
+    *   Bridges the gap until sufficient history exists (< 60 entries) by utilizing **user-defined sensitivity settings** (Weather, Sleep, Strain).
 2.  **Dual-Stage Hurdle Model (Established Users)**: 
     *   Automatically takes over once enough data is collected (N > 60).
     *   Uses a **Classifier** (Probability of Migraine) + **Regressor** (Severity of Migraine) to handle zero-inflated data.

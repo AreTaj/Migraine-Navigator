@@ -7,10 +7,10 @@
 Migraine Navigator serves as a platform for **high-resolution longitudinal tracking**. The project explores how individualized (N-of-1) machine learning models can identify latent environmental and behavioral triggers that are often obscured in large-scale population studies due to physiological heterogeneity.
 
 ## 2. Statistical Methodology
-The platform addresses the classic "small data" challenge in personalized health through a phased architecture:
+The platform addresses the classic "small data" challenge in personalized health through a phased architecture involving a **User-Configurable Heuristic** (Phase 1) and **Machine Learning** (Phase 2):
 
 ### 2.1 Gradient Boosting Decision Trees (GBDT) & The Hurdle Model
-Migation tracking data is inherently "zero-inflated"—patients have many more healthy days than sick days. Standard regression models often "average out" these zeros, leading to under-prediction of severe events. We utilize a **Two-Stage Hurdle Model** (`XGBoost`/`Scikit-Learn`) to address this:
+Migation tracking data is inherently "zero-inflated"—patients have many more healthy days than sick days. Standard regression models often "average out" these zeros, leading to under-prediction of severe events. We utilize a **Two-Stage Hurdle Model** (`Scikit-Learn`) to address this:
 
 1.  **Binary Classification Stage**: Estimates the probability of $Pain > 0$.
 2.  **Regression Stage**: Estimates the log-severity of pain, conditional on $Pain > 0$.
