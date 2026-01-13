@@ -17,6 +17,8 @@
 # Except specific directories
 !screenshots/
 !screenshots/*
+!website/static/img/
+!website/static/img/*
 !notebooks/
 !notebooks/*
 
@@ -41,12 +43,15 @@ frontend/src-tauri/binaries/
 
 # Ignore other directories
 models/
+!models/tester_model_clf.pkl
+!models/tester_model_reg.pkl
 graphics/
 
 # Ignore everything in data/
 data/*
-# Except for the synthetic_migraine_log.csv file
+# Except for the synthetic data files
 !data/synthetic_migraine_log.csv
+!data/synthetic_migraine_log.db
 
 # Except favicon
 !frontend/public/favicon.ico
