@@ -48,29 +48,68 @@ function Feature({ title, description }) {
   );
 }
 
-function HomepageHeader() {
-  const { siteConfig } = useDocusaurusContext();
+const ScreenshotGallery = [
+  { src: 'img/dashboard.png', label: 'Real-time Predictive Dashboard' },
+  { src: 'img/log.png', label: 'Streamlined Data Entry' },
+  { src: 'img/history.png', label: 'Detailed History Management' },
+  { src: 'img/medications.png', label: 'Medication Registry & Tracking' },
+  { src: 'img/triggers.png', label: 'Trigger Management' },
+  { src: 'img/settings.png', label: 'Customizable Settings' },
+];
+
+function Gallery() {
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const timeoutRef = React.useRef(null);
+
+  const resetTimeout = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  };
+
+  React.useEffect(() => {
+    resetTimeout();
+    timeoutRef.current = setTimeout(
+      () =>
+        setCurrentIndex((prevIndex) =>
+          prevIndex === ScreenshotGallery.length - 1 ? 0 : prevIndex + 1
+        ),
+      4000
+    );
+
+    return () => {
+      resetTimeout();
+    };
+  }, [currentIndex]);
+
   return (
-    <header className={clsx('hero', styles.heroBanner)}>
-      <div className="container">
-        <Heading as="h1" className={styles.heroTitle}>
-          {siteConfig.title}
-        </Heading>
-        <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/architecture">
-            System Overview
-          </Link>
-          <Link
-            className="button button--primary button--lg"
-            to="/blog">
-            "Perfect Storm" Study
-          </Link>
+    <div className={styles.galleryContainer}>
+      <div className={styles.gallerySlide}>
+        <img
+          src={useBaseUrl(ScreenshotGallery[currentIndex].src)}
+          alt={ScreenshotGallery[currentIndex].label}
+          className={styles.dashboardImage}
+        />
+        <div className={styles.galleryCaption}>
+          {ScreenshotGallery[currentIndex].label}
         </div>
       </div>
-    </header>
+
+      <div className={styles.galleryControls}>
+        <div className={styles.galleryDots}>
+          {ScreenshotGallery.map((_, idx) => (
+            <div
+              key={idx}
+              className={clsx(
+                styles.galleryDot,
+                currentIndex === idx && styles.galleryDotActive
+              )}
+              onClick={() => setCurrentIndex(idx)}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -86,11 +125,7 @@ export default function Home() {
         <div className={styles.dashboardSection}>
           <div className="container">
             <div className={styles.dashboardContainer}>
-              <img
-                src={useBaseUrl('img/dashboard.png')}
-                alt="Migraine Navigator Dashboard"
-                className={styles.dashboardImage}
-              />
+              <Gallery />
             </div>
           </div>
         </div>
