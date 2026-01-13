@@ -113,6 +113,32 @@ function Gallery() {
   );
 }
 
+function HomepageHeader() {
+  const { siteConfig } = useDocusaurusContext();
+  return (
+    <header className={clsx('hero', styles.heroBanner)}>
+      <div className="container">
+        <Heading as="h1" className={styles.heroTitle}>
+          {siteConfig.title}
+        </Heading>
+        <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
+        <div className={styles.buttons}>
+          <Link
+            className="button button--secondary button--lg"
+            to="/docs/architecture">
+            System Overview
+          </Link>
+          <Link
+            className="button button--primary button--lg"
+            to="/blog">
+            "Perfect Storm" Study
+          </Link>
+        </div>
+      </div>
+    </header>
+  );
+}
+
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   return (
