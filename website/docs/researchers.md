@@ -9,10 +9,15 @@ Migraine Navigator serves as a platform for **high-resolution longitudinal track
 ## 2. Statistical Methodology
 The platform addresses the classic "small data" challenge in personalized health through a phased architecture:
 
-### 2.1 Gradient Boosting Decision Trees (GBDT)
-Instead of deep learning architectures which require massive datasets, we utilize GBDT (`XGBoost`/`Scikit-Learn`). This approach offers:
-*   **High Gradient Performance**: GBDT excels at minimizing loss on structured tabular data where deep learning is often prone to overfitting on small sample sizes.
-*   **Non-Linear Interaction Capture**: GBDT is exceptionally effective at identifying interaction effects (e.g., the synergistic risk of combined barometric pressure drops and sleep deprivation) that linear models (Logistic Regression) may underestimate.
+### 2.1 Gradient Boosting Decision Trees (GBDT) & The Hurdle Model
+Migation tracking data is inherently "zero-inflated"—patients have many more healthy days than sick days. Standard regression models often "average out" these zeros, leading to under-prediction of severe events. We utilize a **Two-Stage Hurdle Model** (`XGBoost`/`Scikit-Learn`) to address this:
+
+1.  **Binary Classification Stage**: Estimates the probability of $Pain > 0$.
+2.  **Regression Stage**: Estimates the log-severity of pain, conditional on $Pain > 0$.
+
+This approach allows us to:
+*   **Handle Variance**: Accurately model both the *occurrence* and the *severity* independently.
+*   **Capture Non-Linear Interactions**: Identify synergistic risks (e.g., combined barometric pressure drops and sleep deprivation) that linear models (Logistic Regression) may underestimate.
 
 ### 2.2 Feature Engineering & Encoding
 *   **Cyclical Temporal Encoding**: Days of the week and months are transformed using sine/cosine transforms to preserve the mathematical proximity of cyclical boundaries (e.g., ensuring Monday is as "close" to Sunday as it is to Tuesday).

@@ -22,8 +22,11 @@ By correlating high-resolution meteorological data with patient-logged symptoms 
 The application employs a dual-stage predictive pipeline to calibrate performance from the first day of use (the "Cold Start" problem) through long-term observation.
 
 ### 2.1 The Hybrid Engine
-*   **Bayesian Heuristic Bridge**: For new patients with limited data, the system uses an expert-calibrated Bayesian model. This allows for immediate risk assessment based on established clinical triggers (e.g., barometric pressure drops, sleep deprivation).
-*   **Gradient Boosting Decision Trees (GBDT)**: As the patient's longitudinal dataset grows (N > 30 entries), the system transitions to a personalized Machine Learning model (Scikit-Learn). This model detects non-linear interactions unique to that specific patient’s biology that a human analyst might miss.
+*   **Bayesian Heuristic Bridge**: For new patients with limited data (< 60 entries), the system uses an expert-calibrated Bayesian model. This allows for immediate risk assessment based on established clinical triggers (e.g., barometric pressure drops, sleep deprivation).
+*   **Dual-Stage Hurdle Model (GBDT)**: As the patient's longitudinal dataset grows (N > 60 entries), the system transitions to a personalized **Hurdle Model**. Because migraine data is "zero-inflated" (many pain-free days), a single regression model often struggles. We solve this by splitting the problem:
+    1.  **Classifier (The Gate)**: A Binary GBDT predicts the *probability* of a migraine occurring.
+    2.  **Regressor (The Severity)**: A GBDT Regressor predicts the *intensity* (1-10) if a migraine occurs.
+    The final risk profile is a product of these two models, capturing non-linear interactions unique to that specific patient’s biology.
 
 ### 2.2 Truth Propagation (Temporal Detail)
 To provide granular hourly risk assessment without requiring the patient to log every hour, the system uses a **"Truth Propagation"** algorithm. It uses the Daily ML Prediction as a statistical baseline and scales a high-resolution hourly heuristic curve (based on circadian rhythms and real-time weather shifts) to match that anchor.

@@ -31,10 +31,11 @@ The core value proposition of Migraine Navigator is its predictive engine, which
 ### 2.1 Hybrid Strategy
 1.  **Bayesian Heuristic Engine (New Users)**: 
     *   Provides immediate, personalized predictions from Day 1.
-    *   Bridges the gap until sufficient history exists by utilizing user-calibrated settings (sensitivity to Weather, Sleep, Stress).
-2.  **Gradient Boosting ML (Established Users)**: 
-    *   Automatically takes over once enough data is collected (typically ~30-50 logs).
-    *   Detects complex, non-linear patterns unique to your biology using **Gradient Boosting Decision Trees (GBDT)** via `scikit-learn`.
+    *   Bridges the gap until sufficient history exists (< 60 entries) by utilizing user-calibrated settings (sensitivity to Weather, Sleep, Stress).
+2.  **Dual-Stage Hurdle Model (Established Users)**: 
+    *   Automatically takes over once enough data is collected (N > 60).
+    *   Uses a **Classifier** (Probability of Migraine) + **Regressor** (Severity of Migraine) to handle zero-inflated data.
+    *   Detects complex, non-linear patterns unique to your biology using **Gradient Boosting Decision Trees (GBDT)**.
 
 ### 2.2 The 24-Hour Risk Engine ("Truth Propagation")
 Training a pure ML model for hourly predictions requires unrealistic, massive labeled datasets (hourly logs). We solve this with a 3-step hybrid approach:
