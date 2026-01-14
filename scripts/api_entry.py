@@ -100,8 +100,8 @@ if __name__ == "__main__":
                     os._exit(0)
             except Exception as e:
                 logger.error(f"Stdin monitor error: {e}")
-                # If reading standard input fails, safer to assume we are detached
-                os._exit(0)
+                # If reading standard input fails, keep going using signal handlers only
+                return
 
         # Start monitoring in a background thread
         monitor_thread = threading.Thread(target=monitor_stdin, daemon=True)

@@ -4,24 +4,23 @@ from api.main import app
 import os
 from unittest.mock import patch
 import pandas as pd
-
+from api.dependencies import get_db_path_dep
+import shutil
 client = TestClient(app)
 
 class TestAPI(unittest.TestCase):
 
-    @patch('api.routes.entries.get_db_path')
-    @patch('api.routes.analysis.get_db_path')
-    def test_read_root(self, mock_analysis_db, mock_entries_db):
+    def test_read_root(self):
+        # No DB access needed for root, but good to override safely
+        app.dependency_overrides[get_db_path_dep] = lambda: "test_root.db"
         response = client.get("/")
+        app.dependency_overrides = {}
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"message": "Welcome to Migraine Navigator API"})
 
-    @patch('api.routes.entries.get_db_path')
-    @patch('api.routes.analysis.get_db_path')
-    def test_create_and_read_entry(self, mock_analysis_db, mock_entries_db):
+    def test_create_and_read_entry(self):
         test_db = "test_api.db"
-        mock_entries_db.return_value = test_db
-        mock_analysis_db.return_value = test_db
+        app.dependency_overrides[get_db_path_dep] = lambda: test_db
         
         # Clean up
         if os.path.exists(test_db):
@@ -64,12 +63,12 @@ class TestAPI(unittest.TestCase):
         if os.path.exists(test_db):
             os.remove(test_db)
 
-    @patch('api.routes.entries.get_db_path')
-    @patch('api.routes.analysis.get_db_path')
-    def test_analysis_endpoint(self, mock_analysis_db, mock_entries_db):
+    def test_analysis_endpoint(self):
         test_db = "test_api_analysis.db"
-        mock_entries_db.return_value = test_db
-        mock_analysis_db.return_value = test_db
+        app.dependency_overrides[get_db_path_dep] = lambda: test_db
+        
+        # mock_entries_db.return_value = test_db # Removed
+        # mock_analysis_db.return_value = test_db # Removed
         
         if os.path.exists(test_db):
             os.remove(test_db)
@@ -99,14 +98,14 @@ class TestAPI(unittest.TestCase):
         if os.path.exists(test_db):
             os.remove(test_db)
 
-    @patch('api.routes.entries.get_db_path')
-    @patch('api.routes.analysis.get_db_path')
     @patch('services.entry_service.EntryService.get_entries_from_db')
-    def test_read_entry_with_empty_float_fields(self, mock_get_entries, mock_analysis_db, mock_entries_db):
+    def test_read_entry_with_empty_float_fields(self, mock_get_entries):
         """
         Regression test: Ensure API handles empty strings in float fields (Latitude/Longitude)
         gracefully by converting them to None, avoiding 500 errors.
         """
+        # Override DB dependency even if we mock the service, to be safe
+        app.dependency_overrides[get_db_path_dep] = lambda: "test_empty.db"
         # Mock returning a List of Dicts (not DataFrame) as EntryService logic actually does
         mock_get_entries.return_value = [{
             "Date": "2023-10-10",
@@ -130,10 +129,9 @@ class TestAPI(unittest.TestCase):
         self.assertIsNone(data[0]['Latitude'])
         self.assertIsNone(data[0]['Longitude'])
 
-    @patch('api.routes.user.get_db_path')
-    def test_user_priors(self, mock_user_db):
+    def test_user_priors(self):
         test_db = "test_api_priors.db"
-        mock_user_db.return_value = test_db
+        app.dependency_overrides[get_db_path_dep] = lambda: test_db
         
         if os.path.exists(test_db):
             os.remove(test_db)

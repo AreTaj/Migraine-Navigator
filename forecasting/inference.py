@@ -22,13 +22,15 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_DIR = os.path.join(BASE_DIR, '..', 'models')
 MODEL_CLF_PATH = os.path.join(MODEL_DIR, 'best_model_clf.pkl')
 MODEL_REG_PATH = os.path.join(MODEL_DIR, 'best_model_reg.pkl')
+TESTER_CLF_PATH = os.path.join(MODEL_DIR, 'tester_model_clf.pkl')
+TESTER_REG_PATH = os.path.join(MODEL_DIR, 'tester_model_reg.pkl')
 
 # Calibration Constants
 # Limits how much the Daily ML Truth can inflate the Hourly Heuristic shape.
 # 2.5x allows a 20% heuristic to scale to 50%, but prevents 5% -> 50% (noise amplification).
 MAX_CALIBRATION_SCALE = 2.5
 
-DB_PATH = get_db_path()
+# DB_PATH = get_db_path() # Removed global
 
 # Setup logger
 logger = logging.getLogger("inference")
@@ -43,27 +45,52 @@ logger.setLevel(logging.DEBUG)
 
 _clf_model = None
 _reg_model = None
+_tester_clf_model = None
+_tester_reg_model = None
 _prediction_cache = {}
 
-def load_models():
-    global _clf_model, _reg_model
-    if _clf_model is None:
-        import joblib
-        if not os.path.exists(MODEL_CLF_PATH):
-            raise FileNotFoundError("Model files not found")
-        logger.debug("Loading CLF model...")
-        _clf_model = joblib.load(MODEL_CLF_PATH)
-        logger.debug("Loading REG model...")
-        _reg_model = joblib.load(MODEL_REG_PATH)
-    return _clf_model, _reg_model
+def load_models(tester_mode=False):
+    global _clf_model, _reg_model, _tester_clf_model, _tester_reg_model
+    
+    import joblib
+    
+    if tester_mode:
+        if _tester_clf_model is None:
+            if not os.path.exists(TESTER_CLF_PATH):
+                raise FileNotFoundError("Tester Model files not found")
+            logger.debug("Loading TESTER CLF model...")
+            _tester_clf_model = joblib.load(TESTER_CLF_PATH)
+            logger.debug("Loading TESTER REG model...")
+            _tester_reg_model = joblib.load(TESTER_REG_PATH)
+        return _tester_clf_model, _tester_reg_model
+    
+    else:
+        # Production / Local Mode
+        if _clf_model is None:
+            if not os.path.exists(MODEL_CLF_PATH):
+                # Graceful degradation for new users who haven't trained yet
+                # We return None, logic below must handle it
+                return None, None
+            
+            logger.debug("Loading CLF model...")
+            try:
+                _clf_model = joblib.load(MODEL_CLF_PATH)
+                logger.debug("Loading REG model...")
+                _reg_model = joblib.load(MODEL_REG_PATH)
+            except Exception as e:
+                logger.error(f"Error loading models: {e}")
+                return None, None
+                
+        return _clf_model, _reg_model
 
 def clear_prediction_cache():
     global _prediction_cache
     _prediction_cache.clear()
     logger.info("Prediction cache cleared.")
 
-def get_prediction_for_date(target_date_str, weather_override=None):
-    logger.debug(f"Starting prediction for {target_date_str}")
+def get_prediction_for_date(target_date_str, weather_override=None, db_path=None):
+    if db_path is None: db_path = get_db_path() # Fallback for non-request calls
+    logger.debug(f"Starting prediction for {target_date_str} with DB: {os.path.basename(db_path)}")
     
     # 1. Check Cache
     if target_date_str in _prediction_cache:
@@ -81,12 +108,12 @@ def get_prediction_for_date(target_date_str, weather_override=None):
     
     # 2. Coordinate Data Fetching
     # A. History
-    history = get_recent_history(DB_PATH)
+    history = get_recent_history(db_path)
     
     # B. Weather
     weather = weather_override
     if not weather:
-        lat, lon = get_latest_location_from_db(DB_PATH)
+        lat, lon = get_latest_location_from_db(db_path)
         if lat and lon:
             weather = WeatherService.fetch_forecast(lat, lon, target_date)
             if weather:
@@ -107,7 +134,7 @@ def get_prediction_for_date(target_date_str, weather_override=None):
         # Check Force Heuristic Mode
         force_heuristic = False
         try:
-             conn = sqlite3.connect(DB_PATH)
+             conn = sqlite3.connect(db_path)
              cursor = conn.cursor()
              cursor.execute("SELECT value FROM user_settings WHERE key='force_heuristic_mode'")
              row = cursor.fetchone()
@@ -118,9 +145,16 @@ def get_prediction_for_date(target_date_str, weather_override=None):
 
         if force_heuristic:
              logger.info("Force Heuristic Mode enabled. Bypassing ML.")
-             return _run_heuristic_fallback(target_date_str, X, meta)
+             return _run_heuristic_fallback(target_date_str, X, meta, db_path)
 
-        clf, reg = load_models()
+        # detect mode
+        is_tester = 'synthetic' in os.path.basename(db_path)
+        clf, reg = load_models(tester_mode=is_tester)
+        
+        if clf is None or reg is None:
+            logger.info("No ML models available. Falling back to Heuristic.")
+             # Raise exception to trigger the heuristic fallback catch block below
+            raise FileNotFoundError("No models found")
         
         # Safe column ordering
         if hasattr(clf, 'feature_names_in_'):
@@ -148,7 +182,7 @@ def get_prediction_for_date(target_date_str, weather_override=None):
 
     except (FileNotFoundError, Exception) as e:
         logger.warning(f"ML Model unavailable ({e}). Switching to Heuristic Engine.")
-        result = _run_heuristic_fallback(target_date_str, X, meta)
+        result = _run_heuristic_fallback(target_date_str, X, meta, db_path)
         
     # Update Cache
     _prediction_cache[target_date_str] = {
@@ -157,7 +191,8 @@ def get_prediction_for_date(target_date_str, weather_override=None):
     }
     return result
 
-def _run_heuristic_fallback(target_date_str, X, meta):
+def _run_heuristic_fallback(target_date_str, X, meta, db_path=None):
+    if db_path is None: db_path = get_db_path()
     """
     Helper to run Heuristic Predictor when ML fails.
     """
@@ -167,7 +202,7 @@ def _run_heuristic_fallback(target_date_str, X, meta):
     # Fetch User Priors
     user_priors = {}
     try:
-        conn = sqlite3.connect(DB_PATH)
+        conn = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         cursor.execute("SELECT key, value FROM user_settings")
@@ -205,7 +240,8 @@ def _run_heuristic_fallback(target_date_str, X, meta):
         "components": pred.get('components', {})
     }
 
-def get_weekly_forecast(start_date=None):
+def get_weekly_forecast(start_date=None, db_path=None):
+    if db_path is None: db_path = get_db_path()
     """
     Generates a 7-day forecast using Direct Forecasting.
     Each day is predicted independently using the same recent history, 
@@ -217,50 +253,44 @@ def get_weekly_forecast(start_date=None):
     if start_date is None:
         start_date = datetime.datetime.now() + timedelta(days=1)
     
-    lat, lon = get_latest_location_from_db(DB_PATH)
-    if not lat: lat, lon = 34.05, -118.25
-        
-    weather_map = WeatherService.fetch_weekly(start_date, lat, lon)
+    lat, lon = get_latest_location_from_db(db_path)
+    
+    weather_map = {}
+    if lat and lon:
+        weather_map = WeatherService.fetch_weekly(start_date, lat, lon)
+    
     # Get history ONCE. We will use this same history for all future days.
     # This assumes that "Recent History" is constant relative to the forecast window.
-    base_history_df = get_recent_history(DB_PATH, days=60)
+    base_history_df = get_recent_history(db_path, days=60)
     
     forecasts = []
     current_date = start_date
     
-    clf, reg = None, None
-    try:
-        clf, reg = load_models()
-    except: pass
-
+    
+    # Check Force Heuristic Mode
+    # (Removed redundant check since get_prediction_for_date handles it)
+    
     for i in range(7):
         date_str = current_date.strftime("%Y-%m-%d")
         day_weather = weather_map.get(date_str)
-        pd_date = pd.to_datetime(current_date)
         
-        # Construct features using the STATIC base_history_df
-        # This effectively treats every forecast day as "Tomorrow" relative to known history
-        X, meta = FeatureEngine.construct_features(pd_date, base_history_df, weather_data=day_weather)
-        
-        prob = 0.0
-        risk = "Unknown"
-        pred_pain = 0.0
-        
-        if clf and reg:
-            try:
-                if hasattr(clf, 'feature_names_in_'): X = X[clf.feature_names_in_]
-                prob = clf.predict_proba(X)[0][1]
-                if prob > 0.6: risk = "High"
-                elif prob > 0.2: risk = "Moderate"
-                else: risk = "Low"
-                
-                pred_log = reg.predict(X)[0]
-                pred_pain = max(0, min(10, np.expm1(pred_log)))
-            except Exception as e:
-                logger.error(f"Weekly Inference Error: {e}")
-        else:
-             # Heuristic Fallback logic (omitted for brevity)
-             pass
+        # Reuse the main prediction pipeline ensures 100% consistency
+        # We inject the pre-fetched weather to avoid N+1 API calls
+        try:
+            pred = get_prediction_for_date(date_str, weather_override=day_weather, db_path=db_path)
+            
+            prob = float(pred.get('probability', 0.0)) / 100.0
+            risk = pred.get('risk_level', 'Low')
+            pred_pain = float(pred.get('predicted_pain', 0.0))
+            
+            # Debug log to verify consistency if needed
+            # logger.info(f"Weekly Day {i}: {prob*100}% ({risk})")
+            
+        except Exception as e:
+            logger.error(f"Weekly Prediction failed for {date_str}: {e}")
+            prob = 0.1
+            risk = "Low"
+            pred_pain = 0.0
 
         forecasts.append({
             "date": date_str,
@@ -269,13 +299,12 @@ def get_weekly_forecast(start_date=None):
             "predicted_pain": round(pred_pain, 1)
         })
         
-        # NO Recursive update of history_df
-        
         current_date += timedelta(days=1)
         
     return forecasts
 
-def get_hourly_forecast(start_date_str):
+def get_hourly_forecast(start_date_str, db_path=None):
+    if db_path is None: db_path = get_db_path()
     import pandas as pd
     from .heuristic_predictor import HeuristicPredictor
     
@@ -283,11 +312,11 @@ def get_hourly_forecast(start_date_str):
         start_date_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
     start_dt = pd.to_datetime(start_date_str)
-    lat, lon = get_latest_location_from_db(DB_PATH)
+    lat, lon = get_latest_location_from_db(db_path)
     if not lat: lat, lon = 34.05, -118.25 # Default LA
     
     full_hourly_weather = WeatherService.fetch_hourly(start_dt, lat, lon, hours=24)
-    history_df = get_recent_history(DB_PATH)
+    history_df = get_recent_history(db_path)
     circadian_priors = FeatureEngine.get_circadian_priors(history_df)
     
     # Init Heuristic
@@ -333,7 +362,7 @@ def get_hourly_forecast(start_date_str):
             # We call the main prediction function which uses ML models
             # NOTE: Recursive check - get_prediction_for_date does NOT call get_hourly_forecast_recursive or similar
             # so this is safe.
-            daily_pred = get_prediction_for_date(date_key)
+            daily_pred = get_prediction_for_date(date_key, db_path=db_path)
             
             if daily_pred and daily_pred.get('probability') is not None:
                 daily_prob = float(daily_pred['probability']) # 0-100

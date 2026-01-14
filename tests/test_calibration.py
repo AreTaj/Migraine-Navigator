@@ -3,6 +3,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 import sys
 import os
+import pandas as pd
 
 # Add project root to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -19,8 +20,10 @@ class TestCalibration(unittest.TestCase):
     # I will patch where it is defined: forecasting.feature_engine.FeatureEngine.get_circadian_priors
     @patch('forecasting.feature_engine.FeatureEngine.get_circadian_priors')
     @patch('forecasting.inference.get_latest_location_from_db')
-    def test_truth_propagation(self, mock_loc, mock_priors, mock_weather_cls, mock_heuristic_cls, mock_daily_pred):
+    @patch('forecasting.inference.get_recent_history')
+    def test_truth_propagation(self, mock_history, mock_loc, mock_priors, mock_weather_cls, mock_heuristic_cls, mock_daily_pred):
         # Setup Mocks
+        mock_history.return_value = pd.DataFrame() # Empty DF is fine since get_circadian_priors is mocked
         mock_loc.return_value = (34.05, -118.25)
         mock_priors.return_value = [0.1] * 24
         

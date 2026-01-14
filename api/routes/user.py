@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from typing import Optional
 import sqlite3
-from ..utils import get_db_path
+from ..dependencies import get_db_path_dep
 
 router = APIRouter(prefix="/user", tags=["user"])
 
@@ -14,16 +14,15 @@ class UserPriors(BaseModel):
     temp_unit: str = 'C'
     force_heuristic_mode: bool = False
 
-# DB Helper (Quick and dirty for now, should use a proper dependency)
-def get_db():
-    return get_db_path()
+# DB Helper removed
+# def get_db():
+#     return get_db_path()
 
 @router.get("/priors", response_model=UserPriors)
-async def get_user_priors():
+async def get_user_priors(db_path: str = Depends(get_db_path_dep)):
     """
     Get the current user's sensitivity priors.
     """
-    db_path = get_db()
     try:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
@@ -59,11 +58,10 @@ async def get_user_priors():
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/priors")
-async def update_user_priors(priors: UserPriors):
+async def update_user_priors(priors: UserPriors, db_path: str = Depends(get_db_path_dep)):
     """
     Update the user's sensitivity priors.
     """
-    db_path = get_db()
     try:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()

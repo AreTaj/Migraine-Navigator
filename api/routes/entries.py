@@ -1,5 +1,4 @@
-from fastapi import Query
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query, Depends
 from typing import List, Optional
 from api.models import MigraineEntry
 from services.entry_service import EntryService
@@ -10,7 +9,8 @@ import os
 
 router = APIRouter()
 
-from api.utils import get_db_path
+from api.dependencies import get_db_path_dep # Use dependency
+from api.utils import get_db_path # Keep for fallback or internal calls if needed
 import logging
 import os
 from api.utils import get_data_dir
@@ -26,10 +26,11 @@ logger.setLevel(logging.DEBUG)
 @router.get("/entries", response_model=List[MigraineEntry])
 def get_entries(start_date: str = Query(None, description="Filter start date (YYYY-MM-DD)"), 
                 end_date: str = Query(None, description="Filter end date (YYYY-MM-DD)"),
-                limit: int = Query(None, description="Limit number of entries")):
+                limit: int = Query(None, description="Limit number of entries"),
+                db_path: str = Depends(get_db_path_dep)):
     try:
-        logger.info(f"GET /entries request. Limit: {limit}, Start: {start_date}, End: {end_date}")
-        entries_data = EntryService.get_entries_from_db(get_db_path(), start_date, end_date)
+        logger.info(f"GET /entries request. Limit: {limit}, Start: {start_date}, End: {end_date}, DB: {os.path.basename(db_path)}")
+        entries_data = EntryService.get_entries_from_db(db_path, start_date, end_date)
         logger.info(f"Retrieved {len(entries_data)} entries from DB")
         
         # Apply limit manually if service doesn't support it yet
@@ -90,7 +91,7 @@ def get_entries(start_date: str = Query(None, description="Filter start date (YY
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/entries")
-def add_entry(entry: MigraineEntry):
+def add_entry(entry: MigraineEntry, db_path: str = Depends(get_db_path_dep)): # Inject DB path
     try:
         # Convert Pydantic model to dict for Service
         data = entry.model_dump()
@@ -99,7 +100,7 @@ def add_entry(entry: MigraineEntry):
         data['Pain Level'] = data.pop('Pain_Level')
         data['Physical Activity'] = data.pop('Physical_Activity')
         
-        EntryService.add_entry(data, get_db_path())
+        EntryService.add_entry(data, db_path)
         try:
             from forecasting.inference import clear_prediction_cache
             clear_prediction_cache()
@@ -110,9 +111,9 @@ def add_entry(entry: MigraineEntry):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.delete("/entries/{entry_id}")
-def delete_entry(entry_id: int):
+def delete_entry(entry_id: int, db_path: str = Depends(get_db_path_dep)):
     try:
-        EntryService.delete_entry(entry_id, get_db_path())
+        EntryService.delete_entry(entry_id, db_path)
         try:
             from forecasting.inference import clear_prediction_cache
             clear_prediction_cache()
@@ -125,7 +126,7 @@ def delete_entry(entry_id: int):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.put("/entries/{entry_id}")
-def update_entry(entry_id: int, entry: MigraineEntry):
+def update_entry(entry_id: int, entry: MigraineEntry, db_path: str = Depends(get_db_path_dep)):
     try:
         data = entry.model_dump()
         # Handle remapping
@@ -133,7 +134,7 @@ def update_entry(entry_id: int, entry: MigraineEntry):
         data['Physical Activity'] = data.pop('Physical_Activity')
         if 'id' in data: del data['id'] # Don't update ID
 
-        EntryService.update_entry(entry_id, data, get_db_path())
+        EntryService.update_entry(entry_id, data, db_path)
         try:
             from forecasting.inference import clear_prediction_cache
             clear_prediction_cache()

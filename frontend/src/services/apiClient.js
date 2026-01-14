@@ -14,6 +14,15 @@ const apiClient = axios.create({
     timeout: 30000, // Higher timeout for slow cold starts
 });
 
+// Inject Tester Mode Header
+apiClient.interceptors.request.use((config) => {
+    const isTester = localStorage.getItem('tester_mode') === 'true';
+    if (isTester) {
+        config.headers['X-Tester-Mode'] = 'true';
+    }
+    return config;
+});
+
 // Retry logic for slow startup (Sidecar takes ~8s to boot)
 apiClient.interceptors.response.use(null, async (error) => {
     const config = error.config;

@@ -262,6 +262,31 @@ const Settings = () => {
                     <Link to="/import" className="btn-option" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '1rem', justifyContent: 'center' }}>
                         <Database size={20} /> Import / Restore Data
                     </Link>
+
+                    {localStorage.getItem('tester_mode') === 'true' ? (
+                        <button
+                            className="btn-option"
+                            style={{ width: '100%', marginTop: '1rem', background: 'rgba(239, 68, 68, 0.2)', color: '#fca5a5', border: '1px solid #ef4444' }}
+                            onClick={() => {
+                                localStorage.removeItem('tester_mode');
+                                window.location.reload();
+                            }}
+                        >
+                            Exit Tester Mode
+                        </button>
+                    ) : (
+                        <button
+                            className="btn-option"
+                            style={{ width: '100%', marginTop: '1rem', background: 'rgba(59, 130, 246, 0.2)', color: '#93c5fd', border: '1px solid #3b82f6' }}
+                            onClick={() => {
+                                localStorage.setItem('tester_mode', 'true');
+                                localStorage.setItem('onboarding_completed', 'true');
+                                window.location.href = '/';
+                            }}
+                        >
+                            Explore as Tester (Demo Data)
+                        </button>
+                    )}
                 </div>
             </section>
         </div>

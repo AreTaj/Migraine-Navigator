@@ -27,8 +27,18 @@ def load_migraine_log_from_db(db_path=None):
     conn = sqlite3.connect(db_path)
     # c = conn.cursor() # Not needed for pandas read_sql
     query = "SELECT * FROM migraine_log"
-    df = pd.read_sql_query(query, conn)
-    conn.close()
+    try:
+        df = pd.read_sql_query(query, conn)
+    except Exception:
+        # Table might not exist yet (Clean install or fresh reset)
+        # Return empty DF with expected columns to prevent downstream KeyErrors
+        df = pd.DataFrame(columns=[
+            'Date', 'Time', 'Pain Level', 'Medication', 'Dosage', 'Medications',
+            'Sleep', 'Physical Activity', 'Triggers', 'Notes', 
+            'Location', 'Timezone', 'Latitude', 'Longitude'
+        ])
+    finally:
+        conn.close()
     return df
 
 def merge_migraine_and_weather_data(migraine_log_file=migraine_data_filename, weather_data_file=weather_data_filename, output_file=combined_data_filename, db_path=None, return_df=False):
@@ -186,10 +196,11 @@ def get_recent_history(db_path=None, days=60):
     import pandas as pd
     
     df = load_migraine_log_from_db(db_path)
-    if df.empty:
-        return df
-        
-    df['Date'] = pd.to_datetime(df['Date'])
+    # if df.empty: return df  <-- Removed to ensure column types are cast correctly below
+    
+    # Ensure Date is datetime (works even on empty)
+    if 'Date' in df.columns:
+        df['Date'] = pd.to_datetime(df['Date'])
     
     # Ensure numeric types
     for col in ['Pain Level', 'Sleep', 'Physical Activity']:

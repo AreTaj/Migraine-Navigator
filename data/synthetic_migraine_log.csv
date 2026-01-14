@@ -1,1001 +1,366 @@
-Date,Time,Pain Level,Medication,Dosage,Sleep,Physical Activity,Triggers,Location,Latitude,Longitude,Timezone
-2024-02-18,23:27:55,5.2,Anticonvulsant,,9.1,Low,,"San Diego, California, US",32.770261,-117.212178,America/Los_Angeles
-2023-12-24,,4.3,Triptan,,8.4,Moderate,"Weather: Hot, Stress","San Diego, California, US",32.987959,-117.05348,America/Los_Angeles
-2023-03-16,,5.5,Ergotamine,400mg,7.1,Moderate,,"San Diego, California, US",32.867064,-117.13369,America/Los_Angeles
-2023-12-21,,6.8,Acetaminophen,,6.0,Moderate,Weather: Dry,"San Diego, California, US",32.828683,-117.083638,America/Los_Angeles
-2024-08-06,09:23:10,4.1,Acetaminophen,,8.0,Moderate,,"San Diego, California, US",32.908929,-117.019142,America/Los_Angeles
-2023-07-07,11:00:45,4.1,Acetaminophen,,,Low,,"San Diego, California, US",32.751508,-117.099955,America/Los_Angeles
-2024-11-15,20:44:15,6.9,,50mg,8.3,,Weather: Warm,"San Diego, California, US",32.823587,-116.951789,America/Los_Angeles
-2023-10-17,,,,,8.0,,Weather: Rain,"San Diego, California, US",32.889426,-117.086998,America/Los_Angeles
-2023-02-14,18:36:09,3.8,Acetaminophen,,8.6,,Weather: Hot,"San Diego, California, US",32.734618,-117.057745,America/Los_Angeles
-2024-07-26,,5.3,Beta Blocker,,6.2,Low,Weather: Light rain,"San Diego, California, US",32.735161,-117.165117,America/Los_Angeles
-2023-03-24,,3.8,Ergotamine,,9.0,,,"San Diego, California, US",32.742853,-117.023171,America/Los_Angeles
-2023-05-03,11:20:15,3.8,Anticonvulsant,,7.3,High,Weather: Light rain,"San Diego, California, US",32.761876,-117.143256,America/Los_Angeles
-2023-12-24,,,NSAID,,,,Weather: Clear,"San Diego, California, US",32.968702,-117.218273,America/Los_Angeles
-2024-06-11,,,Anticonvulsant,,6.0,,,"San Diego, California, US",32.852342,-117.132291,America/Los_Angeles
-2023-03-07,03:36:10,,Beta Blocker,25mg,,,Lack of Sleep,"San Diego, California, US",32.705437,-116.982897,America/Los_Angeles
-2024-10-18,16:33:43,3.7,Anticonvulsant,25mg,,High,Weather: Windy,"San Diego, California, US",32.720714,-117.110298,America/Los_Angeles
-2024-01-10,,3.0,Triptan,10mg,,High,"Alcohol, Weather: Warm","San Diego, California, US",32.868203,-117.048629,America/Los_Angeles
-2023-06-11,23:01:43,5.0,Acetaminophen,,,,Weather: Cloudy,"San Diego, California, US",32.906589,-117.198691,America/Los_Angeles
-2024-01-15,00:22:26,3.1,Ergotamine,,6.5,Moderate,,"San Diego, California, US",32.702994,-117.010623,America/Los_Angeles
-2024-10-17,,2.4,NSAID,200mg,,,Skipped Meal,"San Diego, California, US",32.860697,-116.965553,America/Los_Angeles
-2023-12-24,01:43:23,,,,7.8,,,"San Diego, California, US",32.946417,-116.96267,America/Los_Angeles
-2023-07-07,07:45:17,4.2,NSAID,,6.1,,Weather: Hot,"San Diego, California, US",32.845528,-117.166549,America/Los_Angeles
-2023-11-18,19:21:47,4.6,Triptan,,7.0,Moderate,Weather: Windy,"San Diego, California, US",32.937467,-117.119482,America/Los_Angeles
-2024-03-25,,2.4,Triptan,,10.2,Moderate,Weather: Dry,"San Diego, California, US",32.755033,-116.95801,America/Los_Angeles
-2024-04-18,03:18:39,3.7,Anticonvulsant,,9.6,Low,Weather: Warm,"San Diego, California, US",32.964768,-117.113476,America/Los_Angeles
-2023-01-13,06:56:56,4.7,None,,7.7,,Weather: Hot,"San Diego, California, US",32.72271,-117.14487,America/Los_Angeles
-2023-07-03,,2.8,,25mg,,Low,,"San Diego, California, US",32.941061,-116.93929,America/Los_Angeles
-2023-04-21,,,Beta Blocker,400mg,7.2,Moderate,Weather: Warm,"San Diego, California, US",32.761042,-117.273211,America/Los_Angeles
-2024-05-22,22:15:37,3.6,Ergotamine,25mg,7.9,,,"San Diego, California, US",32.963205,-117.144238,America/Los_Angeles
-2023-10-17,01:51:39,4.1,Ergotamine,,,,,"San Diego, California, US",32.862528,-116.912774,America/Los_Angeles
-2023-10-22,18:08:49,3.6,,,6.6,,,"San Diego, California, US",32.719969,-117.040673,America/Los_Angeles
-2024-03-26,22:09:03,7.3,Anticonvulsant,25mg,,Low,"Weather: Dry heat, Stress","San Diego, California, US",32.722232,-117.149812,America/Los_Angeles
-2023-08-03,04:00:30,4.5,Triptan,,,,Skipped Meal,"San Diego, California, US",32.941144,-117.126611,America/Los_Angeles
-2024-09-23,12:45:17,2.9,NSAID,100mg,8.0,,,"San Diego, California, US",32.999155,-117.076376,America/Los_Angeles
-2024-07-20,16:55:11,5.7,Triptan,,6.3,,Skipped Meal,"San Diego, California, US",32.796349,-117.211955,America/Los_Angeles
-2023-01-27,21:33:44,2.7,Acetaminophen,,,High,,"San Diego, California, US",32.805156,-117.150987,America/Los_Angeles
-2024-09-21,18:24:05,4.8,Triptan,,5.2,,,"San Diego, California, US",32.720614,-117.15217,America/Los_Angeles
-2023-08-19,11:58:45,1.6,Beta Blocker,,4.8,,Weather: Cloudy,"San Diego, California, US",32.839272,-117.010905,America/Los_Angeles
-2024-07-18,14:55:25,2.5,Anticonvulsant,,7.3,High,Stress,"San Diego, California, US",32.897019,-117.016494,America/Los_Angeles
-2023-11-17,09:01:52,4.8,Acetaminophen,10mg,8.6,,"Weather: Dry heat, Weather: Cool","San Diego, California, US",32.702509,-117.212933,America/Los_Angeles
-2023-08-21,05:23:59,5.6,NSAID,,9.5,High,,"San Diego, California, US",32.898505,-117.106404,America/Los_Angeles
-2024-10-31,,4.8,NSAID,,6.3,Low,Alcohol,"San Diego, California, US",32.701594,-116.978202,America/Los_Angeles
-2024-03-12,,4.3,,,8.6,Moderate,,"San Diego, California, US",32.931843,-117.080632,America/Los_Angeles
-2024-06-16,,4.0,NSAID,,6.9,,,"San Diego, California, US",32.719939,-116.993394,America/Los_Angeles
-2024-02-07,,2.3,Acetaminophen,200mg,,,,"San Diego, California, US",32.875114,-116.987216,America/Los_Angeles
-2023-02-22,,3.4,None,,8.3,,"Weather: Cool, Lack of Sleep","San Diego, California, US",32.925524,-116.978799,America/Los_Angeles
-2023-11-09,,3.8,Ergotamine,,8.0,,Skipped Meal,"San Diego, California, US",32.855402,-117.24387,America/Los_Angeles
-2023-10-08,,6.1,,,4.6,,,"San Diego, California, US",32.901347,-117.05181,America/Los_Angeles
-2024-12-26,12:51:52,5.0,Acetaminophen,50mg,9.2,High,Weather: Cool,"San Diego, California, US",32.922676,-117.232048,America/Los_Angeles
-2023-01-31,02:25:53,1.9,NSAID,,9.1,High,,"San Diego, California, US",32.758493,-116.943836,America/Los_Angeles
-2023-12-03,13:36:35,5.0,Ergotamine,25mg,6.1,,Alcohol,"San Diego, California, US",32.924993,-116.936709,America/Los_Angeles
-2023-07-02,,3.9,Ergotamine,,,Moderate,,"San Diego, California, US",32.927615,-117.061138,America/Los_Angeles
-2023-01-23,,3.5,Anticonvulsant,200mg,,,,"San Diego, California, US",32.89624,-116.944349,America/Los_Angeles
-2024-06-27,00:11:04,5.4,,100mg,,Moderate,,"San Diego, California, US",32.873642,-117.047043,America/Los_Angeles
-2024-03-21,21:55:36,6.0,None,,6.2,High,Lack of Sleep,"San Diego, California, US",32.746943,-117.110432,America/Los_Angeles
-2023-03-15,10:15:37,5.9,,,6.0,,,"San Diego, California, US",32.914919,-117.191623,America/Los_Angeles
-2023-01-10,,3.2,Ergotamine,10mg,7.0,,,"San Diego, California, US",32.760676,-117.174469,America/Los_Angeles
-2024-04-28,04:01:48,4.0,NSAID,25mg,,,Weather: Cool,"San Diego, California, US",32.77245,-117.214035,America/Los_Angeles
-2024-03-31,,5.0,None,50mg,7.8,High,Weather: Warm,"San Diego, California, US",32.827455,-116.936865,America/Los_Angeles
-2024-07-19,04:15:42,6.0,Anticonvulsant,,6.4,Low,,"San Diego, California, US",32.852118,-117.224832,America/Los_Angeles
-2024-07-17,03:22:42,3.8,Anticonvulsant,200mg,8.2,,Weather: Cloudy,"San Diego, California, US",32.723092,-117.021538,America/Los_Angeles
-2024-10-21,11:13:33,4.2,Acetaminophen,,3.0,,Stress,"San Diego, California, US",32.81484,-116.971268,America/Los_Angeles
-2023-06-09,03:20:15,2.8,Ergotamine,25mg,8.7,,,"San Diego, California, US",32.897853,-116.981503,America/Los_Angeles
-2023-01-14,10:45:20,,Ergotamine,,4.4,Low,"Weather: Clear, Weather: Dry","San Diego, California, US",32.781584,-117.023056,America/Los_Angeles
-2023-06-27,02:39:45,5.7,None,,6.5,,Weather: Hot,"San Diego, California, US",32.779219,-116.924373,America/Los_Angeles
-2024-02-16,16:34:36,6.5,Anticonvulsant,,5.3,Low,,"San Diego, California, US",32.890912,-117.170195,America/Los_Angeles
-2023-02-22,,4.4,Acetaminophen,25mg,,High,,"San Diego, California, US",32.780854,-117.223629,America/Los_Angeles
-2024-02-12,,6.0,Acetaminophen,25mg,8.7,,Weather: Dry heat,"San Diego, California, US",32.908392,-117.212514,America/Los_Angeles
-2023-01-22,07:37:02,5.0,Triptan,,6.3,High,Weather: Light rain,"San Diego, California, US",32.878591,-117.194146,America/Los_Angeles
-2023-01-30,,3.5,Acetaminophen,,,Low,Weather: Cool,"San Diego, California, US",32.898591,-116.974024,America/Los_Angeles
-2024-12-03,,5.0,Triptan,,6.9,High,Weather: Cloudy,"San Diego, California, US",32.933408,-116.995659,America/Los_Angeles
-2023-09-17,20:15:35,6.8,Anticonvulsant,,7.7,Moderate,,"San Diego, California, US",32.756317,-117.264646,America/Los_Angeles
-2023-07-24,00:12:46,4.4,None,100mg,7.1,High,,"San Diego, California, US",32.909685,-117.152661,America/Los_Angeles
-2023-02-28,18:35:08,6.8,,,,Low,,"San Diego, California, US",32.829704,-117.28754,America/Los_Angeles
-2024-04-15,05:22:24,1.0,Anticonvulsant,100mg,8.5,High,"Weather: Clear, Weather: Hot","San Diego, California, US",32.777873,-117.286529,America/Los_Angeles
-2024-04-10,15:00:24,5.7,Acetaminophen,,6.3,Moderate,"Lack of Sleep, Alcohol","San Diego, California, US",32.963756,-117.202641,America/Los_Angeles
-2023-01-12,12:38:39,4.6,Anticonvulsant,25mg,4.7,,,"San Diego, California, US",32.867201,-117.284408,America/Los_Angeles
-2024-09-22,09:28:17,4.1,NSAID,,6.4,,,"San Diego, California, US",32.900054,-117.170789,America/Los_Angeles
-2023-10-17,,4.6,NSAID,,9.3,Low,Weather: Light rain,"San Diego, California, US",32.969376,-116.944753,America/Los_Angeles
-2023-12-20,,1.5,Acetaminophen,200mg,8.3,Low,Weather: Cloudy,"San Diego, California, US",32.797587,-116.939616,America/Los_Angeles
-2024-09-30,09:20:33,4.2,Anticonvulsant,400mg,6.5,,Weather: Dry,"San Diego, California, US",32.998847,-116.969834,America/Los_Angeles
-2023-03-16,,5.0,Beta Blocker,,6.5,,"Weather: Dry, Weather: Windy","San Diego, California, US",32.953461,-117.200397,America/Los_Angeles
-2024-12-16,16:56:24,6.7,Acetaminophen,,6.5,,,"San Diego, California, US",32.873011,-117.273098,America/Los_Angeles
-2024-07-14,16:37:10,,Beta Blocker,,10.1,Low,"Weather: Rain, Alcohol","San Diego, California, US",32.728475,-116.900443,America/Los_Angeles
-2024-08-13,02:56:03,3.3,Beta Blocker,,7.6,,Weather: Dry,"San Diego, California, US",32.797992,-117.000726,America/Los_Angeles
-2024-03-16,,,,,7.6,High,Lack of Sleep,"San Diego, California, US",32.942,-116.956791,America/Los_Angeles
-2023-08-29,22:44:03,5.9,Anticonvulsant,200mg,8.5,,Lack of Sleep,"San Diego, California, US",32.999288,-117.203401,America/Los_Angeles
-2023-06-03,12:24:36,5.0,,,,High,Weather: Clear,"San Diego, California, US",32.712105,-117.135523,America/Los_Angeles
-2023-04-06,,3.7,Acetaminophen,25mg,,Moderate,"Weather: Light rain, Weather: Windy","San Diego, California, US",32.739024,-117.29103,America/Los_Angeles
-2024-12-26,,5.3,,,6.7,,Weather: Clear,"San Diego, California, US",32.808128,-116.986505,America/Los_Angeles
-2023-10-21,,4.6,Triptan,,6.9,,,"San Diego, California, US",32.869854,-117.174889,America/Los_Angeles
-2023-07-28,20:24:33,,NSAID,,6.9,,,"San Diego, California, US",32.896303,-117.207193,America/Los_Angeles
-2023-12-09,22:05:29,3.4,Ergotamine,,8.1,,Weather: Rain,"San Diego, California, US",32.704314,-116.994259,America/Los_Angeles
-2023-03-29,22:36:20,4.0,NSAID,,,High,Weather: Dry,"San Diego, California, US",32.887123,-116.995079,America/Los_Angeles
-2024-01-25,,3.9,Ergotamine,,8.1,Low,Weather: Cloudy,"San Diego, California, US",32.711681,-116.965152,America/Los_Angeles
-2023-11-21,22:34:00,2.3,,200mg,6.9,,,"San Diego, California, US",32.885858,-117.074642,America/Los_Angeles
-2023-06-06,18:06:52,4.9,Anticonvulsant,,7.1,,,"San Diego, California, US",32.887384,-116.954227,America/Los_Angeles
-2024-10-29,13:46:38,4.9,,10mg,4.0,Low,Weather: Warm,"San Diego, California, US",32.876081,-117.06762,America/Los_Angeles
-2024-10-12,02:31:25,4.5,Triptan,10mg,8.4,,Weather: Light rain,"San Diego, California, US",32.997204,-116.997308,America/Los_Angeles
-2024-09-24,18:58:14,4.1,None,,7.5,Low,Weather: Dry heat,"San Diego, California, US",32.832688,-117.017041,America/Los_Angeles
-2024-07-30,,,Anticonvulsant,,8.5,Moderate,Weather: Windy,"San Diego, California, US",32.816769,-117.20845,America/Los_Angeles
-2024-09-10,20:55:55,3.9,Triptan,,3.0,High,Weather: Clear,"San Diego, California, US",32.879056,-116.928727,America/Los_Angeles
-2024-10-20,14:10:41,4.0,Acetaminophen,,10.1,,Weather: Light rain,"San Diego, California, US",32.978742,-117.163238,America/Los_Angeles
-2023-05-17,13:34:27,3.3,Beta Blocker,400mg,6.8,High,Lack of Sleep,"San Diego, California, US",32.858303,-117.215346,America/Los_Angeles
-2024-11-04,,4.3,Beta Blocker,400mg,8.7,,,"San Diego, California, US",32.998689,-116.907553,America/Los_Angeles
-2024-03-03,01:37:15,5.1,Beta Blocker,,5.4,,Skipped Meal,"San Diego, California, US",32.894853,-116.978234,America/Los_Angeles
-2024-03-27,,7.3,Acetaminophen,,7.9,,Weather: Cloudy,"San Diego, California, US",32.91453,-117.062737,America/Los_Angeles
-2024-09-03,02:02:13,4.8,Beta Blocker,400mg,5.4,,,"San Diego, California, US",32.716004,-117.118094,America/Los_Angeles
-2023-05-21,10:58:59,4.9,Ergotamine,,6.1,,Weather: Dry,"San Diego, California, US",32.902436,-117.028987,America/Los_Angeles
-2023-03-24,18:01:47,4.4,Anticonvulsant,100mg,9.9,Moderate,,"San Diego, California, US",32.811937,-116.923323,America/Los_Angeles
-2023-06-26,04:42:11,1.6,Acetaminophen,,6.7,,,"San Diego, California, US",32.750207,-117.099856,America/Los_Angeles
-2023-07-17,,4.5,Anticonvulsant,,,Low,,"San Diego, California, US",32.907265,-117.021146,America/Los_Angeles
-2024-09-15,16:03:27,4.6,Triptan,200mg,8.3,Moderate,,"San Diego, California, US",32.894592,-117.189885,America/Los_Angeles
-2024-07-21,,8.2,,,7.7,High,,"San Diego, California, US",32.746862,-117.045624,America/Los_Angeles
-2024-11-21,09:21:52,4.2,NSAID,25mg,7.2,,,"San Diego, California, US",32.879791,-117.228258,America/Los_Angeles
-2024-02-25,01:45:45,5.0,,,7.5,High,Weather: Cool,"San Diego, California, US",32.911542,-117.117931,America/Los_Angeles
-2024-02-05,,4.4,Beta Blocker,50mg,10.6,High,,"San Diego, California, US",32.900328,-116.965053,America/Los_Angeles
-2024-11-28,08:06:20,2.7,None,,6.9,,Weather: Cool,"San Diego, California, US",32.750919,-117.292342,America/Los_Angeles
-2024-04-15,16:30:41,6.2,Anticonvulsant,50mg,7.3,Moderate,,"San Diego, California, US",32.933731,-117.056121,America/Los_Angeles
-2023-08-06,,5.6,Triptan,,8.6,Moderate,,"San Diego, California, US",32.909892,-116.964738,America/Los_Angeles
-2024-12-29,15:06:04,5.7,Beta Blocker,,8.7,,,"San Diego, California, US",32.940843,-116.915632,America/Los_Angeles
-2024-09-23,08:02:56,3.1,Beta Blocker,,8.8,Moderate,Stress,"San Diego, California, US",32.860781,-117.104602,America/Los_Angeles
-2023-06-24,22:08:11,6.6,,400mg,8.0,,Weather: Dry heat,"San Diego, California, US",32.820566,-117.238524,America/Los_Angeles
-2023-01-23,17:27:12,2.4,Anticonvulsant,,5.3,Low,"Weather: Hot, Weather: Warm","San Diego, California, US",32.871782,-117.189195,America/Los_Angeles
-2024-12-25,,5.4,Acetaminophen,,9.5,Low,"Weather: Windy, Weather: Dry heat","San Diego, California, US",32.976392,-117.066724,America/Los_Angeles
-2023-08-23,04:57:28,,,,,,Weather: Clear,"San Diego, California, US",32.877852,-117.15803,America/Los_Angeles
-2023-01-13,,3.0,Beta Blocker,,7.5,Low,,"San Diego, California, US",32.715597,-117.287302,America/Los_Angeles
-2023-04-11,02:32:31,3.7,NSAID,50mg,5.9,Low,Weather: Rain,"San Diego, California, US",32.827001,-117.266174,America/Los_Angeles
-2024-06-19,11:14:06,4.6,Acetaminophen,,6.9,,Weather: Dry,"San Diego, California, US",32.882054,-116.947611,America/Los_Angeles
-2024-06-06,18:28:57,,Acetaminophen,25mg,,,"Weather: Light rain, Alcohol","San Diego, California, US",32.964874,-117.036382,America/Los_Angeles
-2024-03-27,23:46:07,2.2,Triptan,10mg,7.5,,,"San Diego, California, US",32.76337,-116.954801,America/Los_Angeles
-2024-03-06,,4.6,,,7.6,,Alcohol,"San Diego, California, US",32.965828,-117.221339,America/Los_Angeles
-2024-08-28,17:30:20,2.9,Triptan,,,,,"San Diego, California, US",32.921228,-117.185392,America/Los_Angeles
-2024-12-13,11:29:57,5.2,Triptan,,,,,"San Diego, California, US",32.940792,-116.901105,America/Los_Angeles
-2024-06-16,,3.1,Triptan,,6.6,Moderate,,"San Diego, California, US",32.709008,-116.941054,America/Los_Angeles
-2024-12-23,17:59:34,6.8,Anticonvulsant,,8.4,,Weather: Cloudy,"San Diego, California, US",32.886789,-116.910647,America/Los_Angeles
-2024-10-13,,,Acetaminophen,,8.8,Low,Weather: Dry,"San Diego, California, US",32.839503,-116.961045,America/Los_Angeles
-2023-10-20,08:29:16,4.0,Anticonvulsant,,,,"Stress, Weather: Light rain","San Diego, California, US",32.718718,-117.165888,America/Los_Angeles
-2023-04-11,01:28:35,5.7,Ergotamine,10mg,7.9,Moderate,,"San Diego, California, US",32.720105,-116.909863,America/Los_Angeles
-2024-05-16,,2.7,Acetaminophen,,8.1,High,"Weather: Warm, Weather: Light rain","San Diego, California, US",32.945092,-116.958981,America/Los_Angeles
-2023-10-31,09:22:42,,Ergotamine,,6.6,,"Alcohol, Weather: Cloudy","San Diego, California, US",32.98139,-117.265959,America/Los_Angeles
-2024-06-23,20:29:42,6.5,Ergotamine,,9.1,High,"Weather: Windy, Skipped Meal","San Diego, California, US",32.815679,-117.271586,America/Los_Angeles
-2024-07-06,,2.1,NSAID,,6.8,,"Weather: Windy, Alcohol","San Diego, California, US",32.763238,-117.208254,America/Los_Angeles
-2023-12-21,19:18:44,4.8,Anticonvulsant,,7.2,,,"San Diego, California, US",32.840732,-117.192575,America/Los_Angeles
-2023-10-30,11:13:42,4.9,,,6.7,,,"San Diego, California, US",32.730293,-117.233004,America/Los_Angeles
-2024-05-10,,5.7,Triptan,400mg,7.0,Low,"Weather: Windy, Weather: Cloudy","San Diego, California, US",32.744183,-116.910769,America/Los_Angeles
-2024-10-19,16:42:12,2.6,Acetaminophen,,5.4,,"Weather: Dry heat, Lack of Sleep","San Diego, California, US",32.927788,-116.912895,America/Los_Angeles
-2023-08-15,15:27:25,2.5,Anticonvulsant,,4.8,,Stress,"San Diego, California, US",32.831922,-117.188653,America/Los_Angeles
-2023-08-24,,5.3,Anticonvulsant,,9.4,,Weather: Cool,"San Diego, California, US",32.939488,-117.169498,America/Los_Angeles
-2024-03-30,20:35:17,4.9,Triptan,100mg,5.7,,,"San Diego, California, US",32.789815,-117.206998,America/Los_Angeles
-2023-01-13,01:20:38,,Acetaminophen,400mg,,Moderate,,"San Diego, California, US",32.738904,-117.197415,America/Los_Angeles
-2023-07-29,19:14:24,5.0,Anticonvulsant,,3.8,,,"San Diego, California, US",32.806596,-117.030402,America/Los_Angeles
-2024-02-01,01:01:24,,None,,6.0,High,Weather: Rain,"San Diego, California, US",32.718769,-117.215797,America/Los_Angeles
-2023-04-10,08:42:06,4.8,None,200mg,,Low,,"San Diego, California, US",32.942707,-117.241231,America/Los_Angeles
-2023-01-31,,4.9,Beta Blocker,10mg,9.5,Low,,"San Diego, California, US",32.802794,-116.954136,America/Los_Angeles
-2024-06-11,,3.4,Ergotamine,,8.5,Low,Weather: Dry heat,"San Diego, California, US",32.746478,-117.266905,America/Los_Angeles
-2024-10-10,12:29:21,,None,,6.0,,"Skipped Meal, Weather: Rain","San Diego, California, US",32.845361,-117.179032,America/Los_Angeles
-2023-11-25,06:12:25,5.2,,25mg,10.4,Low,,"San Diego, California, US",32.869023,-116.978478,America/Los_Angeles
-2023-06-15,,2.7,,,8.5,,"Weather: Windy, Alcohol","San Diego, California, US",32.741145,-117.06772,America/Los_Angeles
-2024-04-03,,,Anticonvulsant,,6.5,Moderate,"Weather: Dry heat, Stress","San Diego, California, US",32.851653,-117.242368,America/Los_Angeles
-2023-04-10,,3.0,Beta Blocker,,3.3,,Weather: Light rain,"San Diego, California, US",32.8872,-117.190544,America/Los_Angeles
-2024-09-12,23:56:36,5.7,Acetaminophen,100mg,10.4,High,Weather: Light rain,"San Diego, California, US",32.84635,-117.267091,America/Los_Angeles
-2023-06-22,,6.2,NSAID,,4.9,,,"San Diego, California, US",32.837875,-117.177415,America/Los_Angeles
-2023-06-11,17:24:01,3.3,,,4.5,,Weather: Rain,"San Diego, California, US",32.946714,-117.277209,America/Los_Angeles
-2024-12-28,15:06:03,5.9,Beta Blocker,100mg,,Moderate,Stress,"San Diego, California, US",32.825582,-117.116627,America/Los_Angeles
-2023-09-20,,5.1,Anticonvulsant,,,High,Weather: Cool,"San Diego, California, US",32.917502,-117.070285,America/Los_Angeles
-2023-10-01,,5.7,Acetaminophen,,9.1,,Weather: Hot,"San Diego, California, US",32.900164,-116.98918,America/Los_Angeles
-2023-01-03,12:12:31,7.3,NSAID,25mg,7.8,Low,,"San Diego, California, US",32.958661,-117.17445,America/Los_Angeles
-2023-01-28,,4.1,Ergotamine,200mg,7.9,Moderate,Weather: Hot,"San Diego, California, US",32.861407,-116.963957,America/Los_Angeles
-2023-11-22,,3.4,,,,High,,"San Diego, California, US",32.996835,-116.944192,America/Los_Angeles
-2023-05-29,02:55:23,3.2,Ergotamine,,8.1,Moderate,Weather: Hot,"San Diego, California, US",32.81144,-117.221933,America/Los_Angeles
-2024-06-23,20:36:05,,None,,7.4,High,,"San Diego, California, US",32.846818,-117.003343,America/Los_Angeles
-2024-05-02,13:10:35,4.4,Acetaminophen,,7.2,,Alcohol,"San Diego, California, US",32.847771,-117.106728,America/Los_Angeles
-2024-03-13,04:01:30,5.0,Beta Blocker,,6.9,Moderate,Weather: Light rain,"San Diego, California, US",32.951469,-117.155438,America/Los_Angeles
-2023-03-06,16:32:52,4.9,Anticonvulsant,,5.9,,,"San Diego, California, US",32.957938,-117.137278,America/Los_Angeles
-2023-12-22,,5.7,Triptan,,6.6,Moderate,,"San Diego, California, US",32.79847,-117.118404,America/Los_Angeles
-2024-06-16,,4.5,None,200mg,4.5,Moderate,,"San Diego, California, US",32.928734,-117.249599,America/Los_Angeles
-2023-09-09,16:45:33,6.7,None,,6.9,,,"San Diego, California, US",32.758926,-116.919422,America/Los_Angeles
-2023-08-23,08:00:50,4.1,Triptan,25mg,5.5,,Alcohol,"San Diego, California, US",32.752647,-117.072909,America/Los_Angeles
-2023-08-15,06:32:53,8.6,Anticonvulsant,,5.3,,"Weather: Hot, Skipped Meal","San Diego, California, US",32.873794,-117.10415,America/Los_Angeles
-2024-06-08,18:00:48,5.4,Anticonvulsant,,,Low,Weather: Light rain,"San Diego, California, US",32.893424,-117.208069,America/Los_Angeles
-2023-11-09,19:26:40,3.2,Ergotamine,,9.1,,Weather: Warm,"San Diego, California, US",32.865799,-117.151131,America/Los_Angeles
-2023-02-18,01:20:24,2.9,,,8.4,Low,Weather: Cloudy,"San Diego, California, US",32.8985,-117.243511,America/Los_Angeles
-2023-04-28,,5.2,Acetaminophen,,4.6,Moderate,,"San Diego, California, US",32.871263,-117.225892,America/Los_Angeles
-2023-02-23,21:15:43,4.2,,,5.5,,Weather: Hot,"San Diego, California, US",32.783593,-117.212516,America/Los_Angeles
-2024-10-11,05:36:13,5.6,NSAID,200mg,8.4,,,"San Diego, California, US",32.754851,-116.969716,America/Los_Angeles
-2024-07-18,18:51:12,5.2,None,400mg,5.5,,,"San Diego, California, US",32.785712,-116.92915,America/Los_Angeles
-2023-02-13,,4.4,None,,6.7,Moderate,,"San Diego, California, US",32.990978,-117.071496,America/Los_Angeles
-2023-02-22,,3.2,Ergotamine,,7.8,Low,Weather: Rain,"San Diego, California, US",32.7429,-117.150181,America/Los_Angeles
-2024-08-08,09:59:36,2.2,Anticonvulsant,,,,Weather: Warm,"San Diego, California, US",32.93932,-117.153044,America/Los_Angeles
-2024-07-11,16:33:01,3.8,None,100mg,7.2,,Stress,"San Diego, California, US",32.726105,-117.077286,America/Los_Angeles
-2024-06-08,,5.8,NSAID,25mg,,High,"Lack of Sleep, Skipped Meal","San Diego, California, US",32.953536,-116.981629,America/Los_Angeles
-2024-11-07,,4.8,Acetaminophen,,6.1,,,"San Diego, California, US",32.752537,-117.030894,America/Los_Angeles
-2023-04-12,02:55:44,2.6,Acetaminophen,,7.5,Moderate,,"San Diego, California, US",32.766151,-117.212717,America/Los_Angeles
-2024-02-02,03:37:13,4.8,Triptan,,,,Weather: Rain,"San Diego, California, US",32.962222,-117.200132,America/Los_Angeles
-2023-05-18,05:06:33,5.1,,,7.7,,Weather: Clear,"San Diego, California, US",32.778974,-117.299739,America/Los_Angeles
-2024-11-05,22:30:46,3.2,Ergotamine,,7.0,,,"San Diego, California, US",32.961201,-116.982962,America/Los_Angeles
-2024-01-22,,4.7,,100mg,7.8,High,Weather: Dry heat,"San Diego, California, US",32.888199,-116.999894,America/Los_Angeles
-2023-04-21,20:58:49,4.6,Triptan,,7.3,,"Weather: Cloudy, Weather: Warm","San Diego, California, US",32.745615,-117.116671,America/Los_Angeles
-2024-09-05,22:36:11,2.8,Ergotamine,,9.0,,,"San Diego, California, US",32.805366,-117.262489,America/Los_Angeles
-2023-01-17,12:04:57,5.0,NSAID,400mg,7.2,,"Weather: Hot, Weather: Clear","San Diego, California, US",32.845839,-116.931704,America/Los_Angeles
-2023-07-01,10:35:12,5.3,None,,,Moderate,Lack of Sleep,"San Diego, California, US",32.712018,-117.183416,America/Los_Angeles
-2024-06-19,03:14:54,6.1,Acetaminophen,,7.2,High,"Weather: Dry heat, Weather: Cloudy","San Diego, California, US",32.762262,-117.204741,America/Los_Angeles
-2024-06-24,,6.1,Acetaminophen,,7.8,High,"Weather: Warm, Stress","San Diego, California, US",32.97253,-117.112772,America/Los_Angeles
-2023-06-20,03:25:28,2.4,Ergotamine,,7.1,Moderate,,"San Diego, California, US",32.83989,-116.99577,America/Los_Angeles
-2024-02-13,,3.1,Beta Blocker,,7.1,,Weather: Clear,"San Diego, California, US",32.746348,-117.105094,America/Los_Angeles
-2024-01-13,16:14:07,5.3,Beta Blocker,25mg,5.9,,Weather: Light rain,"San Diego, California, US",32.828996,-117.061236,America/Los_Angeles
-2023-07-07,,5.3,NSAID,,6.0,,,"San Diego, California, US",32.999867,-116.99222,America/Los_Angeles
-2023-08-18,21:33:23,5.3,Ergotamine,400mg,4.9,High,,"San Diego, California, US",32.81936,-116.968979,America/Los_Angeles
-2023-04-29,05:47:55,10.0,,50mg,,,Weather: Dry heat,"San Diego, California, US",32.751213,-117.287815,America/Los_Angeles
-2023-06-05,,5.4,Acetaminophen,,,,Weather: Hot,"San Diego, California, US",32.761335,-117.163835,America/Los_Angeles
-2024-11-17,14:27:28,6.2,Beta Blocker,,6.0,High,Weather: Cool,"San Diego, California, US",32.853174,-117.053948,America/Los_Angeles
-2024-04-09,08:58:21,5.9,NSAID,,5.9,Moderate,,"San Diego, California, US",32.973182,-117.096058,America/Los_Angeles
-2023-04-14,10:03:58,5.5,Ergotamine,,,Low,,"San Diego, California, US",32.850383,-117.279903,America/Los_Angeles
-2024-08-26,05:54:50,4.0,Acetaminophen,,6.6,Low,,"San Diego, California, US",32.710473,-117.079536,America/Los_Angeles
-2024-11-28,06:27:51,5.6,NSAID,,8.9,,,"San Diego, California, US",32.831454,-116.964328,America/Los_Angeles
-2024-05-16,08:31:58,3.3,NSAID,,6.0,High,,"San Diego, California, US",32.748204,-117.290011,America/Los_Angeles
-2024-11-23,06:50:01,4.1,Acetaminophen,200mg,,,,"San Diego, California, US",32.834712,-117.205009,America/Los_Angeles
-2024-11-12,,3.8,,,5.7,,,"San Diego, California, US",32.714884,-117.010161,America/Los_Angeles
-2024-11-29,,4.6,,100mg,10.2,Moderate,,"San Diego, California, US",32.733478,-117.056672,America/Los_Angeles
-2023-06-24,21:34:52,8.0,None,,,High,Weather: Light rain,"San Diego, California, US",32.784315,-117.230602,America/Los_Angeles
-2024-11-04,12:55:44,1.7,Beta Blocker,50mg,7.5,,,"San Diego, California, US",32.813925,-116.979422,America/Los_Angeles
-2024-02-25,10:07:08,5.5,Ergotamine,10mg,8.0,Moderate,,"San Diego, California, US",32.817628,-116.999692,America/Los_Angeles
-2023-05-14,16:19:12,2.1,NSAID,50mg,7.6,High,,"San Diego, California, US",32.737646,-116.990891,America/Los_Angeles
-2024-01-26,,3.8,None,,6.7,,,"San Diego, California, US",32.77108,-117.029043,America/Los_Angeles
-2024-05-15,06:37:16,6.1,Triptan,,,Low,Weather: Rain,"San Diego, California, US",32.869734,-116.928342,America/Los_Angeles
-2024-10-26,07:37:41,4.6,None,,7.1,,Weather: Dry,"San Diego, California, US",32.816197,-117.273534,America/Los_Angeles
-2023-02-02,14:17:40,,NSAID,400mg,6.8,Moderate,Weather: Dry,"San Diego, California, US",32.705747,-116.969257,America/Los_Angeles
-2023-02-24,,3.4,NSAID,,8.4,Moderate,Stress,"San Diego, California, US",32.857421,-116.989902,America/Los_Angeles
-2024-06-02,18:35:16,,None,,10.3,Low,,"San Diego, California, US",32.770328,-117.161967,America/Los_Angeles
-2024-09-29,,3.4,Triptan,50mg,,High,Lack of Sleep,"San Diego, California, US",32.709031,-116.915403,America/Los_Angeles
-2023-01-12,,4.8,Anticonvulsant,,4.9,High,Lack of Sleep,"San Diego, California, US",32.90036,-116.926718,America/Los_Angeles
-2024-06-11,06:16:10,4.6,Anticonvulsant,10mg,6.9,High,,"San Diego, California, US",32.779649,-117.055415,America/Los_Angeles
-2024-12-20,11:01:56,3.5,Anticonvulsant,,10.9,Moderate,Weather: Hot,"San Diego, California, US",32.90355,-117.17298,America/Los_Angeles
-2024-07-08,,7.7,NSAID,,5.8,Low,,"San Diego, California, US",32.954433,-116.921135,America/Los_Angeles
-2024-01-08,,,Anticonvulsant,,,Low,,"San Diego, California, US",32.965457,-117.004373,America/Los_Angeles
-2024-04-28,14:19:26,1.5,Anticonvulsant,,9.5,High,"Lack of Sleep, Stress","San Diego, California, US",32.783239,-117.187354,America/Los_Angeles
-2024-10-08,,4.8,Triptan,,6.2,Low,,"San Diego, California, US",32.989008,-117.295886,America/Los_Angeles
-2023-08-16,11:59:30,3.5,Beta Blocker,10mg,7.9,,,"San Diego, California, US",32.914815,-117.017502,America/Los_Angeles
-2024-09-14,10:41:11,5.8,Beta Blocker,400mg,9.4,,Weather: Dry,"San Diego, California, US",32.886807,-116.903956,America/Los_Angeles
-2023-11-03,17:49:25,3.3,Ergotamine,,6.4,Low,"Skipped Meal, Weather: Windy","San Diego, California, US",32.793564,-117.164011,America/Los_Angeles
-2024-04-01,11:34:03,4.3,Triptan,50mg,6.7,,Alcohol,"San Diego, California, US",32.723682,-117.122881,America/Los_Angeles
-2023-06-09,10:51:57,5.3,Ergotamine,,6.1,Moderate,Weather: Hot,"San Diego, California, US",32.778315,-117.162645,America/Los_Angeles
-2023-11-27,06:20:04,5.8,None,25mg,5.5,,,"San Diego, California, US",32.950372,-116.925806,America/Los_Angeles
-2023-08-13,,,Acetaminophen,,,,,"San Diego, California, US",32.75572,-117.150996,America/Los_Angeles
-2024-12-29,03:13:38,4.0,Acetaminophen,,5.2,High,,"San Diego, California, US",32.978589,-117.275277,America/Los_Angeles
-2024-05-18,,3.8,Anticonvulsant,,7.1,Moderate,Alcohol,"San Diego, California, US",32.727708,-117.234884,America/Los_Angeles
-2024-03-31,14:19:45,3.5,NSAID,,,,,"San Diego, California, US",32.878564,-117.239811,America/Los_Angeles
-2023-02-14,08:30:30,7.1,Ergotamine,,7.4,Low,,"San Diego, California, US",32.990423,-117.121314,America/Los_Angeles
-2023-08-02,,5.1,Beta Blocker,50mg,4.7,High,,"San Diego, California, US",32.850455,-117.201337,America/Los_Angeles
-2023-02-28,01:16:03,2.6,Anticonvulsant,,,High,,"San Diego, California, US",32.841288,-117.035235,America/Los_Angeles
-2024-10-05,02:31:33,5.9,Ergotamine,,,Moderate,"Weather: Rain, Weather: Light rain","San Diego, California, US",32.925353,-116.998453,America/Los_Angeles
-2024-09-07,,,Ergotamine,,4.0,High,,"San Diego, California, US",32.873367,-116.938256,America/Los_Angeles
-2023-07-14,22:30:37,6.0,NSAID,,,,"Weather: Hot, Weather: Dry heat","San Diego, California, US",32.945222,-116.997181,America/Los_Angeles
-2024-05-03,21:45:47,2.2,Anticonvulsant,,8.8,Low,,"San Diego, California, US",32.716682,-117.297249,America/Los_Angeles
-2023-06-06,23:37:48,3.8,None,,5.2,,,"San Diego, California, US",32.763734,-117.034591,America/Los_Angeles
-2024-09-01,,6.4,Acetaminophen,,9.5,Moderate,,"San Diego, California, US",32.823359,-117.139037,America/Los_Angeles
-2023-08-14,,3.4,Ergotamine,,7.6,,,"San Diego, California, US",32.965376,-116.941775,America/Los_Angeles
-2024-02-16,,5.2,None,,5.9,,,"San Diego, California, US",32.972753,-117.174449,America/Los_Angeles
-2023-07-24,08:11:49,,None,25mg,6.9,,"Weather: Warm, Skipped Meal","San Diego, California, US",32.907317,-117.191347,America/Los_Angeles
-2023-03-20,03:18:32,3.1,Acetaminophen,,7.8,Low,Weather: Cloudy,"San Diego, California, US",32.757183,-117.226147,America/Los_Angeles
-2023-05-04,18:58:41,4.4,,400mg,7.1,Low,Weather: Rain,"San Diego, California, US",32.802632,-117.128017,America/Los_Angeles
-2024-04-15,04:58:41,1.0,Triptan,400mg,7.8,,,"San Diego, California, US",32.949285,-117.252044,America/Los_Angeles
-2023-08-06,,3.0,Anticonvulsant,25mg,5.6,Low,"Alcohol, Weather: Cool","San Diego, California, US",32.920478,-117.087418,America/Los_Angeles
-2024-05-30,22:50:31,4.1,Ergotamine,,7.3,Moderate,Weather: Dry heat,"San Diego, California, US",32.786384,-117.102872,America/Los_Angeles
-2024-08-24,05:51:35,2.6,Ergotamine,,4.9,High,,"San Diego, California, US",32.789983,-117.061567,America/Los_Angeles
-2023-04-14,18:15:39,6.9,Acetaminophen,25mg,,Moderate,,"San Diego, California, US",32.830153,-117.234238,America/Los_Angeles
-2024-01-28,02:20:18,2.4,Anticonvulsant,25mg,5.6,,"Skipped Meal, Weather: Hot","San Diego, California, US",32.734975,-117.081322,America/Los_Angeles
-2024-09-22,22:33:43,3.8,Acetaminophen,,5.9,,,"San Diego, California, US",32.970724,-117.162417,America/Los_Angeles
-2024-10-06,,4.7,Anticonvulsant,,8.9,Moderate,,"San Diego, California, US",32.9199,-117.036535,America/Los_Angeles
-2024-08-30,16:52:37,6.7,Triptan,,8.6,,Weather: Dry,"San Diego, California, US",32.979466,-116.971608,America/Los_Angeles
-2024-03-09,,2.3,Ergotamine,100mg,7.9,Moderate,,"San Diego, California, US",32.869982,-117.037188,America/Los_Angeles
-2023-11-27,20:04:22,6.2,Anticonvulsant,,5.4,Low,,"San Diego, California, US",32.969516,-117.140192,America/Los_Angeles
-2023-05-23,23:52:59,4.5,,,6.5,,Lack of Sleep,"San Diego, California, US",32.798038,-117.295676,America/Los_Angeles
-2024-06-23,,3.0,NSAID,50mg,8.8,,,"San Diego, California, US",32.947965,-116.979608,America/Los_Angeles
-2023-10-05,,5.2,None,,7.2,,,"San Diego, California, US",32.731336,-117.069257,America/Los_Angeles
-2023-08-21,,4.8,Acetaminophen,,10.5,Low,Skipped Meal,"San Diego, California, US",32.839195,-117.252516,America/Los_Angeles
-2024-06-12,07:49:31,,Acetaminophen,200mg,7.6,,Weather: Hot,"San Diego, California, US",32.99417,-117.214122,America/Los_Angeles
-2024-07-24,,4.6,,,7.3,Moderate,"Weather: Cloudy, Weather: Dry heat","San Diego, California, US",32.72017,-117.062061,America/Los_Angeles
-2023-03-31,13:13:47,3.9,Ergotamine,,6.5,,Weather: Rain,"San Diego, California, US",32.92166,-117.287023,America/Los_Angeles
-2024-05-06,09:56:17,4.7,Ergotamine,,7.2,,Stress,"San Diego, California, US",32.897615,-117.087083,America/Los_Angeles
-2023-07-18,,5.5,None,,6.8,,,"San Diego, California, US",32.73098,-117.23099,America/Los_Angeles
-2023-12-28,21:50:08,,Acetaminophen,100mg,8.1,Low,,"San Diego, California, US",32.870392,-117.181457,America/Los_Angeles
-2024-03-16,,2.6,Beta Blocker,,8.4,Moderate,Weather: Clear,"San Diego, California, US",32.981495,-116.972504,America/Los_Angeles
-2023-01-26,06:01:55,7.7,Beta Blocker,,5.8,High,Weather: Cool,"San Diego, California, US",32.99507,-117.196132,America/Los_Angeles
-2023-01-25,23:34:44,1.6,NSAID,,5.0,,,"San Diego, California, US",32.990917,-117.127506,America/Los_Angeles
-2024-01-29,13:02:42,4.3,None,,4.2,,Weather: Windy,"San Diego, California, US",32.804256,-117.27986,America/Los_Angeles
-2024-05-21,,5.4,NSAID,,7.8,Low,Weather: Windy,"San Diego, California, US",32.71583,-117.023195,America/Los_Angeles
-2023-10-28,20:17:50,4.9,Acetaminophen,,5.3,Moderate,"Skipped Meal, Weather: Dry heat","San Diego, California, US",32.837379,-117.209391,America/Los_Angeles
-2023-12-05,,3.6,Ergotamine,,3.8,,,"San Diego, California, US",32.884191,-117.198857,America/Los_Angeles
-2023-09-24,,4.2,Beta Blocker,,7.6,Low,"Stress, Weather: Cool","San Diego, California, US",32.87329,-117.156317,America/Los_Angeles
-2024-04-05,17:58:55,3.8,Anticonvulsant,,10.7,Low,,"San Diego, California, US",32.947066,-116.971722,America/Los_Angeles
-2024-11-23,09:36:49,3.6,NSAID,,,,Weather: Warm,"San Diego, California, US",32.843205,-117.159672,America/Los_Angeles
-2024-03-31,,5.8,NSAID,,8.3,,"Weather: Hot, Alcohol","San Diego, California, US",32.808768,-116.977714,America/Los_Angeles
-2023-12-26,21:03:07,5.0,Triptan,,7.1,,Weather: Dry heat,"San Diego, California, US",32.798454,-117.216376,America/Los_Angeles
-2023-03-09,23:51:18,3.5,Anticonvulsant,50mg,6.9,High,Weather: Rain,"San Diego, California, US",32.725407,-117.113323,America/Los_Angeles
-2024-02-16,03:05:37,5.8,Beta Blocker,,8.4,,,"San Diego, California, US",32.84464,-116.963637,America/Los_Angeles
-2024-05-05,,5.0,,25mg,6.6,,"Weather: Windy, Weather: Cool","San Diego, California, US",32.766372,-117.147603,America/Los_Angeles
-2023-02-18,,5.7,None,,7.4,Low,,"San Diego, California, US",32.942522,-116.970551,America/Los_Angeles
-2024-11-17,20:27:19,5.4,None,,7.5,,,"San Diego, California, US",32.815383,-117.11635,America/Los_Angeles
-2024-07-17,23:38:49,3.3,Ergotamine,400mg,,Low,,"San Diego, California, US",32.790986,-116.926978,America/Los_Angeles
-2023-04-12,17:54:52,3.7,,100mg,8.5,Moderate,Weather: Dry,"San Diego, California, US",32.735593,-116.9265,America/Los_Angeles
-2023-08-04,20:22:30,5.6,,25mg,6.7,High,Weather: Cool,"San Diego, California, US",32.90516,-117.087371,America/Los_Angeles
-2024-03-13,17:49:16,,Triptan,,5.9,Moderate,Weather: Dry,"San Diego, California, US",32.709798,-117.109762,America/Los_Angeles
-2024-11-30,,4.5,None,50mg,7.8,Moderate,Stress,"San Diego, California, US",32.822324,-117.235512,America/Los_Angeles
-2024-07-22,,4.7,Beta Blocker,10mg,5.7,,Weather: Rain,"San Diego, California, US",32.896923,-116.91154,America/Los_Angeles
-2024-07-12,03:40:19,6.4,None,50mg,7.0,,Weather: Windy,"San Diego, California, US",32.868657,-117.014099,America/Los_Angeles
-2023-06-08,23:03:38,3.6,Beta Blocker,,,Low,"Weather: Warm, Stress","San Diego, California, US",32.720535,-117.132933,America/Los_Angeles
-2024-05-03,10:18:00,5.3,Beta Blocker,,8.6,,,"San Diego, California, US",32.734908,-117.054882,America/Los_Angeles
-2024-11-16,22:19:32,4.2,Triptan,,7.7,,,"San Diego, California, US",32.981545,-117.035289,America/Los_Angeles
-2023-08-30,06:59:06,,,10mg,7.0,,,"San Diego, California, US",32.723041,-117.158134,America/Los_Angeles
-2023-01-05,,6.1,Ergotamine,,8.2,,,"San Diego, California, US",32.865199,-117.138717,America/Los_Angeles
-2024-08-18,,5.7,Beta Blocker,,,Low,Stress,"San Diego, California, US",32.950093,-116.974132,America/Los_Angeles
-2023-12-27,,5.7,Acetaminophen,25mg,7.8,Moderate,Lack of Sleep,"San Diego, California, US",32.883549,-117.150617,America/Los_Angeles
-2024-04-03,10:26:13,6.5,Anticonvulsant,,7.0,,Weather: Dry,"San Diego, California, US",32.776601,-117.25765,America/Los_Angeles
-2023-09-05,17:55:45,4.5,NSAID,,,Low,Alcohol,"San Diego, California, US",32.806469,-117.134731,America/Los_Angeles
-2024-07-19,22:00:52,5.5,Acetaminophen,,5.4,,Weather: Dry,"San Diego, California, US",32.902747,-117.036736,America/Los_Angeles
-2024-11-03,05:32:30,4.0,Acetaminophen,,6.5,Moderate,"Weather: Clear, Weather: Cool","San Diego, California, US",32.721032,-117.141896,America/Los_Angeles
-2024-02-26,,5.0,Ergotamine,200mg,6.1,Moderate,,"San Diego, California, US",32.754534,-117.237275,America/Los_Angeles
-2023-01-15,21:29:12,4.3,None,,6.7,,Weather: Hot,"San Diego, California, US",32.948191,-117.283234,America/Los_Angeles
-2024-07-26,08:14:25,4.6,Anticonvulsant,25mg,7.1,,,"San Diego, California, US",32.825755,-117.232719,America/Los_Angeles
-2023-05-02,06:04:44,5.4,Ergotamine,,7.8,High,,"San Diego, California, US",32.963799,-117.077184,America/Los_Angeles
-2023-10-04,11:46:49,3.3,Beta Blocker,,6.9,High,,"San Diego, California, US",32.769414,-117.099029,America/Los_Angeles
-2024-07-11,23:58:12,7.6,Anticonvulsant,,7.7,Moderate,Weather: Warm,"San Diego, California, US",32.919446,-116.916753,America/Los_Angeles
-2024-03-28,,3.0,None,,7.1,Moderate,"Weather: Cloudy, Skipped Meal","San Diego, California, US",32.766134,-116.945527,America/Los_Angeles
-2024-01-25,01:44:21,2.7,NSAID,,4.0,Low,,"San Diego, California, US",32.980291,-116.933432,America/Los_Angeles
-2023-10-21,13:06:27,6.2,Triptan,50mg,5.6,,Skipped Meal,"San Diego, California, US",32.890624,-117.048072,America/Los_Angeles
-2024-07-27,21:50:29,5.7,,,6.8,,,"San Diego, California, US",32.820963,-116.999041,America/Los_Angeles
-2024-08-20,04:47:58,5.4,Triptan,,5.2,,,"San Diego, California, US",32.859388,-117.029025,America/Los_Angeles
-2024-03-21,23:38:34,5.4,NSAID,100mg,7.9,Low,Lack of Sleep,"San Diego, California, US",32.828537,-117.007401,America/Los_Angeles
-2023-07-29,20:14:23,4.5,Ergotamine,,9.3,Moderate,Skipped Meal,"San Diego, California, US",32.947341,-117.241425,America/Los_Angeles
-2024-08-12,,3.2,Ergotamine,,8.8,Low,,"San Diego, California, US",32.949879,-117.083881,America/Los_Angeles
-2024-12-14,07:32:12,,NSAID,,,Low,,"San Diego, California, US",32.9534,-117.127479,America/Los_Angeles
-2023-10-29,,3.5,Beta Blocker,,9.2,High,,"San Diego, California, US",32.813712,-116.933976,America/Los_Angeles
-2023-08-11,22:14:53,6.0,Triptan,25mg,7.2,High,,"San Diego, California, US",32.775351,-116.962315,America/Los_Angeles
-2023-01-03,06:11:06,4.3,Triptan,,,,,"San Diego, California, US",32.845206,-117.094362,America/Los_Angeles
-2024-06-01,,3.3,,10mg,6.1,Low,,"San Diego, California, US",32.79254,-117.070783,America/Los_Angeles
-2023-04-03,17:14:48,4.0,,,6.5,,Weather: Hot,"San Diego, California, US",32.797563,-117.284292,America/Los_Angeles
-2024-06-03,06:18:38,5.1,Acetaminophen,50mg,6.4,Moderate,Skipped Meal,"San Diego, California, US",32.7816,-117.297448,America/Los_Angeles
-2024-03-03,23:41:36,3.7,,,,,,"San Diego, California, US",32.993506,-116.913701,America/Los_Angeles
-2024-05-07,00:16:40,3.3,Acetaminophen,,7.2,,Alcohol,"San Diego, California, US",32.818547,-117.008652,America/Los_Angeles
-2023-08-23,,4.9,Triptan,,7.0,,,"San Diego, California, US",32.803742,-117.031563,America/Los_Angeles
-2024-09-11,,4.9,Anticonvulsant,100mg,7.7,,,"San Diego, California, US",32.941629,-116.921298,America/Los_Angeles
-2023-06-10,,3.7,Acetaminophen,,8.8,,Stress,"San Diego, California, US",32.820064,-116.986681,America/Los_Angeles
-2024-12-21,20:40:49,3.8,Acetaminophen,,8.4,Moderate,,"San Diego, California, US",32.779779,-116.903867,America/Los_Angeles
-2023-11-27,22:49:32,4.8,Ergotamine,,4.8,,,"San Diego, California, US",32.707731,-117.058588,America/Los_Angeles
-2023-11-29,13:01:05,2.3,NSAID,,3.2,,Weather: Light rain,"San Diego, California, US",32.897852,-117.024782,America/Los_Angeles
-2023-02-19,,2.4,Anticonvulsant,,8.4,,,"San Diego, California, US",32.736116,-116.924588,America/Los_Angeles
-2024-06-06,21:13:38,3.4,Triptan,50mg,4.9,,,"San Diego, California, US",32.754355,-117.050899,America/Los_Angeles
-2024-10-29,07:06:19,4.2,,25mg,6.7,Moderate,Weather: Warm,"San Diego, California, US",32.766803,-117.177113,America/Los_Angeles
-2024-05-06,03:05:40,5.0,,25mg,5.2,Low,Skipped Meal,"San Diego, California, US",32.863938,-117.133123,America/Los_Angeles
-2024-08-04,02:43:06,6.7,Triptan,,4.3,High,,"San Diego, California, US",32.748068,-117.231625,America/Los_Angeles
-2024-11-11,19:39:25,,Acetaminophen,,7.8,,Weather: Hot,"San Diego, California, US",32.825443,-116.997087,America/Los_Angeles
-2023-09-29,,4.3,Ergotamine,,8.1,Moderate,,"San Diego, California, US",32.969389,-117.266349,America/Los_Angeles
-2024-08-02,17:44:48,4.5,None,,6.1,,Lack of Sleep,"San Diego, California, US",32.817931,-117.259902,America/Los_Angeles
-2023-09-09,,3.0,Acetaminophen,50mg,3.1,Low,Weather: Clear,"San Diego, California, US",32.704978,-117.035313,America/Los_Angeles
-2024-07-13,19:38:24,4.5,Acetaminophen,200mg,6.2,Moderate,Weather: Dry heat,"San Diego, California, US",32.880735,-117.234792,America/Los_Angeles
-2024-11-26,,4.1,Anticonvulsant,,7.6,,,"San Diego, California, US",32.770144,-117.290517,America/Los_Angeles
-2024-11-29,,5.0,Anticonvulsant,,4.8,Moderate,Weather: Dry,"San Diego, California, US",32.950484,-116.910124,America/Los_Angeles
-2023-03-31,14:30:59,3.3,Anticonvulsant,,7.3,Moderate,Lack of Sleep,"San Diego, California, US",32.740638,-117.20741,America/Los_Angeles
-2024-03-21,16:22:37,5.3,Acetaminophen,200mg,7.0,,Stress,"San Diego, California, US",32.960523,-116.929414,America/Los_Angeles
-2023-11-28,06:59:49,6.8,,,7.9,,Skipped Meal,"San Diego, California, US",32.825888,-117.279751,America/Los_Angeles
-2023-05-19,12:44:42,4.3,Triptan,,,Low,"Skipped Meal, Weather: Rain","San Diego, California, US",32.711818,-117.07042,America/Los_Angeles
-2023-12-23,12:51:18,5.1,Acetaminophen,10mg,,Low,,"San Diego, California, US",32.817869,-117.288539,America/Los_Angeles
-2024-08-23,08:08:10,5.5,Triptan,,8.8,,,"San Diego, California, US",32.874976,-117.295479,America/Los_Angeles
-2023-10-01,07:26:25,3.9,None,,6.8,,Alcohol,"San Diego, California, US",32.936212,-117.177427,America/Los_Angeles
-2023-01-19,,4.8,Anticonvulsant,50mg,,High,Weather: Light rain,"San Diego, California, US",32.712077,-117.064659,America/Los_Angeles
-2023-11-07,00:02:24,4.5,Anticonvulsant,,5.6,Moderate,"Alcohol, Weather: Clear","San Diego, California, US",32.819305,-116.91048,America/Los_Angeles
-2023-06-03,,4.6,NSAID,,,,"Weather: Dry, Weather: Clear","San Diego, California, US",32.86326,-117.189904,America/Los_Angeles
-2024-01-25,22:29:27,,Beta Blocker,200mg,,High,,"San Diego, California, US",32.912832,-117.191403,America/Los_Angeles
-2023-09-17,02:09:42,4.5,Acetaminophen,,6.7,,,"San Diego, California, US",32.971273,-117.150111,America/Los_Angeles
-2024-09-11,15:41:06,5.2,Beta Blocker,,9.6,High,,"San Diego, California, US",32.864961,-117.279771,America/Los_Angeles
-2024-07-24,08:46:17,6.7,Ergotamine,,,,,"San Diego, California, US",32.827836,-116.967055,America/Los_Angeles
-2023-05-05,02:17:03,5.9,None,,4.6,Moderate,,"San Diego, California, US",32.941695,-117.210273,America/Los_Angeles
-2023-12-20,06:26:02,7.7,,50mg,,High,Weather: Dry,"San Diego, California, US",32.767824,-116.973078,America/Los_Angeles
-2023-09-30,,3.3,Triptan,25mg,6.7,Low,"Weather: Dry heat, Alcohol","San Diego, California, US",32.97912,-117.261856,America/Los_Angeles
-2024-09-10,12:44:45,,Anticonvulsant,,6.0,Low,Weather: Dry,"San Diego, California, US",32.835018,-117.165018,America/Los_Angeles
-2023-09-02,09:16:13,4.8,NSAID,,8.6,,Weather: Cloudy,"San Diego, California, US",32.961207,-117.26659,America/Los_Angeles
-2024-03-25,08:46:09,7.8,Ergotamine,,6.1,Moderate,Weather: Windy,"San Diego, California, US",32.763338,-116.999013,America/Los_Angeles
-2023-09-04,01:46:41,3.3,NSAID,200mg,,,Lack of Sleep,"San Diego, California, US",32.715388,-117.102986,America/Los_Angeles
-2024-06-03,03:24:49,,Beta Blocker,400mg,8.0,,,"San Diego, California, US",32.832632,-117.16624,America/Los_Angeles
-2023-05-21,08:02:20,3.6,None,,,,Weather: Light rain,"San Diego, California, US",32.818372,-117.088024,America/Los_Angeles
-2023-12-28,08:02:35,,NSAID,,10.2,High,Weather: Dry heat,"San Diego, California, US",32.74841,-117.071202,America/Los_Angeles
-2023-01-08,04:38:04,3.7,,,6.1,Low,Weather: Hot,"San Diego, California, US",32.94163,-116.995936,America/Los_Angeles
-2024-04-22,13:06:24,3.4,Beta Blocker,200mg,8.1,,Weather: Cool,"San Diego, California, US",32.74617,-117.2403,America/Los_Angeles
-2023-12-18,,4.7,Acetaminophen,,,,"Weather: Rain, Weather: Warm","San Diego, California, US",32.780452,-117.15557,America/Los_Angeles
-2024-05-09,,5.0,Anticonvulsant,,9.0,,Weather: Hot,"San Diego, California, US",32.822537,-117.028121,America/Los_Angeles
-2024-08-28,14:57:59,7.3,Beta Blocker,,,,,"San Diego, California, US",32.717004,-117.286131,America/Los_Angeles
-2024-03-02,00:55:54,5.9,NSAID,,,Low,"Weather: Warm, Weather: Clear","San Diego, California, US",32.817573,-117.021135,America/Los_Angeles
-2023-02-08,08:45:35,3.6,Anticonvulsant,,5.9,Moderate,,"San Diego, California, US",32.758031,-117.043398,America/Los_Angeles
-2024-08-15,05:06:31,3.2,Ergotamine,,7.7,,,"San Diego, California, US",32.777948,-116.945566,America/Los_Angeles
-2023-07-06,04:31:41,5.2,Anticonvulsant,,,High,Weather: Cool,"San Diego, California, US",32.968707,-117.181085,America/Los_Angeles
-2024-08-18,20:16:40,2.5,None,,10.0,,,"San Diego, California, US",32.768998,-117.135478,America/Los_Angeles
-2024-08-22,11:42:25,7.2,Beta Blocker,,,,"Weather: Clear, Alcohol","San Diego, California, US",32.772159,-117.031046,America/Los_Angeles
-2023-04-03,,6.3,Ergotamine,,6.5,Low,"Alcohol, Weather: Cool","San Diego, California, US",32.947819,-117.030763,America/Los_Angeles
-2023-03-27,,3.8,None,400mg,7.3,,"Alcohol, Weather: Warm","San Diego, California, US",32.947305,-117.141203,America/Los_Angeles
-2023-02-13,20:11:58,1.9,Acetaminophen,,5.0,,"Weather: Warm, Weather: Clear","San Diego, California, US",32.746895,-117.00482,America/Los_Angeles
-2023-05-17,04:23:01,6.5,NSAID,,5.5,,,"San Diego, California, US",32.808142,-117.031492,America/Los_Angeles
-2024-02-25,18:58:27,4.3,Acetaminophen,,,,"Weather: Dry heat, Stress","San Diego, California, US",32.781193,-117.267508,America/Los_Angeles
-2023-03-15,19:19:19,6.4,Anticonvulsant,,6.0,Moderate,"Lack of Sleep, Alcohol","San Diego, California, US",32.997775,-117.237519,America/Los_Angeles
-2024-07-01,12:47:36,2.1,Triptan,,5.4,High,,"San Diego, California, US",32.996526,-116.909088,America/Los_Angeles
-2024-09-04,,3.6,Anticonvulsant,,7.8,,"Weather: Rain, Alcohol","San Diego, California, US",32.938145,-117.036231,America/Los_Angeles
-2024-05-26,11:40:02,4.5,Acetaminophen,,8.8,,"Weather: Dry, Weather: Dry heat","San Diego, California, US",32.873342,-116.953559,America/Los_Angeles
-2023-06-05,16:15:41,4.6,Ergotamine,25mg,8.1,High,"Weather: Warm, Weather: Dry","San Diego, California, US",32.786832,-117.112928,America/Los_Angeles
-2023-09-12,07:20:48,,Acetaminophen,,8.5,,Weather: Dry heat,"San Diego, California, US",32.885817,-117.135524,America/Los_Angeles
-2023-06-20,,5.4,Anticonvulsant,100mg,5.9,,,"San Diego, California, US",32.828246,-117.167886,America/Los_Angeles
-2024-12-28,,2.9,,,,,Weather: Clear,"San Diego, California, US",32.86927,-116.95977,America/Los_Angeles
-2023-06-19,02:26:14,,Acetaminophen,,9.3,,,"San Diego, California, US",32.760459,-116.926227,America/Los_Angeles
-2023-11-18,19:52:07,4.7,Acetaminophen,,6.5,,,"San Diego, California, US",32.906726,-116.970691,America/Los_Angeles
-2024-07-20,22:46:30,5.3,NSAID,,6.6,,"Lack of Sleep, Stress","San Diego, California, US",32.866857,-116.988193,America/Los_Angeles
-2024-03-31,12:39:38,5.6,Acetaminophen,200mg,9.0,,,"San Diego, California, US",32.70486,-116.972648,America/Los_Angeles
-2024-08-25,21:51:02,2.8,NSAID,,7.8,Low,Weather: Cloudy,"San Diego, California, US",32.712042,-116.944035,America/Los_Angeles
-2024-09-04,17:36:05,2.2,None,100mg,,,,"San Diego, California, US",32.997589,-117.182373,America/Los_Angeles
-2023-06-04,,6.4,NSAID,,,,"Weather: Warm, Alcohol","San Diego, California, US",32.763096,-116.993855,America/Los_Angeles
-2023-12-15,,5.0,None,25mg,6.0,,,"San Diego, California, US",32.775908,-116.953775,America/Los_Angeles
-2024-03-26,,3.4,None,,8.4,,,"San Diego, California, US",32.730853,-117.249618,America/Los_Angeles
-2024-10-14,,6.8,Ergotamine,100mg,7.1,,Weather: Dry,"San Diego, California, US",32.993745,-117.030464,America/Los_Angeles
-2023-06-22,17:38:46,4.7,Triptan,100mg,7.4,,,"San Diego, California, US",32.954066,-117.170268,America/Los_Angeles
-2023-01-10,15:46:41,6.3,NSAID,,9.3,High,Weather: Cloudy,"San Diego, California, US",32.902945,-117.062303,America/Los_Angeles
-2023-09-22,,4.6,Beta Blocker,,7.8,,Weather: Dry heat,"San Diego, California, US",32.880945,-117.026987,America/Los_Angeles
-2024-03-13,10:37:24,7.6,,,7.8,High,Weather: Cool,"San Diego, California, US",32.872608,-117.128375,America/Los_Angeles
-2023-09-04,11:08:17,7.1,NSAID,,8.6,Moderate,Weather: Cool,"San Diego, California, US",32.782777,-116.992567,America/Los_Angeles
-2024-10-28,,4.1,Anticonvulsant,50mg,,,,"San Diego, California, US",32.767882,-117.023058,America/Los_Angeles
-2024-06-29,14:06:32,,Acetaminophen,,5.7,Low,,"San Diego, California, US",32.77,-117.049868,America/Los_Angeles
-2024-05-13,20:12:16,5.5,NSAID,,5.4,,,"San Diego, California, US",32.924123,-117.212514,America/Los_Angeles
-2023-05-09,,6.6,Triptan,200mg,4.1,,Lack of Sleep,"San Diego, California, US",32.717983,-117.247611,America/Los_Angeles
-2024-11-02,20:31:43,3.1,Beta Blocker,,10.1,,,"San Diego, California, US",32.881799,-116.960221,America/Los_Angeles
-2024-08-23,,5.5,Triptan,,5.3,Moderate,,"San Diego, California, US",32.713499,-117.006339,America/Los_Angeles
-2024-08-27,11:02:19,6.1,None,,6.7,,,"San Diego, California, US",32.802396,-117.108589,America/Los_Angeles
-2023-11-23,03:58:07,1.9,NSAID,,6.6,High,,"San Diego, California, US",32.978658,-117.167211,America/Los_Angeles
-2024-02-08,,2.7,,50mg,7.5,,"Weather: Windy, Weather: Dry heat","San Diego, California, US",32.839601,-117.294527,America/Los_Angeles
-2024-09-20,00:01:39,1.4,NSAID,10mg,8.2,,Weather: Warm,"San Diego, California, US",32.72448,-117.196563,America/Los_Angeles
-2024-08-28,,4.1,Ergotamine,,8.3,,Weather: Light rain,"San Diego, California, US",32.708356,-117.04745,America/Los_Angeles
-2024-11-05,16:24:49,,Ergotamine,400mg,6.1,,Weather: Dry,"San Diego, California, US",32.82792,-117.080742,America/Los_Angeles
-2024-09-02,21:46:40,6.8,Beta Blocker,,,,Weather: Rain,"San Diego, California, US",32.752394,-117.181627,America/Los_Angeles
-2024-09-16,,4.6,,,7.4,,Weather: Warm,"San Diego, California, US",32.899147,-116.913879,America/Los_Angeles
-2023-12-25,,6.9,Ergotamine,,6.6,High,"Stress, Weather: Windy","San Diego, California, US",32.715125,-116.943846,America/Los_Angeles
-2024-08-25,14:15:15,2.4,Anticonvulsant,,,Low,,"San Diego, California, US",32.873064,-117.074432,America/Los_Angeles
-2024-12-18,15:12:49,,Triptan,25mg,7.7,,Weather: Dry heat,"San Diego, California, US",32.850084,-117.272242,America/Los_Angeles
-2023-01-17,01:04:30,4.4,Beta Blocker,,8.1,Moderate,"Weather: Dry heat, Weather: Dry","San Diego, California, US",32.726963,-117.059635,America/Los_Angeles
-2023-10-01,13:06:24,5.1,,50mg,8.0,,,"San Diego, California, US",32.802288,-116.933093,America/Los_Angeles
-2024-11-15,16:06:02,4.5,,,,,Weather: Clear,"San Diego, California, US",32.821977,-117.242687,America/Los_Angeles
-2023-04-26,19:51:21,1.4,Beta Blocker,,7.3,High,Weather: Cloudy,"San Diego, California, US",32.914416,-117.182659,America/Los_Angeles
-2024-11-23,00:41:07,4.4,None,,5.1,High,Weather: Cloudy,"San Diego, California, US",32.857641,-117.020867,America/Los_Angeles
-2023-04-01,19:10:07,2.5,Acetaminophen,400mg,7.6,,Weather: Clear,"San Diego, California, US",32.970079,-116.983124,America/Los_Angeles
-2023-03-23,23:19:48,5.5,None,,6.0,,,"San Diego, California, US",32.902908,-117.028147,America/Los_Angeles
-2023-11-20,18:14:53,5.0,Acetaminophen,,,,,"San Diego, California, US",32.983777,-117.18167,America/Los_Angeles
-2023-04-24,06:04:59,3.1,Beta Blocker,50mg,7.9,,Skipped Meal,"San Diego, California, US",32.700334,-117.191218,America/Los_Angeles
-2023-02-27,22:03:14,3.7,Beta Blocker,,8.9,,,"San Diego, California, US",32.765367,-117.035266,America/Los_Angeles
-2023-06-03,05:08:19,2.9,Beta Blocker,,7.0,High,,"San Diego, California, US",32.890113,-117.062615,America/Los_Angeles
-2024-02-08,23:38:21,4.4,Acetaminophen,10mg,7.5,,"Weather: Windy, Weather: Dry heat","San Diego, California, US",32.704873,-117.008489,America/Los_Angeles
-2024-09-19,06:28:04,5.9,None,,9.6,Moderate,Weather: Clear,"San Diego, California, US",32.797059,-117.033978,America/Los_Angeles
-2023-09-23,07:13:24,3.0,None,100mg,,High,Weather: Cloudy,"San Diego, California, US",32.866974,-117.162908,America/Los_Angeles
-2023-11-11,,5.3,None,,10.9,High,Weather: Dry,"San Diego, California, US",32.740373,-117.262232,America/Los_Angeles
-2024-12-15,,3.7,Acetaminophen,200mg,7.8,,Weather: Clear,"San Diego, California, US",32.949455,-116.932641,America/Los_Angeles
-2023-02-10,19:19:11,,Acetaminophen,,,,Lack of Sleep,"San Diego, California, US",32.894936,-117.258626,America/Los_Angeles
-2023-04-15,09:11:23,4.3,NSAID,,8.1,Low,,"San Diego, California, US",32.820608,-117.008424,America/Los_Angeles
-2023-07-12,06:35:08,2.9,Beta Blocker,,,,"Weather: Dry, Weather: Windy","San Diego, California, US",32.933946,-117.252713,America/Los_Angeles
-2024-02-05,05:54:54,3.7,Anticonvulsant,,8.9,,,"San Diego, California, US",32.700009,-117.015145,America/Los_Angeles
-2023-10-05,,2.7,Acetaminophen,,8.0,,Weather: Cool,"San Diego, California, US",32.806979,-117.198207,America/Los_Angeles
-2023-12-20,,7.4,Beta Blocker,,6.8,Low,Stress,"San Diego, California, US",32.703869,-117.08388,America/Los_Angeles
-2024-08-02,,4.6,Triptan,,5.2,Moderate,Weather: Dry,"San Diego, California, US",32.955345,-116.916947,America/Los_Angeles
-2024-12-09,,3.5,,,6.7,,Weather: Rain,"San Diego, California, US",32.869723,-117.094215,America/Los_Angeles
-2023-09-13,06:27:37,,Anticonvulsant,,5.7,,Skipped Meal,"San Diego, California, US",32.725517,-117.080451,America/Los_Angeles
-2024-10-12,11:24:40,4.3,None,400mg,6.1,,,"San Diego, California, US",32.813994,-117.057146,America/Los_Angeles
-2024-10-22,,4.2,Beta Blocker,,7.9,High,Skipped Meal,"San Diego, California, US",32.816618,-117.20388,America/Los_Angeles
-2023-04-09,,5.4,,10mg,9.5,,"Weather: Cool, Alcohol","San Diego, California, US",32.72849,-117.174033,America/Los_Angeles
-2024-08-10,10:05:21,,Triptan,50mg,,Low,,"San Diego, California, US",32.728993,-117.229241,America/Los_Angeles
-2023-10-09,07:25:14,3.7,Triptan,,,,,"San Diego, California, US",32.996201,-117.122359,America/Los_Angeles
-2024-02-07,,3.6,Anticonvulsant,,7.7,High,Skipped Meal,"San Diego, California, US",32.859562,-116.950553,America/Los_Angeles
-2023-04-19,06:25:36,4.1,Acetaminophen,,8.8,Low,,"San Diego, California, US",32.998671,-117.066914,America/Los_Angeles
-2024-11-30,03:42:46,1.0,Beta Blocker,50mg,,,,"San Diego, California, US",32.943742,-117.169224,America/Los_Angeles
-2023-07-18,23:23:52,2.2,Triptan,,6.8,Low,Weather: Clear,"San Diego, California, US",32.791723,-117.138919,America/Los_Angeles
-2023-10-30,,6.6,Beta Blocker,200mg,7.0,Low,"Weather: Clear, Weather: Light rain","San Diego, California, US",32.901752,-117.027123,America/Los_Angeles
-2023-11-23,23:53:19,7.0,Beta Blocker,,5.8,,Weather: Hot,"San Diego, California, US",32.794572,-117.246716,America/Los_Angeles
-2023-06-03,09:39:19,4.1,Anticonvulsant,,8.0,,,"San Diego, California, US",32.889719,-117.24867,America/Los_Angeles
-2024-07-05,01:49:26,5.4,Triptan,,6.8,Moderate,,"San Diego, California, US",32.873548,-117.022631,America/Los_Angeles
-2024-10-06,12:39:43,5.0,NSAID,25mg,7.6,,,"San Diego, California, US",32.910183,-116.998611,America/Los_Angeles
-2024-02-09,20:46:53,9.1,Acetaminophen,100mg,,Moderate,,"San Diego, California, US",32.961858,-117.100016,America/Los_Angeles
-2024-04-06,10:46:31,6.2,,50mg,6.3,High,Stress,"San Diego, California, US",32.919075,-117.052331,America/Los_Angeles
-2023-05-12,11:45:59,,,,8.1,Moderate,,"San Diego, California, US",32.755992,-117.289724,America/Los_Angeles
-2023-03-25,,3.1,Beta Blocker,,,,Weather: Cloudy,"San Diego, California, US",32.785362,-117.122787,America/Los_Angeles
-2024-02-03,07:34:14,2.1,Beta Blocker,,,,,"San Diego, California, US",32.885132,-116.960016,America/Los_Angeles
-2024-09-19,13:41:18,4.8,Anticonvulsant,400mg,6.4,Low,Weather: Rain,"San Diego, California, US",32.758874,-117.24978,America/Los_Angeles
-2023-04-19,14:06:05,3.4,,200mg,7.3,High,Weather: Light rain,"San Diego, California, US",32.989044,-117.256782,America/Los_Angeles
-2023-08-09,16:06:57,2.4,NSAID,,8.4,Moderate,Weather: Hot,"San Diego, California, US",32.843547,-117.065775,America/Los_Angeles
-2024-07-06,05:27:02,3.5,NSAID,,4.9,,,"San Diego, California, US",32.862412,-117.265587,America/Los_Angeles
-2024-01-03,09:45:48,2.9,Triptan,,4.4,Low,Lack of Sleep,"San Diego, California, US",32.717108,-117.257807,America/Los_Angeles
-2023-05-27,20:50:52,7.0,,100mg,4.7,,,"San Diego, California, US",32.875676,-117.082262,America/Los_Angeles
-2023-04-22,07:47:12,5.8,None,50mg,8.9,High,,"San Diego, California, US",32.770122,-117.04489,America/Los_Angeles
-2024-09-06,,4.5,Ergotamine,100mg,,Moderate,Alcohol,"San Diego, California, US",32.94602,-117.283368,America/Los_Angeles
-2024-07-11,,6.7,Ergotamine,200mg,10.8,,,"San Diego, California, US",32.849439,-117.024276,America/Los_Angeles
-2024-05-08,16:07:43,4.6,Anticonvulsant,,6.2,Moderate,,"San Diego, California, US",32.775694,-117.176892,America/Los_Angeles
-2024-05-19,,3.2,Acetaminophen,,7.3,High,Weather: Warm,"San Diego, California, US",32.884091,-116.940826,America/Los_Angeles
-2024-04-19,02:22:29,6.8,None,25mg,9.3,,"Alcohol, Weather: Cloudy","San Diego, California, US",32.942977,-117.066748,America/Los_Angeles
-2023-09-28,07:43:07,5.3,Beta Blocker,,10.0,,Weather: Warm,"San Diego, California, US",32.919067,-117.154071,America/Los_Angeles
-2024-02-25,23:17:31,,Beta Blocker,,,High,,"San Diego, California, US",32.89229,-117.113527,America/Los_Angeles
-2024-12-07,,4.2,Ergotamine,50mg,8.8,,,"San Diego, California, US",32.756981,-117.019305,America/Los_Angeles
-2024-01-02,01:43:22,3.2,Acetaminophen,,8.5,Moderate,"Weather: Warm, Alcohol","San Diego, California, US",32.866939,-117.156551,America/Los_Angeles
-2023-10-07,,2.4,Ergotamine,,7.9,Low,,"San Diego, California, US",32.973402,-117.291626,America/Los_Angeles
-2023-10-10,00:57:31,5.9,Anticonvulsant,200mg,8.2,,Weather: Windy,"San Diego, California, US",32.794732,-117.277247,America/Los_Angeles
-2023-02-09,,7.4,Triptan,,,Low,"Weather: Hot, Weather: Dry heat","San Diego, California, US",32.929958,-117.019157,America/Los_Angeles
-2023-07-08,07:34:22,2.4,NSAID,400mg,5.8,,Alcohol,"San Diego, California, US",32.799406,-117.029735,America/Los_Angeles
-2023-06-13,10:06:54,5.3,Beta Blocker,25mg,7.0,Moderate,Stress,"San Diego, California, US",32.818781,-116.997498,America/Los_Angeles
-2024-06-19,,,None,,,,Weather: Cool,"San Diego, California, US",32.836255,-117.135088,America/Los_Angeles
-2024-06-19,19:39:18,3.8,,50mg,6.3,High,Weather: Cool,"San Diego, California, US",32.980419,-117.199648,America/Los_Angeles
-2023-01-04,,3.6,Acetaminophen,,8.0,,,"San Diego, California, US",32.736134,-117.066183,America/Los_Angeles
-2023-10-17,02:43:25,3.2,Ergotamine,,8.4,,Weather: Warm,"San Diego, California, US",32.990797,-117.148864,America/Los_Angeles
-2024-03-08,,4.6,None,,,High,"Weather: Hot, Alcohol","San Diego, California, US",32.718611,-117.164278,America/Los_Angeles
-2024-04-15,13:47:34,3.3,Anticonvulsant,,9.2,,,"San Diego, California, US",32.851779,-117.235231,America/Los_Angeles
-2023-06-30,,4.9,Ergotamine,200mg,5.3,Low,,"San Diego, California, US",32.897431,-116.9009,America/Los_Angeles
-2023-09-05,23:31:51,,Acetaminophen,10mg,,,,"San Diego, California, US",32.835522,-117.158109,America/Los_Angeles
-2024-09-19,06:48:21,,Ergotamine,400mg,5.9,,Weather: Clear,"San Diego, California, US",32.820211,-117.253942,America/Los_Angeles
-2023-10-06,03:38:22,3.1,Acetaminophen,50mg,4.2,,Weather: Dry heat,"San Diego, California, US",32.964982,-117.13407,America/Los_Angeles
-2024-08-03,10:08:30,,Ergotamine,10mg,,,,"San Diego, California, US",32.816182,-117.036124,America/Los_Angeles
-2023-09-11,13:09:16,5.6,Anticonvulsant,50mg,6.8,,,"San Diego, California, US",32.83261,-117.040707,America/Los_Angeles
-2023-06-30,,,Anticonvulsant,,9.3,Low,"Weather: Warm, Lack of Sleep","San Diego, California, US",32.718434,-116.974511,America/Los_Angeles
-2024-11-11,,3.0,,50mg,,,,"San Diego, California, US",32.982151,-117.040494,America/Los_Angeles
-2024-05-23,,4.6,Anticonvulsant,25mg,5.5,Moderate,Lack of Sleep,"San Diego, California, US",32.98637,-117.239427,America/Los_Angeles
-2024-11-30,15:15:21,,Beta Blocker,50mg,9.8,High,"Weather: Dry, Skipped Meal","San Diego, California, US",32.843225,-117.059277,America/Los_Angeles
-2024-07-19,17:20:56,2.0,NSAID,,8.8,,Weather: Light rain,"San Diego, California, US",32.874521,-117.139415,America/Los_Angeles
-2023-11-22,09:20:36,5.3,Acetaminophen,,7.9,,Weather: Light rain,"San Diego, California, US",32.801425,-117.24927,America/Los_Angeles
-2023-12-23,14:00:29,3.5,Ergotamine,10mg,6.7,,Weather: Windy,"San Diego, California, US",32.817523,-117.234936,America/Los_Angeles
-2024-10-11,04:36:20,5.4,Acetaminophen,,5.6,,Skipped Meal,"San Diego, California, US",32.92031,-117.216468,America/Los_Angeles
-2024-11-10,10:27:57,3.4,Acetaminophen,25mg,6.4,,,"San Diego, California, US",32.71757,-117.079054,America/Los_Angeles
-2024-01-26,20:41:11,1.8,Beta Blocker,,,Moderate,Lack of Sleep,"San Diego, California, US",32.878569,-116.951235,America/Los_Angeles
-2024-09-06,22:30:56,2.1,Beta Blocker,400mg,9.8,Moderate,,"San Diego, California, US",32.873094,-117.161808,America/Los_Angeles
-2023-03-26,,4.6,Acetaminophen,,9.3,High,Lack of Sleep,"San Diego, California, US",32.940904,-117.083888,America/Los_Angeles
-2023-11-13,,4.9,,,,Low,,"San Diego, California, US",32.723784,-117.07366,America/Los_Angeles
-2023-07-31,,3.1,Ergotamine,100mg,,,"Weather: Dry, Weather: Light rain","San Diego, California, US",32.972406,-117.141475,America/Los_Angeles
-2024-05-29,,5.5,Ergotamine,,7.2,,Weather: Cloudy,"San Diego, California, US",32.788898,-117.242612,America/Los_Angeles
-2024-01-19,13:18:30,2.0,Triptan,,4.3,Low,Weather: Cloudy,"San Diego, California, US",32.745434,-117.126891,America/Los_Angeles
-2024-11-21,20:53:26,4.4,Triptan,,7.5,Low,,"San Diego, California, US",32.878704,-117.267754,America/Los_Angeles
-2023-12-08,,2.7,Beta Blocker,10mg,6.8,,,"San Diego, California, US",32.981871,-116.997947,America/Los_Angeles
-2023-02-07,12:03:17,3.5,,,,,"Lack of Sleep, Weather: Warm","San Diego, California, US",32.875987,-116.968625,America/Los_Angeles
-2024-05-25,07:24:54,4.6,Acetaminophen,,4.6,Low,,"San Diego, California, US",32.724056,-117.109264,America/Los_Angeles
-2024-02-24,,3.2,Ergotamine,100mg,7.8,,,"San Diego, California, US",32.889028,-116.968539,America/Los_Angeles
-2023-06-18,13:10:49,3.9,NSAID,,6.2,,Weather: Cool,"San Diego, California, US",32.935041,-117.189172,America/Los_Angeles
-2023-12-09,12:03:50,6.0,Acetaminophen,,5.2,Moderate,Weather: Light rain,"San Diego, California, US",32.982264,-117.250262,America/Los_Angeles
-2023-11-02,,3.6,Acetaminophen,200mg,3.0,Low,Stress,"San Diego, California, US",32.96254,-116.911624,America/Los_Angeles
-2024-06-25,19:14:48,5.8,Beta Blocker,100mg,7.0,Moderate,Skipped Meal,"San Diego, California, US",32.753146,-117.011174,America/Los_Angeles
-2024-12-02,15:05:12,2.8,Triptan,,9.7,,,"San Diego, California, US",32.712086,-117.137831,America/Los_Angeles
-2024-06-20,,5.3,,,9.5,,Weather: Clear,"San Diego, California, US",32.854885,-117.067742,America/Los_Angeles
-2023-04-22,,6.7,Ergotamine,,,,,"San Diego, California, US",32.980781,-117.0311,America/Los_Angeles
-2024-02-15,00:08:57,,Beta Blocker,,,Low,,"San Diego, California, US",32.844383,-116.97613,America/Los_Angeles
-2023-07-25,20:12:05,3.3,Acetaminophen,25mg,7.7,Low,,"San Diego, California, US",32.98516,-117.291174,America/Los_Angeles
-2023-07-04,16:37:18,5.4,None,100mg,5.5,Moderate,Weather: Light rain,"San Diego, California, US",32.994756,-117.265547,America/Los_Angeles
-2024-01-17,21:39:51,4.2,Anticonvulsant,,7.5,Moderate,,"San Diego, California, US",32.944316,-117.187866,America/Los_Angeles
-2024-05-10,12:20:14,5.1,NSAID,,8.1,,,"San Diego, California, US",32.739654,-117.124058,America/Los_Angeles
-2024-01-14,,3.6,Anticonvulsant,,8.8,,Weather: Cloudy,"San Diego, California, US",32.893187,-117.147619,America/Los_Angeles
-2023-02-16,19:01:32,4.6,Ergotamine,,,,"Weather: Dry heat, Weather: Windy","San Diego, California, US",32.71637,-117.060216,America/Los_Angeles
-2024-07-04,16:17:15,4.3,None,,6.7,,Weather: Windy,"San Diego, California, US",32.970721,-117.146714,America/Los_Angeles
-2024-06-11,,6.3,Beta Blocker,,,High,,"San Diego, California, US",32.7649,-117.122969,America/Los_Angeles
-2024-05-18,20:48:46,4.9,Anticonvulsant,,5.8,,Weather: Rain,"San Diego, California, US",32.714509,-116.971805,America/Los_Angeles
-2023-01-22,16:21:44,5.0,,50mg,6.7,,"Weather: Windy, Weather: Cloudy","San Diego, California, US",32.947902,-117.0648,America/Los_Angeles
-2023-08-01,19:59:04,3.9,Anticonvulsant,,7.6,,,"San Diego, California, US",32.805931,-116.980087,America/Los_Angeles
-2023-11-06,,3.8,Anticonvulsant,50mg,8.4,,,"San Diego, California, US",32.866406,-116.969627,America/Los_Angeles
-2024-10-22,03:17:22,,Acetaminophen,,,,"Skipped Meal, Weather: Cloudy","San Diego, California, US",32.889438,-116.986238,America/Los_Angeles
-2023-09-29,20:05:47,5.1,NSAID,10mg,9.2,High,"Weather: Dry heat, Alcohol","San Diego, California, US",32.879569,-117.134344,America/Los_Angeles
-2024-07-24,14:56:57,,Ergotamine,,6.6,High,,"San Diego, California, US",32.987384,-117.083554,America/Los_Angeles
-2023-07-21,14:45:09,4.9,Triptan,100mg,7.0,Low,Weather: Hot,"San Diego, California, US",32.881527,-117.211805,America/Los_Angeles
-2023-02-01,01:01:00,7.6,,,5.9,High,"Weather: Cool, Weather: Windy","San Diego, California, US",32.887695,-117.071357,America/Los_Angeles
-2024-03-18,22:17:12,5.8,Acetaminophen,,,,,"San Diego, California, US",32.755452,-117.276165,America/Los_Angeles
-2023-06-11,15:32:04,4.0,Triptan,100mg,8.3,Low,Weather: Rain,"San Diego, California, US",32.881308,-116.994523,America/Los_Angeles
-2023-09-11,01:12:47,6.3,Beta Blocker,,8.1,,,"San Diego, California, US",32.85702,-117.209291,America/Los_Angeles
-2024-06-04,07:20:17,3.9,Anticonvulsant,100mg,6.6,Moderate,Weather: Windy,"San Diego, California, US",32.899957,-117.267958,America/Los_Angeles
-2024-10-12,,1.4,NSAID,,7.1,High,,"San Diego, California, US",32.83255,-117.234653,America/Los_Angeles
-2024-04-24,06:01:17,3.0,Acetaminophen,,7.8,High,"Skipped Meal, Weather: Dry","San Diego, California, US",32.755338,-117.219082,America/Los_Angeles
-2023-01-10,09:18:43,,Triptan,,,,,"San Diego, California, US",32.816012,-117.27954,America/Los_Angeles
-2024-12-26,21:24:21,4.0,,10mg,6.2,Moderate,Weather: Dry heat,"San Diego, California, US",32.819338,-117.095317,America/Los_Angeles
-2024-05-19,08:51:27,,,100mg,8.2,,Weather: Warm,"San Diego, California, US",32.844988,-117.146886,America/Los_Angeles
-2024-07-13,15:15:48,7.0,,,5.1,Moderate,Stress,"San Diego, California, US",32.951744,-117.241869,America/Los_Angeles
-2024-03-11,19:53:59,5.0,Anticonvulsant,25mg,7.4,Low,Weather: Cloudy,"San Diego, California, US",32.851709,-117.275183,America/Los_Angeles
-2023-04-21,02:01:20,4.2,,,,High,,"San Diego, California, US",32.721347,-117.070454,America/Los_Angeles
-2023-06-02,,5.7,NSAID,,7.7,High,,"San Diego, California, US",32.869806,-116.948787,America/Los_Angeles
-2024-09-26,20:40:22,1.2,Ergotamine,,6.9,High,Weather: Light rain,"San Diego, California, US",32.867362,-116.916084,America/Los_Angeles
-2023-04-12,10:18:39,4.9,None,25mg,4.6,Moderate,Weather: Light rain,"San Diego, California, US",32.714608,-117.260797,America/Los_Angeles
-2023-07-10,02:53:12,5.7,,,8.7,High,,"San Diego, California, US",32.71322,-117.225889,America/Los_Angeles
-2024-12-29,21:51:53,2.3,NSAID,,5.9,,"Weather: Cool, Weather: Dry","San Diego, California, US",32.862381,-117.041771,America/Los_Angeles
-2024-07-16,02:30:57,6.2,Triptan,200mg,5.8,High,,"San Diego, California, US",32.713676,-116.921612,America/Los_Angeles
-2023-03-22,,5.0,Anticonvulsant,,7.3,,Weather: Windy,"San Diego, California, US",32.95265,-117.181355,America/Los_Angeles
-2024-05-03,03:54:16,3.9,Anticonvulsant,50mg,8.7,,"Weather: Light rain, Lack of Sleep","San Diego, California, US",32.723156,-117.232045,America/Los_Angeles
-2023-03-29,22:42:22,5.4,Anticonvulsant,50mg,,,,"San Diego, California, US",32.738083,-117.250686,America/Los_Angeles
-2023-07-13,,7.9,Triptan,,7.1,,Alcohol,"San Diego, California, US",32.855569,-117.201661,America/Los_Angeles
-2023-04-14,09:42:58,4.8,Ergotamine,,,,Weather: Light rain,"San Diego, California, US",32.807442,-116.904198,America/Los_Angeles
-2023-04-06,,4.9,Acetaminophen,,,Low,"Alcohol, Weather: Light rain","San Diego, California, US",32.905294,-116.920408,America/Los_Angeles
-2024-02-27,06:34:12,3.8,None,200mg,,,,"San Diego, California, US",32.742767,-117.147144,America/Los_Angeles
-2023-07-17,18:43:00,3.2,None,,6.4,,"Skipped Meal, Lack of Sleep","San Diego, California, US",32.86642,-117.269297,America/Los_Angeles
-2023-01-01,17:39:32,5.7,Triptan,400mg,5.8,High,Weather: Windy,"San Diego, California, US",32.701256,-117.031826,America/Los_Angeles
-2024-02-11,,,Triptan,25mg,,,Weather: Cloudy,"San Diego, California, US",32.892546,-117.135684,America/Los_Angeles
-2024-01-13,01:21:56,4.6,Beta Blocker,,,,,"San Diego, California, US",32.846893,-117.133823,America/Los_Angeles
-2023-06-16,,3.8,NSAID,,3.0,High,,"San Diego, California, US",32.707202,-117.165851,America/Los_Angeles
-2024-05-23,,,,,7.7,High,"Weather: Warm, Skipped Meal","San Diego, California, US",32.753125,-117.26063,America/Los_Angeles
-2024-09-29,01:50:32,5.0,Triptan,10mg,8.4,,"Skipped Meal, Weather: Dry","San Diego, California, US",32.987016,-117.060256,America/Los_Angeles
-2023-11-09,08:54:38,6.1,Triptan,10mg,3.5,,Weather: Dry heat,"San Diego, California, US",32.918597,-117.173855,America/Los_Angeles
-2024-08-15,08:22:35,3.7,Acetaminophen,10mg,5.5,,,"San Diego, California, US",32.817944,-117.20523,America/Los_Angeles
-2024-02-22,13:36:12,4.1,Acetaminophen,200mg,7.9,High,"Weather: Rain, Lack of Sleep","San Diego, California, US",32.72909,-117.228387,America/Los_Angeles
-2024-11-11,,3.0,,,10.1,Low,,"San Diego, California, US",32.939254,-117.028982,America/Los_Angeles
-2024-04-21,,3.8,Acetaminophen,,7.0,Moderate,,"San Diego, California, US",32.864079,-117.109964,America/Los_Angeles
-2023-03-14,20:57:10,5.1,Anticonvulsant,,5.9,Low,Weather: Cool,"San Diego, California, US",32.97673,-117.270906,America/Los_Angeles
-2023-05-21,,5.6,,,6.7,,,"San Diego, California, US",32.78418,-117.160025,America/Los_Angeles
-2024-08-04,17:52:51,3.1,Acetaminophen,,,,Weather: Light rain,"San Diego, California, US",32.934728,-116.902994,America/Los_Angeles
-2023-09-19,14:09:00,5.8,Triptan,,6.0,High,Weather: Warm,"San Diego, California, US",32.772201,-116.950277,America/Los_Angeles
-2023-12-06,11:09:56,6.5,Anticonvulsant,,5.8,High,Stress,"San Diego, California, US",32.949187,-117.210137,America/Los_Angeles
-2023-11-04,16:24:34,5.1,Ergotamine,400mg,6.3,,Skipped Meal,"San Diego, California, US",32.8198,-117.136131,America/Los_Angeles
-2023-09-02,13:51:59,7.3,Triptan,50mg,5.6,,,"San Diego, California, US",32.993466,-117.227643,America/Los_Angeles
-2024-05-29,22:27:50,3.3,Ergotamine,10mg,,Low,,"San Diego, California, US",32.939747,-117.166323,America/Los_Angeles
-2023-12-03,22:26:42,2.6,Ergotamine,100mg,9.4,Low,,"San Diego, California, US",32.919261,-117.131996,America/Los_Angeles
-2024-07-28,,1.8,None,200mg,7.5,,,"San Diego, California, US",32.873508,-116.966955,America/Los_Angeles
-2024-07-14,,6.7,NSAID,10mg,6.6,,,"San Diego, California, US",32.94125,-116.953431,America/Los_Angeles
-2023-03-17,05:24:32,5.5,NSAID,,,,Weather: Cloudy,"San Diego, California, US",32.717885,-117.02318,America/Los_Angeles
-2023-06-24,13:30:31,4.4,Beta Blocker,,,Moderate,,"San Diego, California, US",32.741996,-117.133673,America/Los_Angeles
-2023-04-19,03:02:45,4.9,Acetaminophen,,8.3,,,"San Diego, California, US",32.864577,-117.138904,America/Los_Angeles
-2023-07-02,06:15:38,2.8,Beta Blocker,,,,,"San Diego, California, US",32.855884,-116.901389,America/Los_Angeles
-2023-07-11,01:04:04,8.2,Acetaminophen,50mg,6.7,,Weather: Rain,"San Diego, California, US",32.740565,-117.029818,America/Los_Angeles
-2023-03-06,08:36:45,4.7,None,,11.8,,,"San Diego, California, US",32.8188,-117.246796,America/Los_Angeles
-2024-04-18,19:33:34,4.7,NSAID,50mg,7.4,,Lack of Sleep,"San Diego, California, US",32.747621,-116.920291,America/Los_Angeles
-2023-04-10,06:42:32,5.6,Anticonvulsant,,5.9,Low,Weather: Dry heat,"San Diego, California, US",32.96388,-116.937183,America/Los_Angeles
-2024-06-27,07:01:13,5.2,Anticonvulsant,,6.4,High,"Weather: Hot, Weather: Cloudy","San Diego, California, US",32.99746,-117.216674,America/Los_Angeles
-2023-05-08,,,None,10mg,8.7,Low,,"San Diego, California, US",32.806632,-117.032312,America/Los_Angeles
-2024-03-27,,3.3,,200mg,,Low,Weather: Hot,"San Diego, California, US",32.845141,-117.132644,America/Los_Angeles
-2024-01-04,,5.2,Beta Blocker,,4.8,,Weather: Clear,"San Diego, California, US",32.807343,-117.062488,America/Los_Angeles
-2023-02-12,,7.3,Anticonvulsant,50mg,8.4,Moderate,,"San Diego, California, US",32.872678,-117.235417,America/Los_Angeles
-2024-02-23,,6.5,Acetaminophen,400mg,6.0,Low,Weather: Clear,"San Diego, California, US",32.841522,-117.078611,America/Los_Angeles
-2024-05-02,00:01:12,6.9,Triptan,,9.8,Low,Weather: Rain,"San Diego, California, US",32.871086,-117.215957,America/Los_Angeles
-2023-03-19,06:05:28,,Beta Blocker,100mg,8.6,Moderate,,"San Diego, California, US",32.922681,-117.28992,America/Los_Angeles
-2023-09-27,,3.0,NSAID,,6.3,Moderate,,"San Diego, California, US",32.80645,-116.987915,America/Los_Angeles
-2024-11-04,,4.3,Anticonvulsant,,8.9,,,"San Diego, California, US",32.869168,-117.195535,America/Los_Angeles
-2024-12-01,22:16:57,4.6,Ergotamine,200mg,7.1,Low,,"San Diego, California, US",32.908486,-117.073044,America/Los_Angeles
-2024-12-28,22:08:21,6.1,Acetaminophen,,8.3,Low,Weather: Cool,"San Diego, California, US",32.938873,-117.00599,America/Los_Angeles
-2023-11-11,15:49:38,2.0,None,50mg,7.7,Low,,"San Diego, California, US",32.883032,-117.104729,America/Los_Angeles
-2023-06-17,16:11:03,6.8,NSAID,10mg,5.7,,,"San Diego, California, US",32.739955,-117.195467,America/Los_Angeles
-2023-12-05,,4.3,,,6.0,,,"San Diego, California, US",32.82573,-117.06028,America/Los_Angeles
-2023-07-12,,3.9,NSAID,10mg,8.5,Low,Lack of Sleep,"San Diego, California, US",32.854112,-117.184726,America/Los_Angeles
-2024-03-28,,3.0,NSAID,,6.5,,,"San Diego, California, US",32.701939,-117.101504,America/Los_Angeles
-2023-10-10,,,NSAID,,6.4,Moderate,Weather: Dry,"San Diego, California, US",32.785688,-117.006157,America/Los_Angeles
-2023-12-02,,5.7,Beta Blocker,,5.6,,,"San Diego, California, US",32.707184,-117.066069,America/Los_Angeles
-2024-01-25,,4.6,Triptan,200mg,,Low,Weather: Rain,"San Diego, California, US",32.982442,-117.230236,America/Los_Angeles
-2024-06-08,06:03:22,2.6,,25mg,10.1,,,"San Diego, California, US",32.841495,-117.263431,America/Los_Angeles
-2023-08-28,,2.6,Ergotamine,,5.4,Moderate,Skipped Meal,"San Diego, California, US",32.887705,-117.079787,America/Los_Angeles
-2024-04-27,20:34:13,4.0,,,7.0,Moderate,,"San Diego, California, US",32.82221,-117.091449,America/Los_Angeles
-2024-10-20,20:31:08,7.0,,25mg,9.1,Moderate,Weather: Light rain,"San Diego, California, US",32.968972,-117.221482,America/Los_Angeles
-2024-12-16,22:36:58,4.1,Beta Blocker,,6.9,,,"San Diego, California, US",32.706769,-116.955334,America/Los_Angeles
-2024-08-14,,2.2,Acetaminophen,200mg,7.7,,Weather: Windy,"San Diego, California, US",32.873135,-116.943737,America/Los_Angeles
-2024-07-08,05:32:25,4.1,,400mg,5.4,,,"San Diego, California, US",32.879084,-116.975936,America/Los_Angeles
-2024-04-02,15:38:10,4.1,Ergotamine,,7.6,,Lack of Sleep,"San Diego, California, US",32.828902,-117.000056,America/Los_Angeles
-2023-03-30,21:25:54,1.0,Triptan,,,,"Weather: Rain, Weather: Light rain","San Diego, California, US",32.973912,-117.071151,America/Los_Angeles
-2024-10-21,19:04:42,4.4,Ergotamine,,8.5,,"Lack of Sleep, Weather: Hot","San Diego, California, US",32.754236,-117.192481,America/Los_Angeles
-2023-04-05,22:43:53,4.2,NSAID,,8.8,Moderate,"Weather: Cool, Weather: Cloudy","San Diego, California, US",32.759593,-117.201257,America/Los_Angeles
-2024-03-27,21:08:27,,,,,,"Lack of Sleep, Weather: Dry heat","San Diego, California, US",32.791925,-117.077946,America/Los_Angeles
-2024-03-03,,7.3,Triptan,100mg,7.9,,Weather: Cloudy,"San Diego, California, US",32.876397,-117.1294,America/Los_Angeles
-2023-05-31,,6.2,Beta Blocker,,7.5,Moderate,,"San Diego, California, US",32.884626,-117.26737,America/Los_Angeles
-2024-05-28,19:50:37,4.1,Triptan,25mg,7.3,Low,,"San Diego, California, US",32.726336,-117.231268,America/Los_Angeles
-2024-01-11,02:38:33,2.8,Acetaminophen,100mg,6.5,Moderate,Weather: Rain,"San Diego, California, US",32.855423,-117.214402,America/Los_Angeles
-2023-01-22,04:00:29,8.4,NSAID,400mg,7.5,Moderate,,"San Diego, California, US",32.784985,-117.139875,America/Los_Angeles
-2023-11-09,21:41:54,4.6,Triptan,,6.6,,"Weather: Warm, Stress","San Diego, California, US",32.94356,-117.294455,America/Los_Angeles
-2024-06-02,,4.5,Beta Blocker,,7.3,,"Weather: Clear, Lack of Sleep","San Diego, California, US",32.894814,-117.032449,America/Los_Angeles
-2023-07-25,16:29:41,4.5,,,9.0,Moderate,"Weather: Hot, Weather: Windy","San Diego, California, US",32.939597,-116.926899,America/Los_Angeles
-2024-01-10,,4.8,Acetaminophen,,5.5,,"Weather: Hot, Weather: Cool","San Diego, California, US",32.706041,-117.238487,America/Los_Angeles
-2024-03-26,,4.3,Acetaminophen,,8.7,,,"San Diego, California, US",32.965851,-117.116593,America/Los_Angeles
-2024-09-17,00:14:55,,Ergotamine,,9.0,,,"San Diego, California, US",32.869377,-117.034789,America/Los_Angeles
-2024-08-17,00:29:27,3.7,,,6.8,High,Skipped Meal,"San Diego, California, US",32.90372,-116.927304,America/Los_Angeles
-2023-06-28,09:04:30,4.5,,,3.8,Low,,"San Diego, California, US",32.999085,-117.011937,America/Los_Angeles
-2023-07-29,,3.7,Acetaminophen,200mg,6.1,High,,"San Diego, California, US",32.786166,-116.948099,America/Los_Angeles
-2024-05-14,16:22:33,3.4,Acetaminophen,,,High,,"San Diego, California, US",32.714766,-117.207568,America/Los_Angeles
-2024-04-08,07:19:00,4.7,Triptan,25mg,,,Weather: Cloudy,"San Diego, California, US",32.969216,-117.197523,America/Los_Angeles
-2023-05-04,20:36:26,4.1,Triptan,,5.5,Moderate,,"San Diego, California, US",32.766195,-117.24475,America/Los_Angeles
-2023-04-23,,6.8,Anticonvulsant,10mg,6.2,High,"Weather: Cool, Weather: Rain","San Diego, California, US",32.957734,-117.099977,America/Los_Angeles
-2023-01-12,01:57:21,1.0,,,,,Weather: Dry heat,"San Diego, California, US",32.902468,-117.204373,America/Los_Angeles
-2023-05-06,13:15:47,6.1,Beta Blocker,,7.8,Moderate,,"San Diego, California, US",32.927412,-116.995998,America/Los_Angeles
-2024-07-18,14:54:35,,Ergotamine,400mg,6.6,High,,"San Diego, California, US",32.793779,-117.135727,America/Los_Angeles
-2023-11-27,17:26:38,,,100mg,6.4,,,"San Diego, California, US",32.762907,-116.909376,America/Los_Angeles
-2023-10-10,20:25:29,4.0,Triptan,25mg,6.4,,,"San Diego, California, US",32.893681,-116.926182,America/Los_Angeles
-2023-05-20,07:55:39,,Anticonvulsant,,5.6,,Weather: Cloudy,"San Diego, California, US",32.791016,-116.987244,America/Los_Angeles
-2024-02-05,11:04:47,2.4,,,9.4,High,,"San Diego, California, US",32.929758,-117.023338,America/Los_Angeles
-2023-04-07,12:19:36,3.3,None,,,,,"San Diego, California, US",32.989692,-117.142578,America/Los_Angeles
-2024-05-31,13:01:18,2.8,Anticonvulsant,,8.8,,,"San Diego, California, US",32.739215,-117.031316,America/Los_Angeles
-2024-07-22,02:48:39,7.1,Beta Blocker,,9.3,,,"San Diego, California, US",32.918793,-117.069976,America/Los_Angeles
-2023-03-10,,5.9,Beta Blocker,50mg,8.5,High,"Weather: Windy, Weather: Cool","San Diego, California, US",32.762045,-117.098218,America/Los_Angeles
-2023-04-28,,6.4,Ergotamine,,,High,Weather: Warm,"San Diego, California, US",32.793657,-117.129013,America/Los_Angeles
-2023-02-28,17:19:01,5.6,Beta Blocker,,7.6,,Stress,"San Diego, California, US",32.893566,-117.001914,America/Los_Angeles
-2023-02-02,,2.8,,100mg,7.0,High,,"San Diego, California, US",32.769667,-117.13787,America/Los_Angeles
-2023-11-14,,3.7,,100mg,5.6,,Alcohol,"San Diego, California, US",32.780748,-117.220547,America/Los_Angeles
-2023-02-19,,,Anticonvulsant,,7.5,High,"Weather: Cool, Weather: Dry heat","San Diego, California, US",32.935016,-116.936299,America/Los_Angeles
-2024-05-03,,2.7,None,25mg,,High,,"San Diego, California, US",32.81107,-116.999488,America/Los_Angeles
-2023-01-19,16:59:24,5.6,Acetaminophen,200mg,8.8,High,"Weather: Warm, Weather: Windy","San Diego, California, US",32.969099,-116.96155,America/Los_Angeles
-2024-12-26,01:51:47,4.1,Anticonvulsant,,6.3,Moderate,Weather: Dry,"San Diego, California, US",32.754844,-116.917483,America/Los_Angeles
-2023-07-16,,3.9,Anticonvulsant,,7.3,Moderate,,"San Diego, California, US",32.813003,-117.164304,America/Los_Angeles
-2024-03-25,,5.6,Ergotamine,,7.4,,,"San Diego, California, US",32.718729,-117.105531,America/Los_Angeles
-2024-07-12,21:26:46,5.2,NSAID,,6.6,Low,Lack of Sleep,"San Diego, California, US",32.732704,-117.200584,America/Los_Angeles
-2024-11-09,01:55:52,4.0,Anticonvulsant,,7.9,,"Weather: Clear, Weather: Cloudy","San Diego, California, US",32.795083,-116.976469,America/Los_Angeles
-2024-03-27,19:02:44,6.2,NSAID,,6.3,Moderate,"Weather: Cool, Lack of Sleep","San Diego, California, US",32.962647,-117.179013,America/Los_Angeles
-2023-10-16,23:02:53,2.9,NSAID,,8.3,Low,Weather: Windy,"San Diego, California, US",32.957609,-116.957108,America/Los_Angeles
-2023-05-21,03:38:44,5.4,None,,,,,"San Diego, California, US",32.929395,-117.241322,America/Los_Angeles
-2023-03-25,18:38:44,5.4,Beta Blocker,,7.2,Low,,"San Diego, California, US",32.907097,-116.92199,America/Los_Angeles
-2024-11-24,18:37:17,4.0,Ergotamine,,9.9,Low,Weather: Dry heat,"San Diego, California, US",32.904762,-117.167353,America/Los_Angeles
-2024-01-26,18:31:03,5.0,Beta Blocker,25mg,5.5,,,"San Diego, California, US",32.850174,-117.04171,America/Los_Angeles
-2024-08-13,20:38:43,2.6,NSAID,50mg,6.0,,Weather: Warm,"San Diego, California, US",32.853171,-117.252019,America/Los_Angeles
-2023-08-03,03:29:14,5.9,Triptan,100mg,7.8,,,"San Diego, California, US",32.793619,-116.979042,America/Los_Angeles
-2024-06-09,23:48:09,4.2,,100mg,,High,Lack of Sleep,"San Diego, California, US",32.958425,-117.24508,America/Los_Angeles
-2023-08-03,04:15:12,3.7,NSAID,25mg,,Low,Weather: Warm,"San Diego, California, US",32.985716,-117.168471,America/Los_Angeles
-2024-02-07,17:06:03,6.1,Triptan,,7.7,,Weather: Cloudy,"San Diego, California, US",32.898694,-116.99927,America/Los_Angeles
-2023-05-08,10:30:42,3.4,,,8.0,,Weather: Dry,"San Diego, California, US",32.943584,-116.9217,America/Los_Angeles
-2024-04-21,,,,25mg,,,,"San Diego, California, US",32.793876,-116.956597,America/Los_Angeles
-2024-02-08,,2.2,NSAID,,7.6,,,"San Diego, California, US",32.739506,-117.017984,America/Los_Angeles
-2023-01-29,04:43:47,5.4,Acetaminophen,,6.6,High,,"San Diego, California, US",32.922593,-117.028911,America/Los_Angeles
-2023-12-04,17:49:36,2.6,None,10mg,8.0,,"Weather: Light rain, Weather: Hot","San Diego, California, US",32.775694,-116.950783,America/Los_Angeles
-2024-12-14,00:56:40,7.1,None,,9.8,,Skipped Meal,"San Diego, California, US",32.750658,-117.278546,America/Los_Angeles
-2023-12-27,,1.4,NSAID,,6.8,Moderate,Weather: Cool,"San Diego, California, US",32.915239,-117.10981,America/Los_Angeles
-2024-07-22,,,Triptan,,5.5,Moderate,,"San Diego, California, US",32.954729,-117.146641,America/Los_Angeles
-2024-01-27,17:47:40,4.8,NSAID,,8.7,,Weather: Cool,"San Diego, California, US",32.750484,-116.965423,America/Los_Angeles
-2023-08-06,02:21:56,4.4,Anticonvulsant,,6.8,Low,Weather: Clear,"San Diego, California, US",32.864673,-117.224322,America/Los_Angeles
-2024-07-27,17:23:12,3.7,None,,,Moderate,"Weather: Hot, Weather: Light rain","San Diego, California, US",32.916115,-117.095555,America/Los_Angeles
-2024-10-30,19:28:11,5.1,None,,8.3,,"Weather: Dry, Lack of Sleep","San Diego, California, US",32.881294,-117.115641,America/Los_Angeles
-2023-07-21,02:54:44,4.4,,,6.2,,Weather: Clear,"San Diego, California, US",32.948613,-116.968175,America/Los_Angeles
-2023-01-17,,6.2,None,25mg,6.9,High,,"San Diego, California, US",32.912817,-117.257839,America/Los_Angeles
-2023-11-18,,,Anticonvulsant,,7.5,Low,,"San Diego, California, US",32.951656,-117.031595,America/Los_Angeles
-2024-06-01,20:11:41,,Anticonvulsant,,7.3,,Weather: Light rain,"San Diego, California, US",32.909107,-117.154807,America/Los_Angeles
-2024-07-23,07:38:51,4.0,NSAID,100mg,8.1,Low,,"San Diego, California, US",32.963784,-117.009851,America/Los_Angeles
-2023-11-21,,4.4,,,6.3,,,"San Diego, California, US",32.733777,-117.136889,America/Los_Angeles
-2024-02-16,,,Anticonvulsant,,7.8,,Weather: Dry heat,"San Diego, California, US",32.965914,-117.281121,America/Los_Angeles
-2023-11-14,05:00:02,1.9,Ergotamine,,6.6,,,"San Diego, California, US",32.988425,-117.028335,America/Los_Angeles
-2024-11-11,13:47:38,2.5,Ergotamine,,8.1,Low,Weather: Cloudy,"San Diego, California, US",32.889413,-117.191776,America/Los_Angeles
-2023-03-23,10:33:23,5.6,Beta Blocker,,7.9,,Weather: Dry,"San Diego, California, US",32.774638,-116.923177,America/Los_Angeles
-2024-04-18,14:29:55,4.8,NSAID,10mg,,,,"San Diego, California, US",32.789482,-116.989798,America/Los_Angeles
-2024-04-12,17:23:52,4.2,Beta Blocker,10mg,8.6,,,"San Diego, California, US",32.817937,-117.244298,America/Los_Angeles
-2024-02-29,12:43:59,4.5,,,,Low,Weather: Dry,"San Diego, California, US",32.703215,-117.082297,America/Los_Angeles
-2024-11-19,,5.0,Ergotamine,,8.2,,Weather: Cool,"San Diego, California, US",32.992734,-117.152346,America/Los_Angeles
-2023-07-23,,3.7,Triptan,25mg,7.6,Moderate,Skipped Meal,"San Diego, California, US",32.807158,-117.162363,America/Los_Angeles
-2024-08-05,09:21:51,3.3,Beta Blocker,,9.8,Low,,"San Diego, California, US",32.856163,-117.123734,America/Los_Angeles
-2024-01-22,22:51:57,4.8,Beta Blocker,400mg,6.7,Low,"Weather: Dry, Alcohol","San Diego, California, US",32.963974,-117.097792,America/Los_Angeles
-2023-04-08,19:18:33,,Beta Blocker,,6.5,,,"San Diego, California, US",32.852327,-117.244651,America/Los_Angeles
-2023-12-11,03:40:00,5.1,Triptan,,7.0,,"Weather: Windy, Weather: Cool","San Diego, California, US",32.994822,-117.200011,America/Los_Angeles
-2023-07-27,,1.9,,50mg,6.5,Low,Weather: Rain,"San Diego, California, US",32.722009,-117.034742,America/Los_Angeles
-2024-05-28,10:29:08,,None,100mg,8.2,,,"San Diego, California, US",32.87861,-117.133942,America/Los_Angeles
-2024-09-27,10:20:08,5.2,NSAID,,4.6,Low,,"San Diego, California, US",32.826658,-116.985974,America/Los_Angeles
-2024-08-08,13:41:55,4.9,Anticonvulsant,,5.4,,,"San Diego, California, US",32.758714,-116.971899,America/Los_Angeles
-2023-06-15,,6.0,Ergotamine,,5.4,,Weather: Cool,"San Diego, California, US",32.894624,-117.132412,America/Los_Angeles
-2023-01-22,03:35:35,7.0,NSAID,,8.4,,,"San Diego, California, US",32.837409,-117.197341,America/Los_Angeles
-2023-06-03,17:12:30,6.0,Acetaminophen,,9.6,High,,"San Diego, California, US",32.925634,-117.09485,America/Los_Angeles
-2024-03-14,11:39:37,1.7,Triptan,50mg,6.8,,,"San Diego, California, US",32.796256,-117.06158,America/Los_Angeles
-2023-10-22,11:32:01,2.6,Anticonvulsant,100mg,6.7,Moderate,Weather: Dry,"San Diego, California, US",32.99872,-117.125895,America/Los_Angeles
-2023-08-07,15:29:45,3.6,Beta Blocker,,7.1,Moderate,Weather: Light rain,"San Diego, California, US",32.976207,-117.161993,America/Los_Angeles
-2024-10-30,05:39:20,4.5,None,10mg,8.7,,"Weather: Cool, Weather: Clear","San Diego, California, US",32.71642,-117.218303,America/Los_Angeles
-2024-05-09,,5.3,None,100mg,5.6,,Alcohol,"San Diego, California, US",32.825609,-117.212146,America/Los_Angeles
-2023-08-18,13:07:00,3.4,Anticonvulsant,,,Low,,"San Diego, California, US",32.700068,-116.933999,America/Los_Angeles
-2023-01-20,00:31:14,4.8,Acetaminophen,,8.5,High,,"San Diego, California, US",32.953164,-117.003083,America/Los_Angeles
-2024-07-06,16:21:13,3.4,Acetaminophen,,7.8,High,,"San Diego, California, US",32.750344,-117.251855,America/Los_Angeles
-2023-05-28,18:58:20,3.6,Anticonvulsant,400mg,,High,"Weather: Cool, Weather: Dry","San Diego, California, US",32.720281,-117.010388,America/Los_Angeles
-2023-04-18,15:23:58,2.4,Ergotamine,,,,,"San Diego, California, US",32.978642,-117.127786,America/Los_Angeles
-2024-02-07,22:59:02,3.1,Ergotamine,,3.0,Low,Weather: Hot,"San Diego, California, US",32.735742,-117.095043,America/Los_Angeles
-2024-08-18,19:14:25,2.5,Anticonvulsant,,8.0,Low,Weather: Dry,"San Diego, California, US",32.80465,-117.15007,America/Los_Angeles
-2024-04-27,09:26:00,3.0,,,6.0,Moderate,Weather: Clear,"San Diego, California, US",32.886399,-117.012513,America/Los_Angeles
-2024-01-02,03:05:52,6.1,None,,4.3,,"Weather: Dry, Alcohol","San Diego, California, US",32.733181,-117.285764,America/Los_Angeles
-2024-02-18,11:31:44,3.1,Acetaminophen,,,High,"Lack of Sleep, Stress","San Diego, California, US",32.998299,-117.206909,America/Los_Angeles
-2023-11-05,17:55:08,8.4,Ergotamine,,9.1,,,"San Diego, California, US",32.716149,-117.22405,America/Los_Angeles
-2023-05-14,13:10:03,5.2,Anticonvulsant,,6.8,,,"San Diego, California, US",32.711687,-117.143276,America/Los_Angeles
-2024-12-19,17:01:03,4.8,NSAID,50mg,8.4,Moderate,Weather: Dry heat,"San Diego, California, US",32.940721,-117.163502,America/Los_Angeles
-2023-10-10,,3.2,Triptan,,9.4,,Weather: Dry heat,"San Diego, California, US",32.833255,-117.029765,America/Los_Angeles
-2023-03-14,02:54:51,5.6,Triptan,10mg,,,Weather: Cloudy,"San Diego, California, US",32.852668,-116.955422,America/Los_Angeles
-2024-04-25,13:09:50,3.6,None,,,Low,"Weather: Cool, Weather: Hot","San Diego, California, US",32.959811,-117.296036,America/Los_Angeles
-2023-12-18,20:39:22,4.7,Anticonvulsant,10mg,8.1,High,Alcohol,"San Diego, California, US",32.933414,-117.115707,America/Los_Angeles
-2024-07-13,22:46:10,8.3,None,25mg,7.1,,Weather: Dry,"San Diego, California, US",32.996652,-117.106707,America/Los_Angeles
-2023-11-22,,4.4,,,,Moderate,,"San Diego, California, US",32.996069,-116.998172,America/Los_Angeles
-2024-03-18,07:00:41,6.2,Acetaminophen,,,,,"San Diego, California, US",32.774581,-117.084642,America/Los_Angeles
-2023-04-10,22:07:27,3.4,,,,,,"San Diego, California, US",32.997641,-116.956988,America/Los_Angeles
-2023-02-28,15:37:56,,Beta Blocker,,,,,"San Diego, California, US",32.72921,-117.017451,America/Los_Angeles
-2024-05-22,19:50:07,7.2,Triptan,200mg,6.7,Low,Stress,"San Diego, California, US",32.803674,-117.297207,America/Los_Angeles
-2023-09-15,,3.6,Triptan,,7.2,Low,Weather: Hot,"San Diego, California, US",32.821044,-117.206098,America/Los_Angeles
-2024-02-17,10:37:14,7.2,Acetaminophen,,7.8,,Weather: Hot,"San Diego, California, US",32.945661,-117.165068,America/Los_Angeles
-2024-03-27,11:16:24,5.6,Triptan,,,,Weather: Dry,"San Diego, California, US",32.948257,-117.299761,America/Los_Angeles
-2023-03-06,,3.7,Acetaminophen,,,,Lack of Sleep,"San Diego, California, US",32.792346,-117.203534,America/Los_Angeles
-2024-08-17,,,None,,6.1,Moderate,Lack of Sleep,"San Diego, California, US",32.77007,-117.272725,America/Los_Angeles
-2023-06-03,05:09:19,6.0,Acetaminophen,,7.3,,"Weather: Hot, Weather: Rain","San Diego, California, US",32.756137,-117.07778,America/Los_Angeles
-2023-09-23,13:35:47,5.4,None,10mg,5.9,,Weather: Hot,"San Diego, California, US",32.787408,-117.133042,America/Los_Angeles
-2023-03-20,,2.1,Anticonvulsant,,5.0,,,"San Diego, California, US",32.81306,-116.949638,America/Los_Angeles
-2023-11-11,06:41:35,,None,200mg,6.1,,Weather: Light rain,"San Diego, California, US",32.97159,-117.102817,America/Los_Angeles
-2024-10-23,16:11:02,4.1,,200mg,6.9,,,"San Diego, California, US",32.799047,-117.25728,America/Los_Angeles
-2024-07-13,13:56:27,4.4,NSAID,,6.4,Moderate,Weather: Dry,"San Diego, California, US",32.986021,-117.275909,America/Los_Angeles
-2023-09-05,,5.4,Beta Blocker,,,Low,Weather: Windy,"San Diego, California, US",32.789295,-117.180774,America/Los_Angeles
-2024-09-01,01:17:31,,Beta Blocker,,4.9,,Weather: Light rain,"San Diego, California, US",32.79612,-117.234285,America/Los_Angeles
-2024-02-18,08:30:18,2.5,,,,,,"San Diego, California, US",32.934948,-117.251001,America/Los_Angeles
-2023-01-25,23:48:50,5.1,Beta Blocker,,4.7,,,"San Diego, California, US",32.890472,-117.250462,America/Los_Angeles
-2023-10-11,11:57:34,5.4,Acetaminophen,,8.1,High,"Weather: Cloudy, Skipped Meal","San Diego, California, US",32.721161,-116.936228,America/Los_Angeles
-2024-03-24,,5.3,Triptan,,,,,"San Diego, California, US",32.757039,-116.9715,America/Los_Angeles
-2023-10-28,06:45:12,6.1,,,4.8,,Alcohol,"San Diego, California, US",32.863389,-117.268857,America/Los_Angeles
-2023-03-09,00:37:15,5.8,Beta Blocker,,,Moderate,Lack of Sleep,"San Diego, California, US",32.986634,-117.201216,America/Los_Angeles
-2023-01-07,,,Ergotamine,400mg,5.9,Moderate,,"San Diego, California, US",32.957894,-117.232476,America/Los_Angeles
-2023-05-17,11:17:03,4.4,Ergotamine,,7.5,Moderate,Stress,"San Diego, California, US",32.956183,-117.294708,America/Los_Angeles
-2023-06-13,00:56:08,2.0,Acetaminophen,,9.0,,,"San Diego, California, US",32.853534,-116.992223,America/Los_Angeles
-2023-03-24,00:25:23,5.1,Ergotamine,,4.2,,,"San Diego, California, US",32.980439,-116.936319,America/Los_Angeles
-2024-10-11,15:08:55,,None,,7.2,,,"San Diego, California, US",32.945887,-116.944723,America/Los_Angeles
-2024-02-24,18:41:45,4.9,,,,Low,"Weather: Rain, Weather: Clear","San Diego, California, US",32.759766,-117.186326,America/Los_Angeles
-2023-03-14,15:05:50,2.6,None,100mg,8.0,,Weather: Hot,"San Diego, California, US",32.786691,-117.149178,America/Los_Angeles
-2023-08-25,,2.9,Ergotamine,,7.3,,Weather: Rain,"San Diego, California, US",32.817996,-117.082178,America/Los_Angeles
-2023-02-15,05:03:54,6.1,,,5.9,,"Weather: Cloudy, Weather: Dry heat","San Diego, California, US",32.747964,-117.023501,America/Los_Angeles
-2024-09-09,10:13:10,4.4,Anticonvulsant,200mg,6.5,High,Stress,"San Diego, California, US",32.75027,-117.175877,America/Los_Angeles
-2023-09-19,04:39:23,5.5,Acetaminophen,,5.8,Low,,"San Diego, California, US",32.851004,-116.981424,America/Los_Angeles
-2023-06-25,19:33:51,4.5,Triptan,25mg,8.6,High,"Weather: Clear, Weather: Dry","San Diego, California, US",32.921841,-117.041786,America/Los_Angeles
-2023-06-15,09:07:56,4.5,Triptan,25mg,7.0,,,"San Diego, California, US",32.746732,-117.081182,America/Los_Angeles
-2024-10-18,,5.9,Anticonvulsant,50mg,9.9,,Weather: Clear,"San Diego, California, US",32.726234,-117.149055,America/Los_Angeles
-2024-01-05,,3.7,NSAID,,6.9,Low,,"San Diego, California, US",32.824055,-117.284075,America/Los_Angeles
-2023-02-23,17:04:38,4.6,NSAID,50mg,5.9,Moderate,Weather: Dry heat,"San Diego, California, US",32.782196,-116.91774,America/Los_Angeles
-2024-11-20,14:55:26,3.8,,,4.7,Low,"Weather: Cloudy, Weather: Cool","San Diego, California, US",32.98609,-117.159069,America/Los_Angeles
-2024-02-23,10:42:02,3.8,Acetaminophen,,4.3,,,"San Diego, California, US",32.71293,-117.228362,America/Los_Angeles
-2024-05-21,,4.0,,,4.6,Low,,"San Diego, California, US",32.817665,-116.920888,America/Los_Angeles
-2023-12-07,13:52:39,4.8,Ergotamine,,7.4,,Weather: Light rain,"San Diego, California, US",32.74236,-116.994594,America/Los_Angeles
-2023-05-07,19:54:53,3.8,None,,7.8,High,,"San Diego, California, US",32.732605,-116.907497,America/Los_Angeles
-2024-02-13,13:11:45,,NSAID,,4.6,Moderate,Skipped Meal,"San Diego, California, US",32.814485,-116.989906,America/Los_Angeles
-2024-01-02,16:01:16,3.2,Acetaminophen,50mg,8.3,,Weather: Rain,"San Diego, California, US",32.802777,-117.048932,America/Los_Angeles
-2023-09-28,17:30:20,4.2,Beta Blocker,25mg,6.3,Low,"Weather: Dry, Weather: Light rain","San Diego, California, US",32.757605,-117.241592,America/Los_Angeles
-2024-10-05,03:44:08,3.8,,,7.2,,"Weather: Dry heat, Weather: Cool","San Diego, California, US",32.981419,-116.932941,America/Los_Angeles
-2024-08-27,,6.7,None,10mg,,,Skipped Meal,"San Diego, California, US",32.966241,-117.049827,America/Los_Angeles
-2024-01-14,02:41:02,4.8,Beta Blocker,,8.3,High,Lack of Sleep,"San Diego, California, US",32.94248,-117.272385,America/Los_Angeles
-2023-03-14,18:23:52,,Beta Blocker,,6.6,,Weather: Cool,"San Diego, California, US",32.800437,-117.174519,America/Los_Angeles
-2023-09-05,,,Anticonvulsant,,5.7,Low,Lack of Sleep,"San Diego, California, US",32.890694,-117.157617,America/Los_Angeles
-2023-02-12,15:46:50,4.9,NSAID,,3.8,Low,,"San Diego, California, US",32.744552,-117.061413,America/Los_Angeles
-2024-01-12,,5.8,Ergotamine,,5.9,,"Skipped Meal, Lack of Sleep","San Diego, California, US",32.944315,-117.147151,America/Los_Angeles
-2023-02-10,06:08:05,4.6,Ergotamine,,6.7,Moderate,,"San Diego, California, US",32.739681,-117.221325,America/Los_Angeles
-2023-06-19,18:12:20,6.1,None,100mg,,,Weather: Hot,"San Diego, California, US",32.771245,-117.180041,America/Los_Angeles
-2023-07-31,04:06:42,,None,,6.8,High,Weather: Clear,"San Diego, California, US",32.892839,-117.059622,America/Los_Angeles
-2024-05-07,11:06:15,6.6,,,7.1,Moderate,Weather: Clear,"San Diego, California, US",32.908824,-117.154999,America/Los_Angeles
-2024-11-10,16:20:55,7.9,NSAID,,6.7,,Weather: Clear,"San Diego, California, US",32.947199,-117.218365,America/Los_Angeles
-2023-02-08,15:29:42,4.0,NSAID,,,High,,"San Diego, California, US",32.840712,-116.979625,America/Los_Angeles
-2024-01-04,06:02:31,3.8,Anticonvulsant,,7.3,High,,"San Diego, California, US",32.754048,-117.256055,America/Los_Angeles
-2023-05-31,12:21:09,6.7,None,,7.7,High,Weather: Cool,"San Diego, California, US",32.965105,-117.162828,America/Los_Angeles
-2023-04-21,,6.9,Anticonvulsant,,,,"Weather: Clear, Weather: Rain","San Diego, California, US",32.905161,-117.289861,America/Los_Angeles
-2024-04-24,18:47:25,3.7,,200mg,9.1,,Weather: Cloudy,"San Diego, California, US",32.907014,-117.173559,America/Los_Angeles
-2024-03-11,01:35:31,3.9,Anticonvulsant,,6.9,,Stress,"San Diego, California, US",32.716722,-117.056075,America/Los_Angeles
-2023-02-16,10:26:19,4.1,Triptan,,7.0,,,"San Diego, California, US",32.772241,-117.145277,America/Los_Angeles
-2024-07-28,07:34:48,2.5,Triptan,10mg,8.1,Low,,"San Diego, California, US",32.724174,-117.241135,America/Los_Angeles
-2024-01-01,11:52:09,3.1,Triptan,,,,,"San Diego, California, US",32.789393,-117.264096,America/Los_Angeles
-2023-03-10,06:14:28,3.0,Acetaminophen,10mg,8.4,Moderate,,"San Diego, California, US",32.973248,-117.297581,America/Los_Angeles
-2023-10-26,07:34:56,,Anticonvulsant,,,Low,"Weather: Dry heat, Weather: Clear","San Diego, California, US",32.845158,-117.250701,America/Los_Angeles
-2023-10-23,10:01:38,,Anticonvulsant,,,Low,,"San Diego, California, US",32.792304,-116.929576,America/Los_Angeles
-2023-07-22,11:29:08,4.9,NSAID,,7.5,,,"San Diego, California, US",32.748508,-116.913667,America/Los_Angeles
-2023-03-02,09:39:20,6.8,Anticonvulsant,,5.3,High,,"San Diego, California, US",32.761738,-117.003374,America/Los_Angeles
-2023-11-10,,3.0,Beta Blocker,,7.2,Low,Weather: Light rain,"San Diego, California, US",32.864003,-116.946209,America/Los_Angeles
-2023-06-10,18:35:17,6.0,Ergotamine,,7.0,,,"San Diego, California, US",32.866198,-117.086176,America/Los_Angeles
-2023-11-27,08:31:50,4.2,None,,,,,"San Diego, California, US",32.758637,-117.233508,America/Los_Angeles
-2024-06-11,04:24:20,4.4,NSAID,,6.8,Moderate,"Weather: Dry, Weather: Warm","San Diego, California, US",32.974947,-117.168865,America/Los_Angeles
-2023-12-04,05:04:50,5.5,Ergotamine,200mg,4.2,Moderate,Weather: Hot,"San Diego, California, US",32.811625,-116.996071,America/Los_Angeles
-2024-08-28,21:19:52,2.8,,,6.2,,Weather: Light rain,"San Diego, California, US",32.801647,-116.919175,America/Los_Angeles
-2023-10-31,15:23:22,5.1,,,7.1,,"Weather: Rain, Alcohol","San Diego, California, US",32.921378,-117.061028,America/Los_Angeles
-2024-05-17,13:38:08,4.7,Beta Blocker,,7.2,,Stress,"San Diego, California, US",32.964269,-117.280158,America/Los_Angeles
-2024-10-11,13:49:15,,NSAID,,5.5,,,"San Diego, California, US",32.777119,-117.113985,America/Los_Angeles
-2023-12-04,09:20:05,4.9,Anticonvulsant,,8.9,,Skipped Meal,"San Diego, California, US",32.768094,-117.002438,America/Los_Angeles
-2024-07-03,04:03:12,8.2,Anticonvulsant,,5.7,,Weather: Clear,"San Diego, California, US",32.975762,-117.130492,America/Los_Angeles
-2024-09-30,20:55:14,3.5,Acetaminophen,,8.5,,Weather: Rain,"San Diego, California, US",32.80264,-116.91538,America/Los_Angeles
-2023-10-02,16:50:33,3.7,NSAID,,7.6,High,Weather: Hot,"San Diego, California, US",32.833456,-117.104381,America/Los_Angeles
-2023-06-13,11:24:46,3.6,Acetaminophen,50mg,,High,Weather: Dry heat,"San Diego, California, US",32.805495,-116.936181,America/Los_Angeles
-2024-03-18,,3.7,Beta Blocker,25mg,,,Weather: Windy,"San Diego, California, US",32.870687,-116.99513,America/Los_Angeles
-2023-11-15,,3.5,Anticonvulsant,,5.2,,"Weather: Windy, Alcohol","San Diego, California, US",32.943542,-117.16326,America/Los_Angeles
-2024-08-11,17:59:10,6.3,None,,8.4,,,"San Diego, California, US",32.830108,-116.960611,America/Los_Angeles
-2024-05-18,20:04:32,6.6,Acetaminophen,,,Low,Stress,"San Diego, California, US",32.808977,-116.982426,America/Los_Angeles
-2024-11-16,16:44:40,3.6,Ergotamine,10mg,,,,"San Diego, California, US",32.982298,-117.050716,America/Los_Angeles
-2024-01-22,17:40:23,3.3,Beta Blocker,,,,,"San Diego, California, US",32.922488,-116.977961,America/Los_Angeles
-2024-08-25,22:53:51,5.2,None,,6.6,,"Weather: Rain, Weather: Cloudy","San Diego, California, US",32.953512,-117.141979,America/Los_Angeles
-2024-11-21,,3.7,Ergotamine,,7.4,,Weather: Rain,"San Diego, California, US",32.715379,-117.139249,America/Los_Angeles
-2024-05-08,01:55:03,5.4,NSAID,50mg,7.4,Moderate,,"San Diego, California, US",32.902127,-117.11986,America/Los_Angeles
-2024-05-04,04:27:25,4.8,Ergotamine,,6.8,,Weather: Hot,"San Diego, California, US",32.924689,-117.157207,America/Los_Angeles
-2024-12-21,19:36:28,2.2,Triptan,25mg,8.2,Moderate,,"San Diego, California, US",32.890423,-117.225432,America/Los_Angeles
-2023-03-14,15:59:50,6.8,Anticonvulsant,25mg,8.2,Moderate,,"San Diego, California, US",32.924811,-117.081722,America/Los_Angeles
-2024-05-23,02:47:36,7.2,NSAID,100mg,,Low,Weather: Dry heat,"San Diego, California, US",32.761219,-117.183236,America/Los_Angeles
-2024-01-25,,3.6,Acetaminophen,,9.0,Low,Alcohol,"San Diego, California, US",32.924583,-117.10696,America/Los_Angeles
-2024-09-10,07:45:55,3.9,Triptan,10mg,4.5,,Weather: Hot,"San Diego, California, US",32.764809,-116.913092,America/Los_Angeles
-2023-10-22,,4.9,Ergotamine,50mg,8.5,,,"San Diego, California, US",32.914538,-116.917146,America/Los_Angeles
-2024-01-04,22:47:44,5.0,Triptan,,8.7,Moderate,"Weather: Dry heat, Weather: Hot","San Diego, California, US",32.828132,-117.10996,America/Los_Angeles
-2024-11-24,,,NSAID,400mg,5.4,Moderate,,"San Diego, California, US",32.969387,-117.08998,America/Los_Angeles
-2024-07-02,23:33:13,7.5,,,,Low,,"San Diego, California, US",32.912184,-117.199131,America/Los_Angeles
-2024-10-10,15:54:35,4.2,None,25mg,5.3,,,"San Diego, California, US",32.834018,-117.25062,America/Los_Angeles
-2024-07-21,14:43:18,3.3,Anticonvulsant,,6.7,,,"San Diego, California, US",32.761794,-117.299623,America/Los_Angeles
-2023-07-06,,2.4,Triptan,,,Moderate,Weather: Rain,"San Diego, California, US",32.71178,-116.909086,America/Los_Angeles
-2024-03-20,,,Ergotamine,,8.2,High,,"San Diego, California, US",32.772706,-117.034676,America/Los_Angeles
-2024-07-23,05:17:58,4.5,None,,,Low,Weather: Cloudy,"San Diego, California, US",32.95173,-117.079736,America/Los_Angeles
-2023-12-29,20:45:17,7.2,,400mg,9.1,High,"Stress, Weather: Windy","San Diego, California, US",32.745943,-117.008753,America/Los_Angeles
-2023-05-03,,3.7,Triptan,,,Low,Weather: Light rain,"San Diego, California, US",32.880075,-117.0075,America/Los_Angeles
-2023-07-07,06:49:45,4.8,Anticonvulsant,,,Moderate,,"San Diego, California, US",32.930924,-116.909836,America/Los_Angeles
-2024-11-10,,4.5,Acetaminophen,,4.5,Moderate,,"San Diego, California, US",32.872069,-117.163344,America/Los_Angeles
-2024-02-24,22:38:26,6.3,Beta Blocker,50mg,5.8,Moderate,,"San Diego, California, US",32.894539,-117.272624,America/Los_Angeles
-2024-09-17,,8.3,Ergotamine,,8.4,High,Weather: Hot,"San Diego, California, US",32.969219,-117.252248,America/Los_Angeles
-2023-09-09,,3.7,NSAID,,9.4,Moderate,"Skipped Meal, Weather: Dry heat","San Diego, California, US",32.798353,-116.973702,America/Los_Angeles
-2024-09-10,,3.8,Anticonvulsant,,5.1,,,"San Diego, California, US",32.879194,-117.142546,America/Los_Angeles
-2024-07-02,04:42:05,6.1,Ergotamine,10mg,6.1,High,,"San Diego, California, US",32.842031,-116.958181,America/Los_Angeles
-2023-12-01,10:03:03,5.5,,,,,Weather: Dry,"San Diego, California, US",32.802001,-116.95214,America/Los_Angeles
-2023-04-02,01:17:43,7.3,Anticonvulsant,,7.4,High,Weather: Cool,"San Diego, California, US",32.72644,-116.989281,America/Los_Angeles
-2024-06-13,,5.4,,,5.8,,Weather: Clear,"San Diego, California, US",32.954264,-117.227273,America/Los_Angeles
-2023-03-04,14:11:53,4.0,Ergotamine,,7.6,Moderate,Weather: Rain,"San Diego, California, US",32.829104,-117.2338,America/Los_Angeles
-2024-10-23,04:06:26,5.4,Anticonvulsant,,,Low,"Weather: Dry heat, Weather: Cool","San Diego, California, US",32.911981,-117.085861,America/Los_Angeles
-2024-05-26,02:15:30,6.2,,25mg,7.0,,Weather: Windy,"San Diego, California, US",32.890597,-117.221405,America/Los_Angeles
-2023-05-19,10:39:58,5.7,None,,7.8,High,Weather: Clear,"San Diego, California, US",32.763524,-117.283401,America/Los_Angeles
-2024-11-28,13:45:32,5.3,NSAID,400mg,,Low,Weather: Hot,"San Diego, California, US",32.79662,-117.076102,America/Los_Angeles
-2023-07-04,,6.1,Anticonvulsant,,6.3,,Weather: Cloudy,"San Diego, California, US",32.95738,-117.033229,America/Los_Angeles
-2023-07-24,12:57:23,6.3,Acetaminophen,,6.8,Low,,"San Diego, California, US",32.830619,-116.918752,America/Los_Angeles
-2023-08-02,,6.6,None,50mg,6.9,,,"San Diego, California, US",32.915774,-116.927934,America/Los_Angeles
-2023-09-13,19:29:17,5.5,Ergotamine,,6.4,,"Alcohol, Weather: Light rain","San Diego, California, US",32.858276,-117.196438,America/Los_Angeles
-2023-05-15,12:54:07,4.2,NSAID,,,,Weather: Clear,"San Diego, California, US",32.715848,-117.009566,America/Los_Angeles
-2024-07-26,,4.7,Anticonvulsant,,9.4,High,Alcohol,"San Diego, California, US",32.736391,-117.17889,America/Los_Angeles
-2023-03-29,03:47:15,6.3,Anticonvulsant,,7.8,,,"San Diego, California, US",32.859741,-117.074233,America/Los_Angeles
-2023-07-26,20:07:44,3.3,Anticonvulsant,50mg,6.6,Moderate,Lack of Sleep,"San Diego, California, US",32.880175,-117.233498,America/Los_Angeles
-2023-05-09,04:22:19,5.1,None,400mg,8.0,Low,"Weather: Dry heat, Stress","San Diego, California, US",32.813921,-117.053122,America/Los_Angeles
-2023-01-03,,3.9,,10mg,,Low,,"San Diego, California, US",32.990946,-117.008948,America/Los_Angeles
-2023-05-01,04:33:21,4.5,,,,,,"San Diego, California, US",32.976781,-116.995115,America/Los_Angeles
-2024-01-20,19:05:34,6.4,NSAID,,7.6,Low,,"San Diego, California, US",32.877515,-117.223191,America/Los_Angeles
-2024-09-05,,4.8,None,,6.8,Moderate,,"San Diego, California, US",32.900006,-117.050648,America/Los_Angeles
-2023-02-07,18:34:32,4.6,Ergotamine,,7.7,,Weather: Hot,"San Diego, California, US",32.880741,-117.104086,America/Los_Angeles
-2023-12-07,17:20:17,2.5,Beta Blocker,,4.6,,Weather: Cool,"San Diego, California, US",32.858597,-117.166223,America/Los_Angeles
-2024-10-06,07:43:14,5.6,NSAID,400mg,5.3,,,"San Diego, California, US",32.855794,-117.220978,America/Los_Angeles
-2024-12-14,,,NSAID,,5.2,,Weather: Dry heat,"San Diego, California, US",32.941552,-117.225689,America/Los_Angeles
-2023-01-21,23:47:00,7.7,Acetaminophen,,,,"Skipped Meal, Weather: Dry","San Diego, California, US",32.72549,-117.125502,America/Los_Angeles
-2023-08-30,04:43:07,4.0,NSAID,,9.6,Moderate,Stress,"San Diego, California, US",32.897492,-117.124913,America/Los_Angeles
-2024-03-30,14:17:02,4.8,Beta Blocker,100mg,10.3,,,"San Diego, California, US",32.783026,-117.076732,America/Los_Angeles
-2024-09-12,,4.9,Anticonvulsant,,,High,"Weather: Light rain, Skipped Meal","San Diego, California, US",32.804101,-116.926853,America/Los_Angeles
-2023-10-30,09:46:17,6.9,Triptan,,,,,"San Diego, California, US",32.976794,-117.099051,America/Los_Angeles
-2024-08-18,02:57:35,4.4,Ergotamine,,,Low,Weather: Cloudy,"San Diego, California, US",32.798365,-117.005147,America/Los_Angeles
-2024-08-17,10:39:30,4.9,,,,,,"San Diego, California, US",32.711014,-117.110092,America/Los_Angeles
-2023-03-10,04:21:09,5.4,Beta Blocker,200mg,5.8,,Weather: Clear,"San Diego, California, US",32.800897,-116.931786,America/Los_Angeles
-2023-05-09,08:06:22,4.8,None,,6.1,Low,,"San Diego, California, US",32.703601,-117.078874,America/Los_Angeles
-2023-07-15,12:46:30,3.8,Ergotamine,,6.7,,,"San Diego, California, US",32.922199,-117.105993,America/Los_Angeles
-2023-05-20,11:48:08,4.8,NSAID,,6.3,Low,,"San Diego, California, US",32.725621,-116.911015,America/Los_Angeles
-2024-03-19,16:00:54,6.1,Ergotamine,25mg,4.0,Moderate,,"San Diego, California, US",32.855403,-117.054326,America/Los_Angeles
-2023-10-10,18:36:46,3.0,Triptan,,,,,"San Diego, California, US",32.770983,-117.106601,America/Los_Angeles
-2023-11-08,09:32:59,4.7,NSAID,200mg,5.4,Low,,"San Diego, California, US",32.828745,-117.270042,America/Los_Angeles
-2024-06-18,05:43:28,3.4,Ergotamine,,7.4,,,"San Diego, California, US",32.731848,-116.965011,America/Los_Angeles
-2024-10-26,14:50:18,6.3,Anticonvulsant,,,,,"San Diego, California, US",32.771946,-117.222017,America/Los_Angeles
-2023-10-04,00:57:49,2.2,Beta Blocker,25mg,,Moderate,Weather: Clear,"San Diego, California, US",32.851473,-116.992501,America/Los_Angeles
-2023-03-02,14:43:20,3.7,NSAID,200mg,3.2,Low,Weather: Clear,"San Diego, California, US",32.718584,-117.069277,America/Los_Angeles
-2023-11-15,14:33:22,5.1,Acetaminophen,,6.6,,"Lack of Sleep, Weather: Light rain","San Diego, California, US",32.735763,-117.285416,America/Los_Angeles
-2023-02-21,10:22:58,6.8,,,8.7,Moderate,"Weather: Clear, Weather: Hot","San Diego, California, US",32.715823,-116.966334,America/Los_Angeles
-2023-06-02,,4.4,NSAID,,9.9,Moderate,Weather: Rain,"San Diego, California, US",32.735392,-117.281939,America/Los_Angeles
-2023-11-07,,3.7,Beta Blocker,,5.2,,,"San Diego, California, US",32.83137,-116.962403,America/Los_Angeles
-2024-06-27,00:07:35,7.3,,25mg,,High,,"San Diego, California, US",32.778723,-117.131315,America/Los_Angeles
-2024-07-20,,2.3,None,10mg,6.3,Moderate,Weather: Warm,"San Diego, California, US",32.711977,-117.120369,America/Los_Angeles
-2024-01-24,,1.2,Triptan,400mg,6.8,,Weather: Windy,"San Diego, California, US",32.873284,-117.071637,America/Los_Angeles
-2024-07-01,07:58:53,5.2,Acetaminophen,,,,Weather: Light rain,"San Diego, California, US",32.799728,-117.173787,America/Los_Angeles
-2024-09-13,18:46:03,3.7,Acetaminophen,200mg,,,,"San Diego, California, US",32.731987,-117.153281,America/Los_Angeles
-2023-06-26,00:17:58,3.0,NSAID,,7.4,Moderate,Weather: Windy,"San Diego, California, US",32.729848,-116.993362,America/Los_Angeles
-2023-12-28,16:30:21,5.6,Ergotamine,,7.7,,,"San Diego, California, US",32.989882,-116.91197,America/Los_Angeles
-2023-11-10,01:52:36,4.9,Anticonvulsant,,,,"Weather: Clear, Weather: Hot","San Diego, California, US",32.959521,-117.059683,America/Los_Angeles
-2023-04-07,,3.7,,,7.1,Low,Weather: Light rain,"San Diego, California, US",32.91026,-117.185918,America/Los_Angeles
-2023-08-01,05:14:03,2.6,Acetaminophen,,7.5,,"Weather: Dry heat, Weather: Warm","San Diego, California, US",32.889231,-117.11774,America/Los_Angeles
-2023-05-17,11:05:56,,Acetaminophen,400mg,,Moderate,Weather: Clear,"San Diego, California, US",32.844605,-116.996889,America/Los_Angeles
-2023-01-06,13:01:03,5.5,Anticonvulsant,,7.4,,,"San Diego, California, US",32.784576,-117.172784,America/Los_Angeles
-2023-04-19,20:40:23,4.4,NSAID,,,Low,Weather: Clear,"San Diego, California, US",32.977393,-117.27751,America/Los_Angeles
-2024-06-30,20:36:28,7.3,Beta Blocker,25mg,7.9,,Weather: Windy,"San Diego, California, US",32.84569,-116.93488,America/Los_Angeles
-2023-02-08,,2.9,None,400mg,6.4,High,Weather: Rain,"San Diego, California, US",32.883109,-117.081437,America/Los_Angeles
-2024-10-23,07:50:18,2.2,Acetaminophen,,7.6,,Lack of Sleep,"San Diego, California, US",32.774923,-117.16269,America/Los_Angeles
-2024-02-29,,3.5,Acetaminophen,,7.0,,,"San Diego, California, US",32.955615,-117.076313,America/Los_Angeles
-2024-09-21,13:38:38,4.4,NSAID,400mg,8.7,Moderate,Lack of Sleep,"San Diego, California, US",32.854423,-117.260168,America/Los_Angeles
-2023-09-18,08:51:43,4.9,None,,6.9,,,"San Diego, California, US",32.704808,-116.914526,America/Los_Angeles
-2024-03-01,20:11:51,4.1,Anticonvulsant,10mg,4.3,,,"San Diego, California, US",32.813096,-117.058715,America/Los_Angeles
-2023-03-28,11:42:13,5.0,Triptan,,8.9,,Weather: Cool,"San Diego, California, US",32.723915,-117.026754,America/Los_Angeles
-2024-04-09,14:12:23,2.6,Acetaminophen,,5.6,Moderate,Lack of Sleep,"San Diego, California, US",32.97977,-117.069734,America/Los_Angeles
-2023-03-17,05:22:29,6.7,Ergotamine,,,Moderate,Weather: Hot,"San Diego, California, US",32.737835,-117.067311,America/Los_Angeles
-2024-04-15,22:15:41,4.4,None,,6.1,Low,,"San Diego, California, US",32.929904,-117.137433,America/Los_Angeles
-2024-02-18,03:39:23,6.2,None,,,Low,,"San Diego, California, US",32.963951,-117.040527,America/Los_Angeles
-2024-12-26,,5.0,Triptan,,3.8,Low,Stress,"San Diego, California, US",32.969775,-117.050598,America/Los_Angeles
-2024-04-01,03:05:22,,Triptan,,11.7,High,Weather: Rain,"San Diego, California, US",32.739386,-117.176123,America/Los_Angeles
-2023-10-12,11:41:12,5.4,Anticonvulsant,,8.6,High,Weather: Cloudy,"San Diego, California, US",32.760538,-116.936469,America/Los_Angeles
-2023-08-27,21:32:04,5.2,Triptan,25mg,7.3,Low,"Stress, Weather: Light rain","San Diego, California, US",32.92812,-117.029441,America/Los_Angeles
-2024-11-07,09:53:06,5.5,Acetaminophen,,,,Lack of Sleep,"San Diego, California, US",32.79029,-117.226382,America/Los_Angeles
-2024-08-21,12:15:26,6.5,,,7.4,,Alcohol,"San Diego, California, US",32.926935,-117.110337,America/Los_Angeles
-2024-10-14,00:15:12,4.8,Anticonvulsant,,7.8,Low,,"San Diego, California, US",32.767737,-117.053351,America/Los_Angeles
-2024-11-02,12:17:10,5.6,,,8.0,Low,Stress,"San Diego, California, US",32.7121,-117.169532,America/Los_Angeles
-2024-07-11,,4.4,NSAID,10mg,7.8,,"Weather: Clear, Stress","San Diego, California, US",32.840567,-117.240817,America/Los_Angeles
-2024-01-07,,6.7,Triptan,,7.1,High,,"San Diego, California, US",32.995396,-117.216361,America/Los_Angeles
-2024-05-09,,3.5,,,6.7,Moderate,"Alcohol, Weather: Clear","San Diego, California, US",32.739106,-117.218586,America/Los_Angeles
-2024-09-15,08:42:20,7.2,NSAID,,6.8,Low,,"San Diego, California, US",32.930718,-117.129798,America/Los_Angeles
-2023-02-14,21:07:16,4.4,None,400mg,6.7,,,"San Diego, California, US",32.869625,-117.291596,America/Los_Angeles
-2024-02-05,08:08:32,2.4,,,8.7,Moderate,"Weather: Hot, Stress","San Diego, California, US",32.710329,-117.12167,America/Los_Angeles
-2023-09-04,,,Anticonvulsant,,7.9,,Weather: Dry heat,"San Diego, California, US",32.944997,-116.945904,America/Los_Angeles
-2024-09-07,,3.5,None,400mg,3.0,High,Skipped Meal,"San Diego, California, US",32.726012,-117.084655,America/Los_Angeles
-2024-08-19,00:21:21,,Ergotamine,100mg,8.0,Moderate,,"San Diego, California, US",32.973969,-117.144811,America/Los_Angeles
-2024-03-25,01:35:48,,Triptan,400mg,7.3,,"Weather: Dry heat, Lack of Sleep","San Diego, California, US",32.94887,-117.246522,America/Los_Angeles
-2024-04-29,15:02:38,3.8,Acetaminophen,400mg,,Low,Stress,"San Diego, California, US",32.980618,-116.999431,America/Los_Angeles
-2024-10-07,19:59:49,1.7,Beta Blocker,,6.4,Moderate,Weather: Cool,"San Diego, California, US",32.9824,-117.029353,America/Los_Angeles
-2024-09-11,,3.8,Triptan,10mg,8.7,,,"San Diego, California, US",32.809021,-116.924728,America/Los_Angeles
-2023-01-18,06:40:45,1.0,,400mg,8.4,,,"San Diego, California, US",32.78267,-117.167131,America/Los_Angeles
-2024-08-28,10:43:49,2.1,Acetaminophen,400mg,5.8,Moderate,,"San Diego, California, US",32.910243,-116.993873,America/Los_Angeles
-2024-10-23,05:06:49,5.6,Acetaminophen,,7.6,,,"San Diego, California, US",32.978821,-117.218079,America/Los_Angeles
-2023-10-16,,,None,,5.5,High,,"San Diego, California, US",32.939399,-117.004582,America/Los_Angeles
-2024-02-18,18:26:02,5.1,Beta Blocker,400mg,4.9,,Weather: Warm,"San Diego, California, US",32.719138,-117.145111,America/Los_Angeles
-2024-12-21,,3.0,Triptan,10mg,6.1,Moderate,,"San Diego, California, US",32.78483,-117.178204,America/Los_Angeles
-2024-09-29,00:48:23,4.4,Acetaminophen,,8.3,Moderate,Weather: Clear,"San Diego, California, US",32.994884,-117.042889,America/Los_Angeles
-2023-08-23,12:08:06,4.5,NSAID,200mg,8.4,,,"San Diego, California, US",32.915303,-116.909353,America/Los_Angeles
-2024-02-20,00:14:39,,Anticonvulsant,200mg,7.8,Low,,"San Diego, California, US",32.813161,-116.979264,America/Los_Angeles
-2024-05-13,06:01:13,6.8,Acetaminophen,,8.1,Low,Weather: Dry heat,"San Diego, California, US",32.830359,-116.952187,America/Los_Angeles
-2024-09-25,19:48:47,5.8,Acetaminophen,,7.8,,Lack of Sleep,"San Diego, California, US",32.754197,-116.920926,America/Los_Angeles
-2024-10-11,09:57:39,4.2,None,,6.0,High,Alcohol,"San Diego, California, US",32.765632,-117.169512,America/Los_Angeles
-2023-04-25,,4.5,NSAID,,7.6,,,"San Diego, California, US",32.926858,-117.142498,America/Los_Angeles
-2024-11-04,20:17:56,4.8,NSAID,200mg,8.2,,Weather: Dry heat,"San Diego, California, US",32.882463,-117.122171,America/Los_Angeles
-2024-12-13,,1.4,Anticonvulsant,,8.1,,,"San Diego, California, US",32.922711,-117.208667,America/Los_Angeles
-2023-08-22,10:51:41,4.1,Triptan,,8.8,,,"San Diego, California, US",32.717537,-117.180028,America/Los_Angeles
-2024-06-23,00:33:08,3.5,NSAID,400mg,8.1,Low,Weather: Dry heat,"San Diego, California, US",32.842293,-117.232792,America/Los_Angeles
-2023-01-11,13:02:52,3.0,Acetaminophen,,7.5,High,,"San Diego, California, US",32.806439,-117.140007,America/Los_Angeles
-2023-07-25,,4.1,Ergotamine,100mg,8.6,Low,,"San Diego, California, US",32.717218,-117.066677,America/Los_Angeles
-2024-11-09,17:01:27,7.2,Beta Blocker,,7.0,,,"San Diego, California, US",32.965303,-117.239303,America/Los_Angeles
-2023-09-04,17:51:43,5.5,Beta Blocker,,,,Weather: Windy,"San Diego, California, US",32.879342,-117.034104,America/Los_Angeles
-2024-07-12,22:20:44,3.6,Ergotamine,50mg,6.8,Moderate,Weather: Cloudy,"San Diego, California, US",32.8258,-117.019561,America/Los_Angeles
-2023-05-07,19:15:30,5.4,Ergotamine,,5.9,High,,"San Diego, California, US",32.823219,-117.098145,America/Los_Angeles
+Date,Time,Pain Level,Medication,Dosage,Sleep,Physical Activity,Triggers,Notes,Location,Latitude,Longitude,Timezone
+2025-01-07,14:38:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-08,12:08:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-09,13:16:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-10,21:35:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-11,20:40:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-12,17:54:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-13,12:23:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-14,22:39:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-15,09:11:00,8,Excedrin Migraine,50mg,Poor,Light,Lack of Sleep,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-16,14:20:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-17,16:37:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-18,12:55:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-19,12:49:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-20,20:32:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-21,21:32:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-22,10:58:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-23,17:26:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-24,08:42:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-25,15:42:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-26,20:33:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-27,21:46:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-28,13:16:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-29,17:51:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-30,19:18:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-01-31,19:52:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-01,19:34:00,8,Naproxen,50mg,Fair,Light,Aged Cheese,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-02,22:51:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-03,21:54:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-04,12:57:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-05,08:06:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-06,10:14:00,4,Excedrin Migraine,50mg,Poor,Light,Bright Lights,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-07,15:01:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-08,17:36:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-09,08:13:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-10,19:13:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-11,13:26:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-12,12:54:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-13,20:39:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-14,13:27:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-15,13:12:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-16,19:07:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-17,22:14:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-18,10:18:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-19,09:55:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-20,12:47:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-21,11:17:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-22,10:28:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-23,18:18:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-24,14:56:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-25,09:22:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-26,16:37:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-27,13:18:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-02-28,12:20:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-01,19:42:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-02,20:58:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-03,16:42:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-04,10:48:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-05,17:30:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-06,11:42:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-07,10:04:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-08,20:00:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-09,17:45:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-10,15:47:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-11,16:42:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-12,12:19:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-13,13:18:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-14,18:15:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-15,21:49:00,6,Sumatriptan,50mg,Poor,Moderate,Bright Lights,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-16,15:13:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-17,10:21:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-18,13:15:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-19,19:25:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-20,16:11:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-21,14:07:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-22,20:10:00,7,Naproxen,50mg,Fair,Heavy,Lack of Sleep,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-23,18:53:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-24,14:43:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-25,11:06:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-26,13:03:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-27,17:30:00,7,Sumatriptan,50mg,Poor,Heavy,Bright Lights,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-28,14:21:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-29,16:28:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-30,14:39:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-03-31,21:30:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-01,11:01:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-02,15:16:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-03,13:47:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-04,09:53:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-05,18:29:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-06,09:19:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-07,16:37:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-08,10:25:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-09,09:46:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-10,22:40:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-11,12:59:00,7,Naproxen,50mg,Fair,Moderate,Alcohol,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-12,10:58:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-13,21:51:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-14,13:38:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-15,20:15:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-16,17:16:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-17,13:43:00,9,Naproxen,50mg,Poor,Moderate,Lack of Sleep,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-18,17:06:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-19,21:23:00,6,Naproxen,50mg,Poor,Moderate,Alcohol,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-20,16:02:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-21,20:22:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-22,20:55:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-23,20:37:00,9,Naproxen,50mg,Fair,Light,Stress,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-24,16:20:00,6,Excedrin Migraine,50mg,Fair,Heavy,Bright Lights,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-25,17:41:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-26,08:26:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-27,16:40:00,9,Excedrin Migraine,50mg,Poor,Moderate,Aged Cheese,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-28,16:20:00,4,Naproxen,50mg,Fair,Moderate,Alcohol,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-29,16:07:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-04-30,21:56:00,7,Naproxen,50mg,Fair,Moderate,Alcohol,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-01,09:30:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-02,13:58:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-03,17:08:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-04,18:15:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-05,08:21:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-06,22:45:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-07,13:04:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-08,17:11:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-09,22:14:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-10,22:15:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-11,16:47:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-12,14:17:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-13,13:57:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-14,15:14:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-15,15:50:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-16,22:44:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-17,18:47:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-18,15:12:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-19,12:43:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-20,12:48:00,6,Naproxen,50mg,Poor,Light,Stress,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-21,10:35:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-22,10:27:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-23,11:57:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-24,13:58:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-25,20:27:00,6,Excedrin Migraine,50mg,Fair,Light,Alcohol,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-26,14:17:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-27,19:34:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-28,21:57:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-29,11:07:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-30,10:48:00,4,Excedrin Migraine,50mg,Poor,Moderate,Alcohol,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-05-31,11:20:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-01,19:15:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-02,16:10:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-03,11:58:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-04,14:47:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-05,13:01:00,8,Sumatriptan,50mg,Poor,Light,Stress,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-06,18:50:00,5,Naproxen,50mg,Fair,Heavy,Lack of Sleep,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-07,08:51:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-08,12:42:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-09,11:16:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-10,13:35:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-11,12:39:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-12,12:17:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-13,09:10:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-14,09:31:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-15,20:59:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-16,16:51:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-17,19:33:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-18,11:16:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-19,14:31:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-20,21:45:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-21,08:05:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-22,12:29:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-23,17:31:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-24,20:34:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-25,09:54:00,4,Sumatriptan,50mg,Fair,Heavy,Lack of Sleep,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-26,21:31:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-27,08:03:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-28,15:33:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-29,13:45:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-06-30,19:42:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-01,08:03:00,6,Excedrin Migraine,50mg,Fair,Heavy,Alcohol,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-02,13:40:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-03,17:11:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-04,22:11:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-05,08:14:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-06,19:03:00,5,Naproxen,50mg,Poor,Light,Alcohol,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-07,17:44:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-08,13:39:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-09,11:20:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-10,19:13:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-11,18:56:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-12,14:09:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-13,13:38:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-14,21:44:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-15,20:06:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-16,17:47:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-17,10:27:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-18,08:49:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-19,13:45:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-20,12:01:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-21,08:30:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-22,19:37:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-23,08:27:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-24,10:29:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-25,21:03:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-26,09:58:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-27,11:12:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-28,12:07:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-29,19:05:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-30,14:50:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-07-31,20:30:00,9,Excedrin Migraine,50mg,Poor,Light,Aged Cheese,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-01,20:58:00,8,Excedrin Migraine,50mg,Poor,Heavy,Weather: Hot,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-02,19:13:00,5,Excedrin Migraine,50mg,Fair,Moderate,Bright Lights,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-03,13:56:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-04,14:35:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-05,10:32:00,6,Naproxen,50mg,Poor,Heavy,Aged Cheese,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-06,19:52:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-07,10:56:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-08,22:34:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-09,19:00:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-10,15:47:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-11,09:26:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-12,15:06:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-13,16:51:00,4,Sumatriptan,50mg,Poor,Moderate,Aged Cheese,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-14,15:00:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-15,13:20:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-16,18:15:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-17,08:59:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-18,12:45:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-19,15:26:00,4,Naproxen,50mg,Poor,Heavy,Lack of Sleep,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-20,08:51:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-21,15:38:00,6,Sumatriptan,50mg,Fair,Moderate,Lack of Sleep,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-22,14:14:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-23,10:22:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-24,11:43:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-25,19:07:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-26,22:20:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-27,08:43:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-28,13:46:00,9,Sumatriptan,50mg,Poor,Light,Alcohol,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-29,16:27:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-30,21:30:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-08-31,16:52:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-01,09:30:00,6,Sumatriptan,50mg,Poor,Light,Aged Cheese,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-02,09:14:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-03,10:22:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-04,19:58:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-05,17:16:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-06,16:23:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-07,11:32:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-08,09:54:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-09,22:17:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-10,19:19:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-11,22:37:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-12,16:25:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-13,21:18:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-14,18:33:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-15,18:21:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-16,20:49:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-17,15:01:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-18,20:56:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-19,12:07:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-20,21:32:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-21,18:09:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-22,15:26:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-23,09:37:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-24,14:11:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-25,12:32:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-26,14:51:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-27,13:09:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-28,17:38:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-29,12:22:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-09-30,12:34:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-01,19:16:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-02,11:27:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-03,09:29:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-04,20:28:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-05,19:21:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-06,10:24:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-07,21:10:00,9,Sumatriptan,50mg,Fair,Light,Stress,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-08,13:43:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-09,10:46:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-10,08:21:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-11,11:17:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-12,10:19:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-13,11:40:00,4,Naproxen,50mg,Fair,Heavy,Alcohol,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-14,20:41:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-15,08:29:00,9,Naproxen,50mg,Poor,Heavy,Alcohol,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-16,09:11:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-17,09:23:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-18,10:17:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-19,16:30:00,9,Naproxen,50mg,Poor,Heavy,Weather: Hot,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-20,09:34:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-21,11:39:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-22,19:28:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-23,09:34:00,8,Sumatriptan,50mg,Poor,Heavy,Stress,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-24,13:07:00,7,Naproxen,50mg,Fair,Light,Weather: Hot,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-25,12:29:00,8,Sumatriptan,50mg,Poor,Light,Bright Lights,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-26,11:29:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-27,17:10:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-28,08:48:00,9,Excedrin Migraine,50mg,Fair,Light,Aged Cheese,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-29,17:00:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-30,08:03:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-10-31,14:48:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-01,09:19:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-02,19:16:00,6,Excedrin Migraine,50mg,Poor,Light,Weather: Hot,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-03,08:35:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-04,11:18:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-05,21:58:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-06,14:58:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-07,20:00:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-08,20:40:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-09,18:18:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-10,10:39:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-11,12:21:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-12,09:47:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-13,12:17:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-14,13:10:00,5,Naproxen,50mg,Poor,Moderate,Aged Cheese,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-15,10:20:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-16,14:21:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-17,13:47:00,8,Sumatriptan,50mg,Fair,Heavy,Aged Cheese,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-18,22:38:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-19,15:07:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-20,10:03:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-21,11:00:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-22,16:08:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-23,17:23:00,9,Sumatriptan,50mg,Poor,Moderate,Weather: Hot,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-24,18:00:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-25,09:09:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-26,14:43:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-27,09:57:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-28,13:13:00,5,Naproxen,50mg,Poor,Light,Bright Lights,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-29,11:12:00,6,Excedrin Migraine,50mg,Fair,Light,Stress,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-11-30,22:49:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-01,08:12:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-02,12:12:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-03,20:53:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-04,20:29:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-05,20:37:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-06,20:00:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-07,20:53:00,8,Naproxen,50mg,Fair,Heavy,Bright Lights,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-08,10:51:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-09,12:51:00,5,Naproxen,50mg,Poor,Heavy,Alcohol,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-10,15:38:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-11,16:55:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-12,14:34:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-13,22:53:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-14,10:52:00,0,Propranolol,80mg,Fair,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-15,10:46:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-16,13:08:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-17,17:10:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-18,15:37:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-19,17:50:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-20,12:43:00,0,Propranolol,80mg,Fair,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-21,22:07:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-22,12:02:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-23,15:20:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-24,19:22:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-25,13:53:00,0,Propranolol,80mg,Fair,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-26,14:18:00,6,Naproxen,50mg,Fair,Heavy,Aged Cheese,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-27,13:59:00,4,Excedrin Migraine,50mg,Poor,Light,Weather: Hot,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-28,14:24:00,5,Sumatriptan,50mg,Poor,Moderate,Aged Cheese,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-29,20:35:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-30,11:42:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2025-12-31,11:30:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2026-01-01,14:49:00,7,Excedrin Migraine,50mg,Poor,Light,Weather: Hot,Migraine attack,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2026-01-02,13:44:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2026-01-03,12:43:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2026-01-04,16:57:00,0,Propranolol,80mg,Good,Light,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2026-01-05,12:41:00,0,Propranolol,80mg,Good,Moderate,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles
+2026-01-06,10:08:00,0,Propranolol,80mg,Good,Heavy,,Daily log,"San Diego, California, US",32.7157,-117.1611,America/Los_Angeles

@@ -78,6 +78,21 @@ const Onboarding = () => {
                     <button className="primary-btn" onClick={handleNext} style={{ marginTop: '2rem' }}>
                         Next <ArrowRight size={16} style={{ display: 'inline', verticalAlign: 'middle' }} />
                     </button>
+
+                    <button
+                        className="text-btn"
+                        onClick={() => {
+                            if (window.confirm("Use synthetic demo data? Your own data will not be saved.")) {
+                                localStorage.setItem('tester_mode', 'true');
+                                localStorage.setItem('onboarding_completed', 'true');
+                                navigate('/');
+                                window.location.reload(); // Ensure apiClient picks up the new header
+                            }
+                        }}
+                        style={{ display: 'block', margin: '1.5rem auto 0', padding: '0.5rem', opacity: 0.6, fontSize: '0.9rem' }}
+                    >
+                        Explore as Tester (Demo Data)
+                    </button>
                 </div>
             )}
 

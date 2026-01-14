@@ -47,10 +47,13 @@ class WeatherService:
             prev_hourly_idx = -1
             
             for i, t in enumerate(times):
-                if t.startswith(target_str):
+                if target_hourly_idx == -1 and t.startswith(target_str):
                     target_hourly_idx = i
-                if t.startswith(start_str):
+                if prev_hourly_idx == -1 and t.startswith(start_str):
                     prev_hourly_idx = i
+                
+                if target_hourly_idx != -1 and prev_hourly_idx != -1:
+                    break
                     
             if target_hourly_idx == -1:
                 return None
@@ -212,8 +215,11 @@ class WeatherService:
                 target_idx = -1
                 prev_idx = -1
                 for idx, t in enumerate(times):
-                    if t.startswith(target_str): target_idx = idx
-                    if t.startswith(prev_str): prev_idx = idx
+                    if target_idx == -1 and t.startswith(target_str): target_idx = idx
+                    if prev_idx == -1 and t.startswith(prev_str): prev_idx = idx
+                    
+                    if target_idx != -1 and prev_idx != -1:
+                        break
                 
                 if target_idx == -1: continue 
 

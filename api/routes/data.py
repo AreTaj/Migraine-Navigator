@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 import sqlite3
 import shutil
 import os
-from ..utils import get_db_path
+from api.dependencies import get_db_path_dep
 # train_and_evaluate from train_model is lazy-loaded in routes to avoid early matplotlib import
 
 router = APIRouter(prefix="/data", tags=["data"])
@@ -13,13 +13,14 @@ router = APIRouter(prefix="/data", tags=["data"])
 REQUIRED_COLUMNS = ['Date', 'Pain Level'] # Minimal requirement
 
 @router.post("/import/csv")
-async def import_csv(file: UploadFile = File(...)):
+async def import_csv(file: UploadFile = File(...), db_path: str = Depends(get_db_path_dep)):
     """
     Import migraine log from a CSV file.
     Triggers ML training if total records exceed threshold.
     """
+    # Check if file is CSV
     if not file.filename.endswith('.csv'):
-        raise HTTPException(status_code=400, detail="File must be a CSV.")
+        raise HTTPException(status_code=400, detail="Invalid file type. Please upload a CSV.")
     
     try:
         import pandas as pd
@@ -33,7 +34,6 @@ async def import_csv(file: UploadFile = File(...)):
              raise HTTPException(status_code=400, detail=f"Missing required columns: {missing}")
         
         # Insert into DB
-        db_path = get_db_path()
         conn = sqlite3.connect(db_path)
         
         # Ensure target table exists (created by main app usually)
@@ -74,7 +74,7 @@ async def import_csv(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/import/db")
-async def import_db(file: UploadFile = File(...)):
+async def import_db(file: UploadFile = File(...), db_path: str = Depends(get_db_path_dep)):
     """
     Import from a legacy SQLite .db file.
     """

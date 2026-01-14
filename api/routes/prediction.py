@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Depends
 from datetime import datetime, timedelta
 import sys
 import os
@@ -11,6 +11,7 @@ router = APIRouter(prefix="/prediction", tags=["prediction"])
 import logging
 import os
 from api.utils import get_data_dir
+from api.dependencies import get_db_path_dep
 
 # Setup logger
 logger = logging.getLogger("prediction_route")
@@ -26,7 +27,7 @@ logger.addHandler(console_handler)
 logger.setLevel(logging.DEBUG)
 
 @router.get("/future")
-def get_future_prediction(date: str = Query(None, description="Date in YYYY-MM-DD format. Defaults to tomorrow.")):
+def get_future_prediction(date: str = Query(None, description="Date in YYYY-MM-DD format. Defaults to tomorrow."), db_path: str = Depends(get_db_path_dep)):
     """
     Get migraine risk prediction for a specific date.
     """
@@ -43,7 +44,7 @@ def get_future_prediction(date: str = Query(None, description="Date in YYYY-MM-D
         from forecasting.inference import get_prediction_for_date
         logger.debug("Calling get_prediction_for_date...")
         
-        result = get_prediction_for_date(date)
+        result = get_prediction_for_date(date, db_path=db_path)
         logger.info("Prediction successful")
         return result
     except ValueError:
@@ -55,7 +56,7 @@ def get_future_prediction(date: str = Query(None, description="Date in YYYY-MM-D
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/forecast")
-def get_weekly_forecast():
+def get_weekly_forecast(db_path: str = Depends(get_db_path_dep)):
     """
     Get migraine risk prediction for the next 7 days (Starting Tomorrow).
     """
@@ -66,7 +67,7 @@ def get_weekly_forecast():
         # 1. Use Recursive Forecasting Logic to ensure future lags are populated
         from forecasting.inference import get_weekly_forecast
         
-        forecasts = get_weekly_forecast(start_date)
+        forecasts = get_weekly_forecast(start_date, db_path=db_path)
             
         return forecasts
     except Exception as e:
@@ -74,7 +75,7 @@ def get_weekly_forecast():
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/hourly")
-def get_hourly_prediction(date: str = Query(None, description="Start date/time in YYYY-MM-DD HH:MM format (optional)"), hours: int = 24):
+def get_hourly_prediction(date: str = Query(None, description="Start date/time in YYYY-MM-DD HH:MM format (optional)"), hours: int = 24, db_path: str = Depends(get_db_path_dep)):
     """
     Get hourly risk forecast for the next 24 (or N) hours.
     """
@@ -84,7 +85,7 @@ def get_hourly_prediction(date: str = Query(None, description="Start date/time i
         # If date is not provided, use current time
         # The underlying function handles None/empty string by using now()
         
-        forecast = get_hourly_forecast(date)
+        forecast = get_hourly_forecast(date, db_path=db_path)
         return forecast
         
     except Exception as e:
