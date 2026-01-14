@@ -3,7 +3,7 @@
  */
 
 .heroBanner {
-  padding: 4rem 0;
+  padding: 4rem 0 2rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -27,26 +27,27 @@
 
 /* Dashboard Section */
 .dashboardSection {
-    background-color: var(--ifm-background-surface-color);
-    padding: 4rem 0;
-    text-align: center;
+  background-color: var(--ifm-background-surface-color);
+  padding: 1rem 0 4rem 0;
+  text-align: center;
 }
 
 .dashboardContainer {
-    max-width: 1000px;
-    margin: 0 auto;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-    background: #000; /* Letterboxing background */
-    position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  background: #000;
+  /* Letterboxing background */
+  position: relative;
 }
 
 .dashboardImage {
-    width: 100%;
-    height: auto;
-    display: block;
-    transition: opacity 0.5s ease-in-out;
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: opacity 0.5s ease-in-out;
 }
 
 /* Gallery Styles */
