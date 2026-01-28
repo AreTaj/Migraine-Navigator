@@ -89,11 +89,18 @@ function Dashboard() {
 
                     const missing = [];
                     let curr = new Date();
-                    curr.setDate(curr.getDate() - 1);
+                    curr.setDate(curr.getDate() - 1); // Start from yesterday
                     const lastDate = new Date(lastDateStr);
 
+                    // Safety break: don't look back further than last logged date OR 7 days
                     while (curr > lastDate && missing.length < 5) {
-                        const dStr = curr.toISOString().split('T')[0];
+                        // FIX: Use LOCAL time string matching (YYYY-MM-DD) instead of UTC toISOPString()
+                        // This prevents "Today (Late Night)" becoming "Tomorrow (UTC)" and shifting the whole window
+                        const year = curr.getFullYear();
+                        const month = String(curr.getMonth() + 1).padStart(2, '0');
+                        const day = String(curr.getDate()).padStart(2, '0');
+                        const dStr = `${year}-${month}-${day}`;
+
                         if (!entriesData.some(e => e.Date === dStr)) {
                             missing.push(dStr);
                         }
@@ -492,18 +499,22 @@ function Dashboard() {
                     </div>
                 ) : (
                     // --- ALL CAUGHT UP STATE ---
-                    <div className="status-center-card">
-                        <Sparkles color="#4ade80" size={32} />
-                        <h3 style={{ margin: '0.5rem 0 0', color: '#f8fafc' }}>You're all caught up!</h3>
-                        <p style={{ margin: 0, fontSize: '0.9rem' }}>Enjoy your day.</p>
+                    (() => {
+                        // FIX: Logic to retrieve today's entry for the card
+                        const now = new Date();
+                        const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+                        const todayEntry = entries.find(e => e.Date === todayStr);
 
-                        {currentStreak > 0 && (
-                            <div className="status-streak">
-                                <span style={{ fontSize: '1.2rem' }}>🔥</span>
-                                <b>{currentStreak} Day Streak</b>
+                        return (
+                            <div className="smart-cards-section">
+                                <AllCaughtUpCard
+                                    weather={hourlyData[0]}
+                                    todayEntry={todayEntry}
+                                    tempUnit={priors?.temp_unit}
+                                />
                             </div>
-                        )}
-                    </div>
+                        );
+                    })()
                 )}
 
 
