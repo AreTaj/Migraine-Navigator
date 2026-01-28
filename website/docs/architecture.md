@@ -66,7 +66,7 @@ Raw data is transformed into a dense feature vector X containing ~24 dimensions:
 * **Medication Analysis**: "Pain-Based" usage tracking that filters out pain-free days for more accurate frequency analysis.
 
 ### 3.2 Forecasting Engine
-* **Recursive Forecasting**: The 7-Day Forecast simulates the future day-by-day, allowing "Cluster" patterns (migraines following migraines) to emerge naturally.
+* **Direct Forecasting**: The 7-Day Forecast generates independent predictions for each day to ensure stability and responsiveness, fixing previous "flatline" issues with recursive clusters.
 * **Caching Strategy**: Predictions are cached in-memory with a 1-hour TTL (Time-To-Live) to prevent API rate-limiting.
 
 ---
