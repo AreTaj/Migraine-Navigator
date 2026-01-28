@@ -8,7 +8,7 @@ Migraine Navigator employs a sophisticated **Hybrid Architecture** to solve the 
 Provides immediate, personalized predictions from Day 1. It bridges the "Cold Start" gap by using your calibrated settings (sensitivity to Weather, Sleep, Stress) until sufficient history exists.
 
 ### 2. Gradient Boosting ML (Established Users)
-Automatically takes over once enough data is collected (typically >30 logs) to detect complex, non-linear patterns unique to your biology using Gradient Boosting Decision Trees (GBDT).
+Automatically takes over once enough data is collected (>60 logs) to detect complex, non-linear patterns unique to your biology using Gradient Boosting Decision Trees (GBDT).
 
 ## 24-Hour Risk Engine (Truth Propagation)
 

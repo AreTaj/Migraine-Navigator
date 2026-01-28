@@ -25,8 +25,8 @@ Migraine Navigator is a desktop application designed to help you **track**, **an
 
 ### 3. Personalized Model
 The app learns *your* specific triggers over time.
-*   **Day 1-30 ("Cold Start")**: It uses basic **Baseline Sensitivity** settings (which you configure during onboarding) to provide initial estimates.
-*   **Day 30+**: It switches to a custom Artificial Intelligence model built *just for you*, detecting unique patterns (e.g., "You only get migraines on Tuesdays when it rains").
+*   **First 60 Logs ("Cold Start")**: It uses basic **Baseline Sensitivity** settings (which you configure during onboarding) to provide initial estimates.
+*   **Log 60+**: It switches to a custom Artificial Intelligence model built *just for you*, detecting unique patterns (e.g., "You only get migraines on Tuesdays when it rains").
 
 ---
 
