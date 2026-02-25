@@ -3,7 +3,7 @@
 All notable changes to the "Migraine Navigator" project will be documented in this file.
 
 
-## [v0.2.7] - 2026-02-24
+## [In Progress]
 ### Refactored
 - **Centralized Data Sanitization**: Moved post-entry data cleaning from the API layer into a dedicated service layer (`EntryService.sanitize_entry`).
     - Implemented **Schema-Aware Persistence**: The service now automatically detects valid SQLite columns and filters out unrecognized keys, preventing crashes on mismatched data.
