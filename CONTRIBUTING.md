@@ -43,8 +43,10 @@ The application features **environment-aware** backend logic:
 To run the automated tests:
 
 ```bash
-python -m pytest tests/
+source .venv/bin/activate
+PYTHONPATH=. pytest tests/ -v
 ```
+*Note: Agents can also run the automated `/verify` workflow for a standardized integrity check.*
 
 ## File Structure
 

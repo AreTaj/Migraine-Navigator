@@ -68,11 +68,38 @@ class EntryService:
             print(f"Migration failed: {e}")
 
     @staticmethod
+    def sanitize_entry(data: dict) -> dict:
+        """
+        Sanitizes and remaps keys for an entry before saving to the database.
+        """
+        sanitized_data = data.copy()
+
+        # Remap keys
+        if 'Pain_Level' in sanitized_data:
+            sanitized_data['Pain Level'] = sanitized_data.pop('Pain_Level')
+        if 'Physical_Activity' in sanitized_data:
+            sanitized_data['Physical Activity'] = sanitized_data.pop('Physical_Activity')
+            
+        # Legacy key remapping
+        if 'weather_pressure' in sanitized_data:
+            sanitized_data['pressure'] = sanitized_data.pop('weather_pressure')
+
+        # Geodata patching for "Unknown" or empty strings
+        for geo_field in ['Latitude', 'Longitude']:
+            if geo_field in sanitized_data:
+                val = sanitized_data[geo_field]
+                if isinstance(val, str) and (val.lower() == 'unknown' or val.strip() == '' or val == '[]'):
+                    sanitized_data[geo_field] = None
+
+        return sanitized_data
+
+    @staticmethod
     def add_entry(data: dict, db_path: str):
         """
-        Validates and appends a new migraine entry to the specified SQLite database.
         Raises ValueError if validation fails.
         """
+        data = EntryService.sanitize_entry(data)
+        
         # --- Date validation ---
         date = data.get('Date', '')
         date_regex = r"^\d{4}-\d{2}-\d{2}$"
@@ -117,13 +144,18 @@ class EntryService:
             conn = sqlite3.connect(db_path)
             EntryService._create_table_if_not_exists(conn)
             
+            # Filter data to only valid columns
+            cur = conn.cursor()
+            cur.execute("PRAGMA table_info(migraine_log)")
+            valid_columns = {info[1] for info in cur.fetchall()}
+            data_to_insert = {k: v for k, v in data.items() if k in valid_columns}
+            
             # Prepare SQL
-            columns = ', '.join(f'"{k}"' for k in data.keys())
-            placeholders = ', '.join('?' for _ in data)
+            columns = ', '.join(f'"{k}"' for k in data_to_insert.keys())
+            placeholders = ', '.join('?' for _ in data_to_insert)
             sql = f'INSERT INTO migraine_log ({columns}) VALUES ({placeholders})'
             
-            cur = conn.cursor()
-            cur.execute(sql, list(data.values()))
+            cur.execute(sql, list(data_to_insert.values()))
             conn.commit()
             conn.close()
             
@@ -230,6 +262,8 @@ class EntryService:
         Updates an existing entry by ID.
         """
         try:
+            data = EntryService.sanitize_entry(data)
+            
             # --- Handle Medications JSON ---
             if 'Medications' in data and isinstance(data['Medications'], list):
                 data['Medications'] = json.dumps(data['Medications'])
@@ -237,14 +271,19 @@ class EntryService:
             conn = sqlite3.connect(db_path)
             EntryService._create_table_if_not_exists(conn)
             
+            # Filter data to only valid columns
+            cur = conn.cursor()
+            cur.execute("PRAGMA table_info(migraine_log)")
+            valid_columns = {info[1] for info in cur.fetchall()}
+            data_to_update = {k: v for k, v in data.items() if k in valid_columns and k != 'id'}
+
             # Prepare SQL
-            set_clause = ', '.join(f'"{k}" = ?' for k in data.keys())
+            set_clause = ', '.join(f'"{k}" = ?' for k in data_to_update.keys())
             sql = f'UPDATE migraine_log SET {set_clause} WHERE id = ?'
             
-            values = list(data.values())
+            values = list(data_to_update.values())
             values.append(entry_id)
             
-            cur = conn.cursor()
             cur.execute(sql, values)
             conn.commit()
             

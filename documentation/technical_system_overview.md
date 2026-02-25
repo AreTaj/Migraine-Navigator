@@ -17,7 +17,7 @@ The application follows a modern **Service-Oriented Architecture (SOA)** tailore
     *   **API Protocol**: RESTful JSON over localhost.
 *   **Persistence (Data Layer)**:
     *   **Database**: SQLite3 (Embedded). Ideal for single-user desktop privacy and zero-config deployment.
-    *   **ORM/DAO**: Custom Data Access Objects (`EntryService`) using raw SQL for maximum performance control and explicit schema management.
+    *   **ORM/DAO**: Custom Data Access Objects (`EntryService`) using raw SQL with **Schema-Aware Persistence**. The service layer dynamically inspects the SQLite schema (via `PRAGMA table_info`) to sanitize and filter incoming data keys before execution.
 
 ---
 
@@ -58,7 +58,7 @@ The analytics engine transforms raw logs into actionable intelligence on the cli
 
 ### 3.1 Real-time Aggregation (`Dashboard.jsx`)
 *   **Dynamic Metrics**: Calculations like "Average Days/Month" are computed dynamically based on the *actual* data span (e.g., dividing by 3 months for a new user vs 12 for an existing one).
-*   **Unit Consistency**: Strict type enforcement ensures alignment between Backend (Integers/Floats) and Frontend (Strings from Forms).
+*   **Data Integrity & Sanitization**: Strict type enforcement and key remapping are centralized in the `EntryService.sanitize_entry` layer. This ensures consistent data handling between the Backend, Frontend, and legacy datasets (e.g., mapping `weather_pressure` or patching invalid Geodata strings).
 
 ### 3.2 Forecasting Engine
 *   **Batch Processing**: The 7-Day Forecast generates predictions in bulk. It fetches a single JSON packet from Open-Meteo containing 7 days of hourly data, processes it into 7 feature vectors, and runs batch inference in $<0.8s$.

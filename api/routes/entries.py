@@ -96,10 +96,6 @@ def add_entry(entry: MigraineEntry, db_path: str = Depends(get_db_path_dep)): # 
         # Convert Pydantic model to dict for Service
         data = entry.model_dump()
         
-        # Remap snake_case keys back to Title Case keys expected by Service/DB
-        data['Pain Level'] = data.pop('Pain_Level')
-        data['Physical Activity'] = data.pop('Physical_Activity')
-        
         EntryService.add_entry(data, db_path)
         try:
             from forecasting.inference import clear_prediction_cache
@@ -129,9 +125,6 @@ def delete_entry(entry_id: int, db_path: str = Depends(get_db_path_dep)):
 def update_entry(entry_id: int, entry: MigraineEntry, db_path: str = Depends(get_db_path_dep)):
     try:
         data = entry.model_dump()
-        # Handle remapping
-        data['Pain Level'] = data.pop('Pain_Level')
-        data['Physical Activity'] = data.pop('Physical_Activity')
         if 'id' in data: del data['id'] # Don't update ID
 
         EntryService.update_entry(entry_id, data, db_path)

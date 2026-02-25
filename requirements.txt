@@ -15,3 +15,7 @@ tzlocal
 psutil
 appdirs
 Pillow
+
+# Testing
+pytest
+httpx
