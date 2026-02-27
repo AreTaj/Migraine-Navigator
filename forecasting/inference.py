@@ -48,9 +48,11 @@ _reg_model = None
 _tester_clf_model = None
 _tester_reg_model = None
 _prediction_cache = {}
+_loaded_model_version = None
 
 def load_models(tester_mode=False):
     global _clf_model, _reg_model, _tester_clf_model, _tester_reg_model
+    global _prediction_cache, _loaded_model_version
     
     import joblib
     
@@ -59,24 +61,48 @@ def load_models(tester_mode=False):
             if not os.path.exists(TESTER_CLF_PATH):
                 raise FileNotFoundError("Tester Model files not found")
             logger.debug("Loading TESTER CLF model...")
-            _tester_clf_model = joblib.load(TESTER_CLF_PATH)
+            _tester_clf_model = joblib.load(TESTER_CLF_PATH, mmap_mode='r')
             logger.debug("Loading TESTER REG model...")
-            _tester_reg_model = joblib.load(TESTER_REG_PATH)
+            _tester_reg_model = joblib.load(TESTER_REG_PATH, mmap_mode='r')
         return _tester_clf_model, _tester_reg_model
     
     else:
         # Production / Local Mode
+        
+        import glob
+        latest_version = None
+        all_clf_files = glob.glob(os.path.join(MODEL_DIR, 'best_model_clf_*.pkl'))
+        if all_clf_files:
+            all_clf_files.sort(reverse=True)
+            newest_file = os.path.basename(all_clf_files[0])
+            latest_version = newest_file.split('_')[-1].replace('.pkl', '')
+                
+        # Invalidate cache and force reload if version changed
+        if latest_version and latest_version != _loaded_model_version:
+            logger.info(f"New model version detected ({latest_version}). Clearing prediction cache.")
+            _prediction_cache.clear()
+            _clf_model = None
+            _reg_model = None
+            _loaded_model_version = latest_version
+            
         if _clf_model is None:
-            if not os.path.exists(MODEL_CLF_PATH):
+            # Determine paths to load
+            if latest_version:
+                clf_candidate = os.path.join(MODEL_DIR, f'best_model_clf_{latest_version}.pkl')
+                reg_candidate = os.path.join(MODEL_DIR, f'best_model_reg_{latest_version}.pkl')
+            else:
+                clf_candidate = MODEL_CLF_PATH
+                reg_candidate = MODEL_REG_PATH
+                
+            if not os.path.exists(clf_candidate):
                 # Graceful degradation for new users who haven't trained yet
-                # We return None, logic below must handle it
                 return None, None
             
-            logger.debug("Loading CLF model...")
+            logger.debug(f"Loading CLF model ({os.path.basename(clf_candidate)})...")
             try:
-                _clf_model = joblib.load(MODEL_CLF_PATH)
-                logger.debug("Loading REG model...")
-                _reg_model = joblib.load(MODEL_REG_PATH)
+                _clf_model = joblib.load(clf_candidate, mmap_mode='r')
+                logger.debug(f"Loading REG model ({os.path.basename(reg_candidate)})...")
+                _reg_model = joblib.load(reg_candidate, mmap_mode='r')
             except Exception as e:
                 logger.error(f"Error loading models: {e}")
                 return None, None
