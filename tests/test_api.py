@@ -136,28 +136,36 @@ class TestAPI(unittest.TestCase):
         if os.path.exists(test_db):
             os.remove(test_db)
             
-        # 1. Get Default Priors
-        response = client.get("/api/v1/user/priors")
-        self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertFalse(data['force_heuristic_mode'])
+        try:
+            # 1. Get Default Priors
+            response = client.get("/api/v1/user/priors")
+            self.assertEqual(response.status_code, 200)
+            data = response.json()
+            self.assertFalse(data['force_heuristic_mode'])
+            
+            # 2. Update Priors (Enable Force Mode)
+            new_priors = data
+            new_priors['force_heuristic_mode'] = True
+            new_priors['weather_sensitivity'] = 0.9
+            
+            response = client.post("/api/v1/user/priors", json=new_priors)
+            self.assertEqual(response.status_code, 200)
+            
+            # 3. Verify Persistence
+            response = client.get("/api/v1/user/priors")
+            data = response.json()
+            self.assertTrue(data['force_heuristic_mode'])
+            self.assertEqual(data['weather_sensitivity'], 0.9)
         
-        # 2. Update Priors (Enable Force Mode)
-        new_priors = data
-        new_priors['force_heuristic_mode'] = True
-        new_priors['weather_sensitivity'] = 0.9
-        
-        response = client.post("/api/v1/user/priors", json=new_priors)
-        self.assertEqual(response.status_code, 200)
-        
-        # 3. Verify Persistence
-        response = client.get("/api/v1/user/priors")
-        data = response.json()
-        self.assertTrue(data['force_heuristic_mode'])
-        self.assertEqual(data['weather_sensitivity'], 0.9)
-        
-        if os.path.exists(test_db):
-            os.remove(test_db)
+        finally:
+            # Ensure the dependency map releases the file lock on teardown
+            app.dependency_overrides.pop(get_db_path_dep, None)
+            
+            if os.path.exists(test_db):
+                try:
+                    os.remove(test_db)
+                except OSError:
+                    pass
 
 if __name__ == '__main__':
     unittest.main()
