@@ -32,6 +32,9 @@ setup.py
 
 # For internal use only
 data_import_helpers/
+.agent/
+.cursorrules
+test_api_priors.db
 
 # Ignore build and dist directories
 build/main/
@@ -46,7 +49,6 @@ models/
 !models/tester_model_clf.pkl
 !models/tester_model_reg.pkl
 graphics/
-.agent/
 
 # Ignore everything in data/
 data/*

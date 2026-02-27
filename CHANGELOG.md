@@ -10,9 +10,11 @@ All notable changes to the "Migraine Navigator" project will be documented in th
     - **Geodata Patching**: Automatically converts "Unknown" or invalid string geodata to `None`.
     - **Legacy Key Support**: Added robust remapping for legacy keys (e.g., `weather_pressure` → `pressure`).
 - **Leaner API Routes**: Refactored `POST` and `PUT` /entries endpoints to eliminate manual data-massaging, improving testability and separation of concerns.
+- **ML Training Loop Decoupling (Issue #46)**: Extracted the monolithic `train_and_evaluate` function into `ModelConfig` and `TrainingManager` classes. Enables explicit isolation testing and runtime configuration injection without side-effects.
+- **Safe Background Retraining (Issue #53)**: Completely eliminated Windows `mmap_mode` file lock crashes by introducing a timestamped versioning strategy. The API now safely saves new models side-by-side with old ones, and the server hot-swaps them utilizing glob sorting and automated cache invalidation.
 
 ### Technical
-- **Expanded Test Coverage**: Added a new verification suite (`tests/test_entry_sanitization.py`) and schema integrity tests.
+- **Expanded Test Coverage**: Added a new verification suite (`tests/test_entry_sanitization.py`) and schema integrity tests. Authored isolated unit tests for the new `TrainingManager`. Total suite expanded to 38 fully passing tests.
 - **Verification Workflow**: Introduced `/verify` agent workflow for automated full-suite regression testing.
 
 ## [v0.2.6] - 2026-01-05

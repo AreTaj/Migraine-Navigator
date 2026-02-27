@@ -4,8 +4,9 @@ Development is organized into phased milestones to ensure stability and focus.
 
 ## [v0.3.0] Core Architecture & Stability
 *Focus: Refactoring, robustness, and background infrastructure.*
-- **[Issue #45] Service Layer Refactor**: Extract business logic from API routes to improve testability.
-- **[Issue #46] De-couple Training Config**: Separate model configuration from the core training loop.
+- **[Issue #45] Service Layer Refactor**: Extract business logic from API routes to improve testability. (Completed)
+- **[Issue #46] De-couple Training Config**: Separate model configuration from the core training loop. (Completed)
+- **[Issue #53] Memory Mapped Model Loading**: Implemented versioned file naming and Cache Invalidation for safe background retraining. (Completed)
 - **[Issue #42] Dynamic Port Discovery**: Improve sidecar backend reliability via automated port binding.
 - **[Issue #50] Data Import System**: Support bulk historical data import for model retraining.
 
