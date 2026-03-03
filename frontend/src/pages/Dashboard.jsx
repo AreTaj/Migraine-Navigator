@@ -46,6 +46,12 @@ function Dashboard() {
     const [retroConfirming, setRetroConfirming] = useState(false);
     const [retroData, setRetroData] = useState({}); // Map of date -> {sleep, activity}
 
+    // --- Retraining State ---
+    const [retrainStatus, setRetrainStatus] = useState(null); // null | { needs_retraining, entries_since_last_train }
+    const [retrainLoading, setRetrainLoading] = useState(false);
+    const [retrainDone, setRetrainDone] = useState(false);
+    const [showRetrainCard, setShowRetrainCard] = useState(true);
+
     // Check-in Form State
     const [checkinStep, setCheckinStep] = useState('initial'); // 'initial', 'details'
     const [checkinData, setCheckinData] = useState({
@@ -59,10 +65,11 @@ function Dashboard() {
         const fetchCoreData = async () => {
             try {
                 // 1. Critical Data (Fast) - Loads immediately
-                const [entriesRes, medsRes, priorsRes] = await Promise.all([
+                const [entriesRes, medsRes, priorsRes, retrainRes] = await Promise.all([
                     axios.get('/api/v1/entries'),
                     axios.get('/api/v1/medications'),
-                    axios.get('/api/v1/user/priors').catch(err => ({ data: { temp_unit: 'C' } }))
+                    axios.get('/api/v1/user/priors').catch(err => ({ data: { temp_unit: 'C' } })),
+                    axios.get('/api/v1/training/status').catch(() => ({ data: null }))
                 ]);
 
                 const entriesData = entriesRes.data;
@@ -70,6 +77,7 @@ function Dashboard() {
                 const allMeds = medsRes.data;
                 setMeds(allMeds);
                 setPriors(priorsRes.data);
+                if (retrainRes.data) setRetrainStatus(retrainRes.data);
 
 
                 // --- SMART LOGIC (Synchronous) ---
@@ -219,6 +227,7 @@ function Dashboard() {
             setTodayStatus('logged');
             alert("Logged healthy day successfully!");
             setCheckinStep('initial'); // Reset
+            await refreshTrainingStatus();
         } catch (err) {
             alert("Failed to log. " + (err.response?.data?.detail || err.message));
         }
@@ -242,6 +251,7 @@ function Dashboard() {
             setShowRetroCard(false);
             setRetroConfirming(false);
             alert("All days logged successfully!");
+            await refreshTrainingStatus();
         } catch (err) {
             console.error("Bulk log failed", err);
             alert("Failed to bulk log.");
@@ -251,6 +261,50 @@ function Dashboard() {
     // Add missing handler
     const handleDismissRetro = () => {
         setShowRetroCard(false);
+    };
+
+    // --- Retrain Handlers ---
+    const refreshTrainingStatus = async () => {
+        try {
+            const res = await axios.get('/api/v1/training/status');
+            if (res.data) setRetrainStatus(res.data);
+        } catch (err) {
+            console.warn("Failed to refresh training status background: ", err);
+        }
+    };
+
+    const handleRetrain = async () => {
+        setRetrainLoading(true);
+        try {
+            await axios.post('/api/v1/training/retrain');
+            // Poll until training completes (is_training flips back to false)
+            const poll = setInterval(async () => {
+                try {
+                    const res = await axios.get('/api/v1/training/status');
+                    if (!res.data.is_training) {
+                        clearInterval(poll);
+                        setRetrainLoading(false);
+                        setRetrainDone(true);
+                        setRetrainStatus(res.data);
+                    }
+                } catch { clearInterval(poll); setRetrainLoading(false); }
+            }, 2000);
+        } catch (err) {
+            setRetrainLoading(false);
+        }
+    };
+
+    const handleDismissRetrain = () => {
+        const expires = new Date();
+        expires.setHours(expires.getHours() + 24);
+        localStorage.setItem('retrain_dismissed_until', expires.toISOString());
+        setShowRetrainCard(false);
+    };
+
+    const isRetrainDismissed = () => {
+        const until = localStorage.getItem('retrain_dismissed_until');
+        if (!until) return false;
+        return new Date() < new Date(until);
     };
 
 
@@ -297,7 +351,10 @@ function Dashboard() {
     const showDailyCheckin = todayStatus === 'missing';
     const showRetroCheckin = showRetroCard && missingDays.length > 0;
     const showReminders = dueMeds.length > 0;
-    const hasSmartCards = showDailyCheckin || showRetroCheckin || showReminders;
+    const showRetrainAlert = showRetrainCard && !isRetrainDismissed() &&
+        retrainStatus?.needs_retraining && !retrainDone;
+    const hasSmartCards = showDailyCheckin || showRetroCheckin || showReminders || showRetrainAlert;
+
 
     return (
         <div className="dashboard-container">
@@ -468,7 +525,37 @@ function Dashboard() {
                                 });
                             }
 
+                            // 4. Retrain Alert
+                            if (showRetrainAlert) {
+                                cards.push({
+                                    priority: 25,
+                                    id: 'retrain',
+                                    content: (
+                                        <div className="smart-card" style={{ borderLeft: '4px solid #a78bfa' }}>
+                                            <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                                                <div>
+                                                    <h3><Sparkles color="#a78bfa" /> Model Update Ready</h3>
+                                                    <p>{retrainStatus.entries_since_last_train} new {retrainStatus.entries_since_last_train === 1 ? 'entry' : 'entries'} since your last update.</p>
+                                                </div>
+                                                <button onClick={handleDismissRetrain} style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer' }}><XCircle size={18} /></button>
+                                            </div>
+                                            <div className="card-actions">
+                                                {retrainLoading ? (
+                                                    <button className="action-btn" disabled style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                                                        <Loader2 className="animate-spin" size={14} /> Training...
+                                                    </button>
+                                                ) : (
+                                                    <button className="action-btn" onClick={handleRetrain}>Update Model</button>
+                                                )}
+                                                <button className="action-btn secondary" onClick={handleDismissRetrain}>Dismiss for 24h</button>
+                                            </div>
+                                        </div>
+                                    )
+                                });
+                            }
+
                             // Sort cards by priority (Lowest number first)
+
                             cards.sort((a, b) => a.priority - b.priority);
 
                             if (cards.length === 0) {

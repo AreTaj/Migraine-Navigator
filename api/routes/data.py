@@ -63,23 +63,11 @@ async def import_csv(file: UploadFile = File(...), db_path: str = Depends(get_db
         total_rows = pd.read_sql("SELECT COUNT(*) as c FROM migraine_log", conn)['c'][0]
         conn.close()
 
-        # Trigger Training?
-        training_triggered = False
-        if total_rows > 60:
-            try:
-                print("Triggering ML Training due to data import...")
-                from forecasting.train_model import train_and_evaluate
-                train_and_evaluate()
-                training_triggered = True
-            except Exception as e:
-                print(f"Training failed: {e}")
-
         return {
             "status": "success",
             "imported_rows": len(df),
             "skipped_rows": skipped_rows,
             "total_rows": int(total_rows),
-            "training_triggered": training_triggered
         }
 
     except HTTPException:
@@ -142,23 +130,11 @@ async def import_db(file: UploadFile = File(...), db_path: str = Depends(get_db_
         conn.close()
         os.remove(temp_path)
 
-        # Trigger Training?
-        training_triggered = False
-        if total_rows > 60:
-            try:
-                print("Triggering ML Training due to data import...")
-                from forecasting.train_model import train_and_evaluate
-                train_and_evaluate()
-                training_triggered = True
-            except Exception as e:
-                print(f"Training failed: {e}")
-
         return {
             "status": "success",
             "imported_rows": imported_rows,
             "skipped_rows": skipped_rows,
             "total_rows": int(total_rows),
-            "training_triggered": training_triggered
         }
 
     except HTTPException:

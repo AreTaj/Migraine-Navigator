@@ -18,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-from api.routes import entries, analysis, prediction, medications, location, user, data, triggers
+from api.routes import entries, analysis, prediction, medications, location, user, data, triggers, training
 
 app.include_router(entries.router, prefix="/api/v1")
 app.include_router(analysis.router, prefix="/api/v1")
@@ -28,6 +28,8 @@ app.include_router(location.router, prefix="/api/v1")
 app.include_router(user.router, prefix="/api/v1")
 app.include_router(data.router, prefix="/api/v1")
 app.include_router(triggers.router, prefix="/api/v1")
+app.include_router(training.router, prefix="/api/v1")
+
 
 @app.get("/")
 def read_root():
