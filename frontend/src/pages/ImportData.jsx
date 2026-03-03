@@ -104,7 +104,10 @@ const ImportData = () => {
                 {status === "success" && result && (
                     <div className="alert success" style={{ marginTop: '2rem' }}>
                         <h4>Import Successful!</h4>
-                        <p>Processed {result.total_rows} entries.</p>
+                        <p>✅ Imported <strong>{result.imported_rows}</strong> new entries.</p>
+                        {result.skipped_rows > 0 && (
+                            <p style={{ color: '#94a3b8' }}>⏭ Skipped <strong>{result.skipped_rows}</strong> duplicate entries.</p>
+                        )}
                         {result.training_triggered && (
                             <p style={{ fontWeight: 'bold' }}>✨ AI Model Trained & Activated! ✨</p>
                         )}

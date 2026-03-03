@@ -25,18 +25,17 @@ def test_priors_lifecycle():
     assert data["weather_sensitivity"] == 0.9
 
 def test_import_csv():
-    # Create a dummy CSV
-    csv_content = "Date,Pain Level\n2023-01-01,5\n2023-01-02,0"
+    # Create a dummy CSV — Time is required for deduplication
+    csv_content = "Date,Time,Pain Level\n2023-01-01,08:00,5\n2023-01-02,09:00,0"
     files = {'file': ('test.csv', csv_content, 'text/csv')}
-    
+
     response = client.post("/api/v1/data/import/csv", files=files)
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "success"
-    # We expect 2 rows to be imported. 
-    # Note: This test runs against the actual DB configured in utils (or a test override if we set one up).
-    # For safety in this environment, it assumes the dev DB. 
-    # Ideally we'd mock the DB, but for a quick integration check this confirms the route works and parses CSV.
+    assert "imported_rows" in data
+    assert "skipped_rows" in data
+
 
 def test_prediction_endpoint_heuristic():
     # Ensure prediction works and returns "Heuristic" source if no model
