@@ -3,7 +3,19 @@ import os
 import logging
 import multiprocessing
 import signal
+import socket
 from api.utils import get_data_dir
+
+
+def get_free_port(dev_mode=False):
+    """Return port 8000 in dev mode, or an OS-assigned free port in prod."""
+    if dev_mode:
+        return 8000
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.bind(('127.0.0.1', 0))
+    port = sock.getsockname()[1]
+    sock.close()
+    return port
 
 # 1. SETUP LOGGING
 log_dir = get_data_dir()
@@ -39,8 +51,7 @@ if __name__ == "__main__":
     logger.info(f"CWD: {os.getcwd()}")
 
     # --- SELF-CLEANING START ---
-    # Attempt to kill any existing process named 'migraine-navigator-api' OR holding port 8000.
-    # We use 'psutil' for robust, cross-platform process management.
+    # Kill any existing process named 'migraine-navigator-api' (skip port check for dynamic port mode).
     try:
         import psutil
         logger.info("Cleaning up old processes via psutil...")
@@ -50,27 +61,9 @@ if __name__ == "__main__":
             try:
                 if proc.info['pid'] == current_pid:
                     continue
-                
-                should_kill = False
-                
-                # Check 1: Name match
                 if proc.info['name'] and 'migraine-navigator-api' in proc.info['name']:
-                     should_kill = True
-                
-                # Check 2: Port 8000 match (more expensive, do only if name didn't match)
-                if not should_kill:
-                    try:
-                        for conn in proc.connections():
-                            if conn.laddr.port == 8000:
-                                should_kill = True
-                                break
-                    except (psutil.AccessDenied, psutil.ZombieProcess):
-                        pass
-
-                if should_kill:
                     logger.warning(f"Found zombie process {proc.info['pid']} ({proc.info['name']}). Force killing...")
                     proc.kill()
-                    
             except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                 pass
                 
@@ -108,7 +101,12 @@ if __name__ == "__main__":
         monitor_thread.start()
         # -------------------------------------------------------------
 
-        config = uvicorn.Config(app, host="127.0.0.1", port=8000, log_config=None)
+        # Determine port: dev uses 8000, prod uses OS-assigned free port
+        is_dev = os.environ.get("API_DEV_MODE") == "1"
+        port = get_free_port(dev_mode=is_dev)
+        logger.info(f"Binding to port {port} (dev_mode={is_dev})")
+
+        config = uvicorn.Config(app, host="127.0.0.1", port=port, log_config=None)
         server = uvicorn.Server(config)
 
         # Update handler to tell Uvicorn to stop
@@ -118,6 +116,10 @@ if __name__ == "__main__":
             
         signal.signal(signal.SIGTERM, handle_exit)
         signal.signal(signal.SIGINT, handle_exit)
+
+        # Announce port to parent process (Tauri sidecar reads this from stdout)
+        print(f"PORT:{port}", flush=True)
+        logger.info(f"Announced PORT:{port} to stdout")
 
         server.run()
         

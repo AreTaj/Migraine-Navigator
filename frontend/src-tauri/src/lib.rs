@@ -5,7 +5,9 @@ fn greet(name: &str) -> String {
 }
 
 
+use tauri::Emitter;
 use tauri_plugin_shell::ShellExt;
+use tauri_plugin_shell::process::CommandEvent;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -28,8 +30,14 @@ pub fn run() {
                     // If this block exits, _child is dropped, stdin closes, and Python self-destructs.
                     // We also listen for events to prevent buffer filling.
                     while let Some(event) = rx.recv().await {
-                       // Just consume events
-                       // println!("Event: {:?}", event);
+                        if let CommandEvent::Stdout(ref line) = event {
+                            let text = String::from_utf8_lossy(line);
+                            if let Some(port_str) = text.trim().strip_prefix("PORT:") {
+                                if let Ok(port) = port_str.parse::<u16>() {
+                                    let _ = handle.emit("backend-started", serde_json::json!({"port": port}));
+                                }
+                            }
+                        }
                     }
                 }
                 
@@ -45,4 +53,3 @@ pub fn run() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
-

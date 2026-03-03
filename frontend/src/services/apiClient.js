@@ -8,11 +8,24 @@ const isTauri =
     window.location.hostname === 'tauri.localhost';
 
 const apiClient = axios.create({
-    baseURL: isTauri
-        ? 'http://127.0.0.1:8000' // Direct to sidecar in packaged app
-        : '',                     // Proxy via Vite in dev
+    // In Tauri prod: start with empty baseURL (requests will fail and retry until port is known)
+    // In Dev: empty string means Vite proxy handles /api/* -> localhost:8000
+    baseURL: '',
     timeout: 30000, // Higher timeout for slow cold starts
 });
+
+// --- Dynamic Port Discovery (Tauri Production Only) ---
+if (isTauri) {
+    import('@tauri-apps/api/event').then(({ listen }) => {
+        listen('backend-started', (event) => {
+            const port = event.payload.port;
+            apiClient.defaults.baseURL = `http://127.0.0.1:${port}`;
+            console.log(`Backend started on dynamic port: ${port}`);
+        });
+    }).catch((err) => {
+        console.warn('Tauri event API not available:', err);
+    });
+}
 
 // Inject Tester Mode Header
 apiClient.interceptors.request.use((config) => {
