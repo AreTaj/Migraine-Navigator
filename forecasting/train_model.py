@@ -18,9 +18,11 @@ except ImportError:
 # Import data processing
 try:
     from forecasting.data_loader import merge_migraine_and_weather_data, process_combined_data
+    from forecasting.feature_engine import FeatureEngine
 except ImportError:
     # Fallback for running as script directly
     from data_loader import merge_migraine_and_weather_data, process_combined_data
+    from feature_engine import FeatureEngine
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -99,6 +101,11 @@ class TrainingManager:
             y_train_reg, y_test_reg = y_reg.iloc[train_index], y_reg.iloc[test_index]
             weights_train = sample_weights[train_index]
             
+            # Feature selection (applied per-fold to prevent data leakage)
+            selected, dropped = FeatureEngine.select_features_by_correlation(X_train)
+            X_train = X_train[selected]
+            X_test = X_test[selected]
+            
             self.clf.fit(X_train, y_train_bin, sample_weight=weights_train)
             y_probs = self.clf.predict_proba(X_test)[:, 1]
             
@@ -168,6 +175,13 @@ class TrainingManager:
 
     def train_final_and_save(self, X, y_bin, y_reg, sample_weights):
         print("\nTraining Final Models on All Data...")
+        
+        # Feature selection on full training data
+        selected, dropped = FeatureEngine.select_features_by_correlation(X)
+        if dropped:
+            print(f"Feature selection dropped {len(dropped)} feature(s): {dropped}")
+        X = X[selected]
+        
         self.clf.fit(X, y_bin, sample_weight=sample_weights)
         self.reg.fit(X, y_reg, sample_weight=sample_weights)
         

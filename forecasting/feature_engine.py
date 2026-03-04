@@ -11,6 +11,68 @@ class FeatureEngine:
         return pain_map.get(d, 0.0)
 
     @staticmethod
+    def select_features_by_correlation(X, threshold=0.90):
+        """
+        Drops one feature from each pair that exceeds the Pearson correlation threshold.
+        
+        Tie-breaking: drops the feature with more NaN values.
+        If tied, drops the alphabetically-last column name for determinism.
+        
+        Returns (selected_cols, dropped_cols) as lists of column names.
+        Skips filtering entirely if fewer than 30 rows (unreliable correlations).
+        """
+        import pandas as pd
+
+        MIN_ROWS = 30
+
+        if len(X) < MIN_ROWS:
+            logger.info(f"Feature selection skipped: insufficient data (N={len(X)}, need {MIN_ROWS}).")
+            return list(X.columns), []
+
+        numeric_X = X.select_dtypes(include='number')
+        if numeric_X.empty:
+            return list(X.columns), []
+
+        corr_matrix = numeric_X.corr(method='pearson').abs()
+
+        # Collect correlated pairs from upper triangle
+        pairs = []
+        cols = corr_matrix.columns
+        for i in range(len(cols)):
+            for j in range(i + 1, len(cols)):
+                val = corr_matrix.iloc[i, j]
+                if pd.isna(val) or val <= threshold:
+                    continue
+                pairs.append((cols[i], cols[j], val))
+
+        # Sort for deterministic iteration order
+        pairs.sort(key=lambda x: (x[0], x[1]))
+
+        to_drop = set()
+        for col_a, col_b, val in pairs:
+            if col_a in to_drop or col_b in to_drop:
+                continue
+
+            nans_a = numeric_X[col_a].isna().sum()
+            nans_b = numeric_X[col_b].isna().sum()
+
+            if nans_a > nans_b:
+                to_drop.add(col_a)
+            elif nans_b > nans_a:
+                to_drop.add(col_b)
+            else:
+                # Alphabetical tie-break: drop the one that sorts last
+                to_drop.add(max(col_a, col_b))
+
+        dropped = sorted(to_drop)
+        selected = [c for c in X.columns if c not in to_drop]
+
+        if dropped:
+            logger.info(f"Feature selection dropped {len(dropped)} feature(s): {dropped}")
+
+        return selected, dropped
+
+    @staticmethod
     def construct_features(target_date, history_df, weather_data: Optional[Dict[str, Any]] = None) -> Tuple[Any, Dict[str, Any]]:
         """
         Builds a single-row DataFrame of features for the target_date.
