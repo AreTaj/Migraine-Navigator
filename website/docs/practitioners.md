@@ -4,6 +4,11 @@
 
 ---
 
+> [!IMPORTANT]
+> **Disclaimer**: Migraine Navigator is a decision-support tool, not a diagnostic or treatment device. It provides statistical probabilities based on historical patterns. Treatment changes should always be supervised by a licensed medical professional.
+
+---
+
 ## **Technical Briefing for Clinicians: Executive Summary**
 *   **The Problem**: Subjective patient recall of migraine triggers is often inaccurate or incomplete.
 *   **The Solution**: A local-first desktop application that correlates user-logged symptoms with high-resolution environmental data (barometric pressure, humidity, etc.).
@@ -52,4 +57,4 @@ One of the primary barriers to digital health adoption is data security. Migrain
 ---
 
 > [!IMPORTANT]
-> **Clinical Disclaimer**: Migraine Navigator is a decision-support tool, not a diagnostic or treatment device. It provides statistical probabilities based on historical patterns. Treatment changes should always be supervised by a licensed medical professional.
+> **Disclaimer**: Migraine Navigator is a decision-support tool, not a diagnostic or treatment device. It provides statistical probabilities based on historical patterns. Treatment changes should always be supervised by a licensed medical professional.

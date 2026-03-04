@@ -52,8 +52,8 @@ PYTHONPATH=. pytest tests/ -v
 
 ```
 Migraine Navigator/
-├── api/                     # FastAPI Backend (Process Management: psutil)
-│   ├── routes/              # API Endpoints (Entries, Analysis)
+├── api/                     # FastAPI Backend
+│   ├── routes/              # API Endpoints (Entries, Analysis, Data Import, Training)
 │   └── main.py              # Server Entry Point
 ├── frontend/                # React + Tauri Frontend
 │   ├── src/                 # UI Source Code
@@ -61,9 +61,10 @@ Migraine Navigator/
 │   │   └── App.jsx          # Main Router
 │   └── src-tauri/           # Rust Backend (Window Management)
 ├── services/                # Business Logic Layer (Pure Python/SQLite)
-├── prediction/              # ML Pipeline (Training & Inference)
-├── scripts/                 # Utility Scripts (Latency, Simulation)
+├── forecasting/             # ML Pipeline (Training, Inference, Feature Engineering)
+├── scripts/                 # Utility Scripts (api_entry.py, Packaging)
 ├── documentation/           # Technical Reports & Architecture
+├── website/                 # Docusaurus Public Website
 ├── data/                    # Database (migraine_log.db)
 └── ...
 ```
@@ -74,5 +75,5 @@ Migraine Navigator/
 2.  **Verify**: Check `releases/` for the new artifact.
 3.  **Upload**: Use the robust upload script to handle network instability:
     ```bash
-    ./scripts/robust_upload.sh v0.2.6 releases/Migraine_Navigator_0.2.6_aarch64.dmg
+    ./scripts/robust_upload.sh v0.3.0 releases/Migraine_Navigator_0.3.0_aarch64.dmg
     ```

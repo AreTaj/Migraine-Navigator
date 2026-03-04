@@ -23,10 +23,19 @@ Migraine Navigator is a desktop application designed to help you **track**, **an
 *   **Pain Slider**: An intuitive visual slider makes logging simple, even during an attack.
 *   **Privacy First**: Your location is automatically detected for weather accuracy, but **never** tracked or saved.
 
-### 3. Personalized Model
-The app learns *your* specific triggers over time.
-*   **First 60 Logs ("Cold Start")**: It uses basic **Baseline Sensitivity** settings (which you configure during onboarding) to provide initial estimates.
-*   **Log 60+**: It switches to a custom Artificial Intelligence model built *just for you*, detecting unique patterns (e.g., "You only get migraines on Tuesdays when it rains").
+### 3. Personalized & Improving Model
+The app builds a custom AI model — *just for you* — that gets smarter every time you log.
+*   **First 60 Logs ("Cold Start")**: Uses your onboarding sensitivity settings (Weather, Sleep, Stress) to provide immediate estimates from Day 1.
+*   **Log 60+**: Switches to a personal Gradient Boosting AI that detects your unique patterns (e.g., "You only get migraines on Tuesdays when it rains").
+*   **Ongoing — "Model Update Ready"**: As you continue logging, the app detects when enough new data exists to improve your model. The Dashboard shows a **"Model Update Ready"** button. One tap retrains the AI in the background — the app stays fully responsive while it works.
+
+> **Why keep logging?** Every entry makes your personal model more accurate. The prediction you get on Day 365 is measurably better than the one you got on Day 60.
+
+### 4. Data Import
+Already have migraine history from another app or a previous device?
+*   **CSV Import**: Upload a `.csv` file exported from any spreadsheet or health app.
+*   **Database Import**: Restore from a previous Migraine Navigator `.db` backup.
+*   Duplicate entries are automatically detected and skipped — no need to worry about importing the same file twice.
 
 ---
 

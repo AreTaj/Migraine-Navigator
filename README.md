@@ -33,6 +33,14 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
     - **Reactive Caching**: Instant dashboard updates upon data modification, with 1-hour caching for stability.
     - Fast and lightweight Desktop experience (~190MB optimized DMG).
     - **Robust Sidecar Management**: Uses "Stdin Monitoring" (Dead Man's Switch) to ensure zero zombie processes.
+    - **Dynamic Port Discovery**: Sidecar backend automatically finds an open port, preventing conflicts when multiple instances are launched.
+- **Data Import:**
+    - Import historical logs from `.csv` files or legacy SQLite `.db` backups.
+    - Automatic `(Date, Time)` deduplication prevents duplicate entries on re-import.
+    - Validates required columns and rejects invalid pain levels before insertion.
+- **Background Retraining:**
+    - Dashboard alerts you when enough new data exists to improve your personal ML model.
+    - One-tap "Retrain Now" triggers asynchronous model training without blocking the UI.
 
 ## Screenshots
 
@@ -61,9 +69,16 @@ Migraine Navigator runs a personalized Machine Learning model **locally on your 
 ### [Hybrid Prediction Engine](documentation/prediction_engine.md)
 *   **User-Configurable Heuristic Engine**: Provides immediate value for new users using calibrated sensitivity settings.
 *   **Gradient Boosting ML**: Automatically takes over as your data grows to detect complex, non-linear patterns.
+*   **Feature Selection**: Before training, a correlation matrix filter automatically removes redundant weather features (|r| > 0.90), improving model stability and interpretability.
 
 ### [24-Hour Risk Engine](documentation/prediction_engine.md)
 Uses a novel **"Truth Propagation"** technique where the daily ML prediction "anchors" a high-resolution heuristic curve, delivering granular hourly risk scores without requiring hourly user logs.
+
+### Adaptive Retraining
+Your personal grows with you. It doesn't stay frozen at the day you installed the app.
+*   When enough new logs accumulate (≥5 entries since the last training run), the Dashboard displays a **"Model Update Ready"** alert.
+*   One tap or click triggers a full retrain on your complete history, running **asynchronously** so the app remains fully usable.
+*   The old model stays active until the new one is verified and swapped in, ensuring zero downtime.
 
 > [!TIP]
 > **[Read the full Deep Dive on the Prediction Engine](documentation/prediction_engine.md)**
@@ -81,7 +96,7 @@ For deeper technical details:
 
 ### Download (macOS)
 1. Go to the [Releases](https://github.com/AreTaj/Migraine-Navigator/releases) page.
-2. Download the latest `.dmg` file (e.g., `Migraine Navigator_0.2.6_aarch64.dmg`).
+2. Download the latest `.dmg` file (e.g., `Migraine Navigator_0.3.0_aarch64.dmg`).
 3. Drag the app to your Applications folder.
 
 ## Usage

@@ -3,18 +3,24 @@
 All notable changes to the "Migraine Navigator" project will be documented in this file.
 
 
-## [In Progress]
+## [v0.3.0] - 2026-03-03
 ### Refactored
-- **Centralized Data Sanitization**: Moved post-entry data cleaning from the API layer into a dedicated service layer (`EntryService.sanitize_entry`).
+- **Centralized Data Sanitization (#45)**: Moved post-entry data cleaning from the API layer into a dedicated service layer (`EntryService.sanitize_entry`).
     - Implemented **Schema-Aware Persistence**: The service now automatically detects valid SQLite columns and filters out unrecognized keys, preventing crashes on mismatched data.
     - **Geodata Patching**: Automatically converts "Unknown" or invalid string geodata to `None`.
     - **Legacy Key Support**: Added robust remapping for legacy keys (e.g., `weather_pressure` → `pressure`).
 - **Leaner API Routes**: Refactored `POST` and `PUT` /entries endpoints to eliminate manual data-massaging, improving testability and separation of concerns.
-- **ML Training Loop Decoupling (Issue #46)**: Extracted the monolithic `train_and_evaluate` function into `ModelConfig` and `TrainingManager` classes. Enables explicit isolation testing and runtime configuration injection without side-effects.
-- **Safe Background Retraining (Issue #53)**: Completely eliminated Windows `mmap_mode` file lock crashes by introducing a timestamped versioning strategy. The API now safely saves new models side-by-side with old ones, and the server hot-swaps them utilizing glob sorting and automated cache invalidation.
+- **ML Training Loop Decoupling (#46)**: Extracted the monolithic `train_and_evaluate` function into `ModelConfig` and `TrainingManager` classes. Enables explicit isolation testing and runtime configuration injection without side-effects.
+- **Safe Background Retraining (#53)**: Completely eliminated Windows `mmap_mode` file lock crashes by introducing a timestamped versioning strategy. The API now safely saves new models side-by-side with old ones, and the server hot-swaps them utilizing glob sorting and automated cache invalidation.
+
+### Added
+- **Dynamic Port Discovery (#42)**: The sidecar backend now automatically discovers and binds to an available port at startup, preventing collisions when multiple instances are launched.
+- **Data Import System (#50)**: Full CSV and legacy SQLite `.db` import with automatic `(Date, Time)` deduplication. Validates required columns, rejects invalid pain levels, and safely handles ID collisions across database instances.
+- **User-Initiated Model Retraining (#52)**: Dashboard detects when ≥5 new entries exist since the last training run (via filesystem `mtime` heuristics) and prompts the user with a non-blocking "Model Update Ready" alert. Training runs asynchronously with a concurrency lock to prevent duplicate runs.
+- **Feature Selection via Correlation Matrix (#59)**: New deterministic pre-training step that drops one feature from each pair exceeding Pearson |r| > 0.90. Uses NaN-count tie-breaking (drop the feature with more missing data) and alphabetical fallback for full reproducibility. Automatically skipped when N < 30 to avoid spurious correlations.
 
 ### Technical
-- **Expanded Test Coverage**: Added a new verification suite (`tests/test_entry_sanitization.py`) and schema integrity tests. Authored isolated unit tests for the new `TrainingManager`. Total suite expanded to 38 fully passing tests.
+- **Expanded Test Coverage**: Total suite expanded to 61 fully passing tests, including dedicated suites for data import deduplication, dynamic port discovery, retraining scheduling, and feature selection edge cases.
 - **Verification Workflow**: Introduced `/verify` agent workflow for automated full-suite regression testing.
 
 ## [v0.2.6] - 2026-01-05

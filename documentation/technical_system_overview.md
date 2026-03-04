@@ -1,5 +1,5 @@
 # Migraine Navigator: Technical System Overview
-**Date:** December 16, 2025
+**Date:** March 2026 (v0.3.0)
 **Scope:** Data Analytics, AI/ML Architecture, and System Design
 
 ---
@@ -18,6 +18,7 @@ The application follows a modern **Service-Oriented Architecture (SOA)** tailore
 *   **Persistence (Data Layer)**:
     *   **Database**: SQLite3 (Embedded). Ideal for single-user desktop privacy and zero-config deployment.
     *   **ORM/DAO**: Custom Data Access Objects (`EntryService`) using raw SQL with **Schema-Aware Persistence**. The service layer dynamically inspects the SQLite schema (via `PRAGMA table_info`) to sanitize and filter incoming data keys before execution.
+    *   **Data Import**: Supports bulk import from `.csv` files and legacy SQLite `.db` backups. Deduplicates on `(Date, Time)` pairs rather than row IDs for safe cross-database merges.
 
 ---
 
@@ -34,7 +35,14 @@ We utilize a dual-model approach using **Gradient Boosting Decision Trees (GBDT)
     *   **Task**: Regression (Predicted Pain Level 0-10).
     *   **Target**: Log-transformed Pain Level ($\log(1 + y)$) to handle zero-inflated targets and enforce non-negativity.
 
-### 2.2 Feature Engineering (`predict_future.py`)
+### 2.2 Feature Selection
+Prior to model training, a **Correlation Matrix Filter** automatically removes redundant features:
+*   Pairs exceeding Pearson $|r| > 0.90$ are identified; the feature with more missing values is dropped.
+*   **Deterministic tie-breaking**: When NaN counts are equal, the alphabetically-last column is dropped for full reproducibility.
+*   **Small-dataset guard**: Skipped entirely when $N < 30$ to prevent spurious correlations for new users.
+*   Integrated inside the cross-validation loop to prevent data leakage.
+
+### 2.3 Feature Engineering (`feature_engine.py`)
 Raw data is transformed into a dense feature vector $X$ containing ~24 dimensions:
 
 *   **Temporal Features**:
@@ -64,6 +72,11 @@ The analytics engine transforms raw logs into actionable intelligence on the cli
 *   **Batch Processing**: The 7-Day Forecast generates predictions in bulk. It fetches a single JSON packet from Open-Meteo containing 7 days of hourly data, processes it into 7 feature vectors, and runs batch inference in $<0.8s$.
 *   **Caching Strategy**: Predictions are cached in-memory with a 1-hour TTL (Time-To-Live). This prevents API rate-limiting and ensures instant dashboard reloads.
 
+### 3.3 Background Retraining
+*   **Staleness Detection**: The system compares the model file's `mtime` against the count of new database entries to determine when retraining is beneficial (≥5 new entries).
+*   **User-Initiated**: The dashboard displays a non-blocking "Model Update Ready" alert; training runs asynchronously with a concurrency lock.
+*   **Model Versioning**: Models are saved with timestamped filenames (`best_model_clf_<timestamp>.pkl`). Old versions are automatically cleaned up, retaining only the 2 most recent.
+
 ---
 
 ## 4. Key Technologies
@@ -85,6 +98,8 @@ The Tauri frontend (`src-tauri/src/lib.rs`) effectively operates as a process ma
 
 *   **Release Profile (Production)**:
     *   **Sidecar**: ENABLED. The application automatically spawns the compiled/frozen backend binary (`migraine-navigator-api`).
+    *   **Dynamic Port Discovery**: The sidecar automatically binds to an available port at startup, preventing conflicts when multiple instances are launched.
     *   **Stdin Monitoring**: The backend listens to `sys.stdin`. If the parent Tauri process closes the pipe (i.e., app exit or crash), the Python backend self-terminates instantly, preventing "zombie" processes.
+    *   **Model Loading**: Uses `joblib.load(path, mmap_mode='r')` for memory-mapped model access, enabling safe hot-swapping without file locks.
     *   **Database**: automatically resolves to the User Data Directory (e.g., `~/Library/Application Support/MigraineNavigator/migraine_log.db` on macOS) to comply with OS sandboxing and persistence standards.
 

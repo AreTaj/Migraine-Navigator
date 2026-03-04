@@ -4,7 +4,7 @@ title: System Overview
 ---
 
 # Migraine Navigator: Technical System Overview
-**Current Version:** v0.2.5
+**Current Version:** v0.3.0
 **Scope:** Hybrid AI Architecture, Data Analytics, and System Design
 
 ---
@@ -21,7 +21,8 @@ The application follows a modern **Service-Oriented Architecture (SOA)** tailore
     * **API Protocol**: RESTful JSON over localhost.
 * **Persistence (Data Layer)**:
     * **Database**: SQLite3 (Embedded). Ideal for single-user desktop privacy and zero-config deployment.
-    * **ORM/DAO**: Custom Data Access Objects (`EntryService`) using raw SQL for maximum performance control and explicit schema management.
+    * **ORM/DAO**: Custom Data Access Objects (`EntryService`) using raw SQL with Schema-Aware Persistence. The service dynamically inspects the live SQLite schema to sanitize incoming data.
+    * **Data Import**: Bulk import from `.csv` or legacy `.db` files with automatic `(Date, Time)` deduplication.
 
 ---
 
@@ -57,7 +58,11 @@ Raw data is transformed into a dense feature vector X containing ~24 dimensions:
     * Captures the "Memory" of the disease (Lags: t-1 to t-7 days).
     * **Rolling Statistics**: Detection of flare-up clusters.
 
----
+### 2.3 Feature Selection
+Prior to training, a **Correlation Matrix Filter** removes redundant features:
+*   Pearson $|r| > 0.90$ triggers a drop. The feature with more missing values is removed.
+*   Alphabetical tie-breaking ensures perfect reproducibility across all environments.
+*   Skipped entirely when $N < 30$ to prevent spurious correlations for new users.
 
 ## 3. Data Analytics & Visualization
 

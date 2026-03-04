@@ -2,14 +2,15 @@
 
 Development is organized into phased milestones to ensure stability and focus.
 
-## [v0.3.0] Core Architecture & Stability
+## [v0.3.0] Core Architecture & Stability (Completed)
 *Focus: Refactoring, robustness, and background infrastructure.*
 - **[Issue #45] Extract Service Logic from API Routes** (Completed)
 - **[Issue #46] Refactor Training Loop (Decouple Config)** (Completed)
 - **[Issue #53] Use Memory Mapping for Model Loading** (Completed)
-- **[Issue #42] Implement Dynamic Port Discovery for Sidecar Backend**
-- **[Issue #50] Data Import System**
-- **[Issue #52] Automatic Periodic Model Retraining**
+- **[Issue #42] Implement Dynamic Port Discovery for Sidecar Backend** (Completed)
+- **[Issue #50] Data Import System** (Completed)
+- **[Issue #52] Automatic Periodic Model Retraining** (Completed)
+- **[Issue #59] Implement Feature Selection via Correlation Matrix** (Completed)
 
 ## [v0.4.0] User Experience & Onboarding
 *Focus: Interface polish, user journey, and first-time experience.*
@@ -30,7 +31,6 @@ Development is organized into phased milestones to ensure stability and focus.
 - **[Issue #56] Heat Stress Load**
 - **[Issue #57] Wet Bulb Interaction (max_dew_point)**
 - **[Issue #58] Statistical Shape Features**
-- **[Issue #59] Implement Feature Selection via Correlation Matrix**
 - **[Issue #62] Dashboard Backend Risk Explanation (SHAP)**
 - **[Issue #63] Migraine Simulator API Endpoint**
 - **[Issue #64] Migraine Simulator UI**
