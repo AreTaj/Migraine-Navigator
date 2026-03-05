@@ -18,8 +18,9 @@ from datetime import datetime
 logger = logging.getLogger(__name__)
 
 # ─── Paths ────────────────────────────────────────────────────────────────────
-_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-_MODEL_DIR = os.path.join(_BASE_DIR, '..', 'models')
+from api.utils import get_data_dir
+_MODEL_DIR = os.path.join(get_data_dir(), 'models')
+os.makedirs(_MODEL_DIR, exist_ok=True)
 
 # ─── Concurrency guard ────────────────────────────────────────────────────────
 _training_lock = threading.Lock()
@@ -98,8 +99,10 @@ def run_training_safely(db_path: str) -> bool:
     try:
         logger.info(f"Starting background model training against {db_path}...")
         from forecasting.train_model import train_and_evaluate
+        from forecasting.inference import clear_prediction_cache
         train_and_evaluate(db_path=db_path)
-        logger.info("Background model training completed successfully.")
+        clear_prediction_cache()
+        logger.info("Background model training completed successfully and prediction cache cleared.")
         return True
     except Exception as e:
         logger.error(f"Background training failed: {e}", exc_info=True)

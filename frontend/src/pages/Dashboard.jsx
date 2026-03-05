@@ -286,6 +286,9 @@ function Dashboard() {
                         setRetrainLoading(false);
                         setRetrainDone(true);
                         setRetrainStatus(res.data);
+                        // HARD RELOAD the dashboard so that new ML predictions are fetched 
+                        // and old cached charts are replaced.
+                        setTimeout(() => window.location.reload(), 1500);
                     }
                 } catch { clearInterval(poll); setRetrainLoading(false); }
             }, 2000);

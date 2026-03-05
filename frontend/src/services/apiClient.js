@@ -1,34 +1,44 @@
 import axios from 'axios';
 
 // Detect if running in Tauri environment
-// Check for specific Tauri protocols or internals
 const isTauri =
     !!(window.__TAURI_INTERNALS__ || window.__TAURI__) ||
     window.location.protocol === 'tauri:' ||
     window.location.hostname === 'tauri.localhost';
 
 const apiClient = axios.create({
-    // In Tauri prod: start with empty baseURL (requests will fail and retry until port is known)
-    // In Dev: empty string means Vite proxy handles /api/* -> localhost:8000
     baseURL: '',
-    timeout: 30000, // Higher timeout for slow cold starts
+    timeout: 30000,
 });
 
 // --- Dynamic Port Discovery (Tauri Production Only) ---
+// Create a gate that holds requests until the backend port is known.
+let _portReady = null;
 if (isTauri) {
-    import('@tauri-apps/api/event').then(({ listen }) => {
-        listen('backend-started', (event) => {
-            const port = event.payload.port;
-            apiClient.defaults.baseURL = `http://127.0.0.1:${port}`;
-            console.log(`Backend started on dynamic port: ${port}`);
+    _portReady = new Promise((resolve) => {
+        import('@tauri-apps/api/event').then(({ listen }) => {
+            listen('backend-started', (event) => {
+                const port = event.payload.port;
+                apiClient.defaults.baseURL = `http://127.0.0.1:${port}`;
+                console.log(`Backend started on dynamic port: ${port}`);
+                resolve();
+            });
+        }).catch((err) => {
+            console.warn('Tauri event API not available:', err);
+            resolve(); // Don't block forever if event API fails
         });
-    }).catch((err) => {
-        console.warn('Tauri event API not available:', err);
     });
 }
 
-// Inject Tester Mode Header
-apiClient.interceptors.request.use((config) => {
+// Request interceptor: in Tauri mode, wait for port before sending any request
+apiClient.interceptors.request.use(async (config) => {
+    if (_portReady) {
+        await _portReady;
+        // CRITICAL: Requests suspended here will have empty config.baseURL from when they started. 
+        // We must update them to the newly discovered baseURL.
+        config.baseURL = apiClient.defaults.baseURL;
+    }
+
     const isTester = localStorage.getItem('tester_mode') === 'true';
     if (isTester) {
         config.headers['X-Tester-Mode'] = 'true';
@@ -40,18 +50,15 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(null, async (error) => {
     const config = error.config;
 
-    // Check if we should retry (idempotent methods or safe to retry)
-    // and if it's a network error (backend not up yet)
     if (!config || !config.retryCount) {
         config.retryCount = 0;
     }
 
-    const MAX_RETRIES = 15; // Try for ~45 seconds total
+    const MAX_RETRIES = 15;
 
     if (config.retryCount < MAX_RETRIES && (!error.response || error.code === 'ERR_NETWORK')) {
         config.retryCount += 1;
 
-        // Exponential backoff: 500ms, 1000ms, 2000ms... capped at 3s
         const delay = Math.min(500 * (2 ** (config.retryCount - 1)), 3000);
 
         console.log(`Backend likely starting... Retrying request (${config.retryCount}/${MAX_RETRIES}) in ${delay}ms`);

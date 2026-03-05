@@ -18,8 +18,13 @@ if TYPE_CHECKING:
     import numpy as np
     import joblib
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_DIR = os.path.join(BASE_DIR, '..', 'models')
+try:
+    from api.utils import get_data_dir
+    MODEL_DIR = os.path.join(get_data_dir(), 'models')
+except ImportError:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    MODEL_DIR = os.path.join(BASE_DIR, '..', 'models')
+    
 MODEL_CLF_PATH = os.path.join(MODEL_DIR, 'best_model_clf.pkl')
 MODEL_REG_PATH = os.path.join(MODEL_DIR, 'best_model_reg.pkl')
 TESTER_CLF_PATH = os.path.join(MODEL_DIR, 'tester_model_clf.pkl')
@@ -159,6 +164,7 @@ def get_prediction_for_date(target_date_str, weather_override=None, db_path=None
     try:
         # Check Force Heuristic Mode
         force_heuristic = False
+        conn = None
         try:
              conn = sqlite3.connect(db_path)
              cursor = conn.cursor()
@@ -166,8 +172,11 @@ def get_prediction_for_date(target_date_str, weather_override=None, db_path=None
              row = cursor.fetchone()
              if row and str(row[0]).lower() == 'true':
                  force_heuristic = True
-             conn.close()
-        except Exception: pass
+        except Exception: 
+            pass
+        finally:
+            if conn:
+                conn.close()
 
         if force_heuristic:
              logger.info("Force Heuristic Mode enabled. Bypassing ML.")
@@ -227,6 +236,7 @@ def _run_heuristic_fallback(target_date_str, X, meta, db_path=None):
     
     # Fetch User Priors
     user_priors = {}
+    conn = None
     try:
         conn = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row
@@ -237,8 +247,11 @@ def _run_heuristic_fallback(target_date_str, X, meta, db_path=None):
             try:
                 user_priors[row['key']] = float(row['value'])
             except ValueError: pass
-        conn.close()
-    except Exception: pass
+    except Exception: 
+        pass
+    finally:
+        if conn:
+            conn.close()
 
     predictor = HeuristicPredictor(user_priors)
     

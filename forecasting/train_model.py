@@ -25,8 +25,13 @@ except ImportError:
     from feature_engine import FeatureEngine
 
 # Paths
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_DIR = os.path.join(BASE_DIR, '..', 'models')
+import sys
+try:
+    from api.utils import get_data_dir
+    MODEL_DIR = os.path.join(get_data_dir(), 'models')
+except ImportError:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    MODEL_DIR = os.path.join(BASE_DIR, '..', 'models')
 os.makedirs(MODEL_DIR, exist_ok=True)
 MODEL_CLF_PATH = os.path.join(MODEL_DIR, 'best_model_clf.pkl')
 MODEL_REG_PATH = os.path.join(MODEL_DIR, 'best_model_reg.pkl')
