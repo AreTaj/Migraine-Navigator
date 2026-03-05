@@ -6,6 +6,7 @@ import sqlite3
 import shutil
 import os
 from api.dependencies import get_db_path_dep
+from api.utils import list_databases, get_data_dir
 # train_and_evaluate from train_model is lazy-loaded in routes to avoid early matplotlib import
 
 router = APIRouter(prefix="/data", tags=["data"])
@@ -143,4 +144,58 @@ async def import_db(file: UploadFile = File(...), db_path: str = Depends(get_db_
         print(f"DB Import Error: {e}")
         if os.path.exists(temp_path):
             os.remove(temp_path)
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/databases")
+async def get_databases():
+    """
+    List all available .db files in the data directory.
+    """
+    dbs = list_databases()
+    return {"databases": dbs}
+
+@router.post("/import/db-separate")
+async def import_db_separate(file: UploadFile = File(...)):
+    """
+    Import a .db file as a SEPARATE database (no merge).
+    Copies the file into the data directory with its original name.
+    Protects against overwriting the main migraine_log.db.
+    """
+    if not file.filename.endswith('.db') and not file.filename.endswith('.sqlite'):
+        raise HTTPException(status_code=400, detail="File must be a SQLite DB.")
+
+    # Sanitize filename
+    safe_name = os.path.basename(file.filename)
+    
+    # Protect the main database from being overwritten
+    if safe_name == 'migraine_log.db':
+        safe_name = 'migraine_log_imported.db'
+
+    dest_path = os.path.join(get_data_dir(), safe_name)
+
+    try:
+        with open(dest_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        # Validate it's actually a SQLite DB
+        try:
+            conn = sqlite3.connect(dest_path)
+            conn.execute("SELECT name FROM sqlite_master WHERE type='table'")
+            conn.close()
+        except sqlite3.DatabaseError:
+            os.remove(dest_path)
+            raise HTTPException(status_code=400, detail="File is not a valid SQLite database.")
+
+        return {
+            "status": "success",
+            "database_name": safe_name,
+            "message": f"Database '{safe_name}' is now available. Select it in Settings to use it."
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Separate DB Import Error: {e}")
+        if os.path.exists(dest_path):
+            os.remove(dest_path)
         raise HTTPException(status_code=500, detail=str(e))

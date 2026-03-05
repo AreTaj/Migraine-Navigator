@@ -3,6 +3,20 @@
 All notable changes to the "Migraine Navigator" project will be documented in this file.
 
 
+## [v0.3.1] - 2026-03-05
+### Added
+- **Database Selector**: Replaced the experimental "Tester Mode" with a professional Database Selector in Settings.
+    - Users can now switch between multiple `.db` files (e.g., primary log vs. imported backups) seamlessly.
+    - **Custom Display Names**: Added ability to assign friendly names (like "Vacation Data") to databases via `localStorage`, without renaming the physical files.
+- **Manual Restart Protocol**: Implemented a blocking UI prompt when switching databases to ensure a clean application state. Instructs users to completely quit and restart the app to finalize the database swap.
+
+### Fixed
+- **Robust Import UI**: Completely rebuilt the Database Import selection layout using a Hybrid CSS Grid-in-Grid approach.
+    - Fixed vertical text squishing and eliminated the wide gap between radio buttons and their labels.    - Added responsive `auto-fit` behavior for smooth window resizing.
+
+### Technical
+- Updated unit test suite to cover database list sanitization and path resolution.
+
 ## [v0.3.0] - 2026-03-03
 ### Refactored
 - **Centralized Data Sanitization (#45)**: Moved post-entry data cleaning from the API layer into a dedicated service layer (`EntryService.sanitize_entry`).

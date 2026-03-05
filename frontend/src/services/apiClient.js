@@ -39,9 +39,14 @@ apiClient.interceptors.request.use(async (config) => {
         config.baseURL = apiClient.defaults.baseURL;
     }
 
-    const isTester = localStorage.getItem('tester_mode') === 'true';
-    if (isTester) {
-        config.headers['X-Tester-Mode'] = 'true';
+    // Clean up legacy tester_mode key from previous versions
+    if (localStorage.getItem('tester_mode')) {
+        localStorage.removeItem('tester_mode');
+    }
+
+    const activeDb = localStorage.getItem('active_db');
+    if (activeDb) {
+        config.headers['X-Active-DB'] = activeDb;
     }
     return config;
 });
