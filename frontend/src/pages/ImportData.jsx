@@ -6,6 +6,7 @@ import '../App.css';
 const ImportData = () => {
     const [file, setFile] = useState(null);
     const [type, setType] = useState('csv'); // or 'db'
+    const [importMode, setImportMode] = useState('merge'); // 'merge' or 'separate'
     const [status, setStatus] = useState("idle"); // idle, uploading, success, error
     const [result, setResult] = useState(null);
 
@@ -22,12 +23,21 @@ const ImportData = () => {
         formData.append("file", file);
 
         try {
-            const endpoint = type === 'csv' ? "/api/v1/data/import/csv" : "/api/v1/data/import/db";
+            let endpoint = "/api/v1/data/import/csv";
+            if (type === 'db') {
+                endpoint = importMode === 'separate' ? "/api/v1/data/import/db-separate" : "/api/v1/data/import/db";
+            }
+
             const res = await axios.post(endpoint, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             setResult(res.data);
             setStatus("success");
+
+            // If importing a separate DB, automatically switch to it
+            if (type === 'db' && importMode === 'separate' && res.data.database_name) {
+                localStorage.setItem('active_db', res.data.database_name);
+            }
         } catch (error) {
             console.error(error);
             setStatus("error");
@@ -56,6 +66,74 @@ const ImportData = () => {
                         <Database /> SQLite Backup
                     </button>
                 </div>
+
+                {type === 'db' && (
+                    <div style={{
+                        marginBottom: '2rem',
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                        gap: '1rem',
+                        background: '#222',
+                        padding: '1.25rem',
+                        borderRadius: '8px',
+                        border: '1px solid #333'
+                    }}>
+                        <label style={{
+                            display: 'grid',
+                            gridTemplateColumns: '24px 1fr',
+                            gap: '12px',
+                            alignItems: 'start',
+                            cursor: 'pointer',
+                            padding: '0.75rem',
+                            borderRadius: '6px',
+                            background: importMode === 'merge' ? 'rgba(255,255,255,0.03)' : 'transparent',
+                            border: importMode === 'merge' ? '1px solid #444' : '1px solid transparent',
+                            transition: 'all 0.2s'
+                        }}>
+                            <input
+                                type="radio"
+                                name="importMode"
+                                value="merge"
+                                checked={importMode === 'merge'}
+                                onChange={() => setImportMode('merge')}
+                                style={{ marginTop: '5px', flexShrink: 0 }}
+                            />
+                            <div style={{ minWidth: 0 }}>
+                                <strong style={{ display: 'block', marginBottom: '4px', color: '#fff' }}>Merge data</strong>
+                                <div className="text-muted" style={{ fontSize: '0.85rem', lineHeight: '1.5' }}>
+                                    Combine with current active database, skipping duplicates.
+                                </div>
+                            </div>
+                        </label>
+                        <label style={{
+                            display: 'grid',
+                            gridTemplateColumns: '24px 1fr',
+                            gap: '12px',
+                            alignItems: 'start',
+                            cursor: 'pointer',
+                            padding: '0.75rem',
+                            borderRadius: '6px',
+                            background: importMode === 'separate' ? 'rgba(255,255,255,0.03)' : 'transparent',
+                            border: importMode === 'separate' ? '1px solid #444' : '1px solid transparent',
+                            transition: 'all 0.2s'
+                        }}>
+                            <input
+                                type="radio"
+                                name="importMode"
+                                value="separate"
+                                checked={importMode === 'separate'}
+                                onChange={() => setImportMode('separate')}
+                                style={{ marginTop: '5px', flexShrink: 0 }}
+                            />
+                            <div style={{ minWidth: 0 }}>
+                                <strong style={{ display: 'block', marginBottom: '4px', color: '#fff' }}>Load as separate Database</strong>
+                                <div className="text-muted" style={{ fontSize: '0.85rem', lineHeight: '1.5' }}>
+                                    Keep data isolated. You can switch to it in Settings.
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                )}
 
                 <div
                     style={{
@@ -104,12 +182,27 @@ const ImportData = () => {
                 {status === "success" && result && (
                     <div className="alert success" style={{ marginTop: '2rem' }}>
                         <h4>Import Successful!</h4>
-                        <p>✅ Imported <strong>{result.imported_rows}</strong> new entries.</p>
-                        {result.skipped_rows > 0 && (
-                            <p style={{ color: '#94a3b8' }}>⏭ Skipped <strong>{result.skipped_rows}</strong> duplicate entries.</p>
+                        {result.message ? (
+                            <p>{result.message}</p>
+                        ) : (
+                            <>
+                                <p>✅ Imported <strong>{result.imported_rows}</strong> new entries.</p>
+                                {result.skipped_rows > 0 && (
+                                    <p style={{ color: '#94a3b8' }}>⏭ Skipped <strong>{result.skipped_rows}</strong> duplicate entries.</p>
+                                )}
+                                {result.training_triggered && (
+                                    <p style={{ fontWeight: 'bold' }}>✨ AI Model Trained & Activated! ✨</p>
+                                )}
+                            </>
                         )}
-                        {result.training_triggered && (
-                            <p style={{ fontWeight: 'bold' }}>✨ AI Model Trained & Activated! ✨</p>
+                        {type === 'db' && importMode === 'separate' && (
+                            <button
+                                className="primary-btn"
+                                style={{ marginTop: '1rem' }}
+                                onClick={() => window.location.href = '/'}
+                            >
+                                Go to Dashboard
+                            </button>
                         )}
                     </div>
                 )}

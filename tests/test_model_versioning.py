@@ -96,7 +96,7 @@ def test_inference_cache_invalidation(mock_glob, mock_exists, mock_load):
     inf._reg_model = "old_model"
     inf._loaded_model_version = "1000"
     
-    inf.load_models(tester_mode=False)
+    inf.load_models()
         
     # Cache should be cleared
     assert len(inf._prediction_cache) == 0

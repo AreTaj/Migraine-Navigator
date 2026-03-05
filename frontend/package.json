@@ -1,7 +1,7 @@
 {
   "name": "migraine-navigator",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "Aresh Tajvar",
   "license": "PolyForm-Noncommercial-1.0.0",
   "type": "module",

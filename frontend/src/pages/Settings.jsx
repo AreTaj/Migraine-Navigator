@@ -8,9 +8,22 @@ const Settings = () => {
     const [priors, setPriors] = useState(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [databases, setDatabases] = useState([]);
+    const [activeDb, setActiveDb] = useState(localStorage.getItem('active_db') || 'migraine_log.db');
+    const [dbDisplayNames, setDbDisplayNames] = useState(() => JSON.parse(localStorage.getItem('db_display_names')) || {});
+    const [showRestartPrompt, setShowRestartPrompt] = useState(false);
+    const [isEditingDbName, setIsEditingDbName] = useState(false);
+    const [editingDbNameVal, setEditingDbNameVal] = useState('');
+
+    const formatDbName = (db) => {
+        if (dbDisplayNames[db]) return `${dbDisplayNames[db]} (${db})`;
+        if (db === 'migraine_log.db') return 'migraine_log.db (Primary Data)';
+        return db;
+    };
 
     useEffect(() => {
         fetchPriors();
+        fetchDatabases();
     }, []);
 
     // Auto-save logic
@@ -36,6 +49,15 @@ const Settings = () => {
         }
     };
 
+    const fetchDatabases = async () => {
+        try {
+            const res = await axios.get('/api/v1/data/databases');
+            setDatabases(res.data.databases || []);
+        } catch (err) {
+            console.error("Failed to fetch databases:", err);
+        }
+    };
+
     const savePriors = async () => {
         setSaving(true);
         try {
@@ -53,6 +75,27 @@ const Settings = () => {
 
     return (
         <div style={{ padding: '2rem', paddingBottom: '4rem' }}>
+            {showRestartPrompt && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    background: 'rgba(0,0,0,0.92)', zIndex: 9999,
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                    color: 'white', padding: '2rem', textAlign: 'center'
+                }}>
+                    <div style={{ background: '#111', padding: '3rem', borderRadius: '12px', border: '1px solid #333', maxWidth: '500px' }}>
+                        <Database size={48} style={{ color: '#3b82f6', marginBottom: '1rem' }} />
+                        <h2 style={{ marginBottom: '1rem' }}>Database Switched</h2>
+                        <p style={{ color: '#cbd5e1', lineHeight: '1.6', marginBottom: '2rem' }}>
+                            You have changed the active database. To ensure all data is safely loaded and no background processes are interrupted, you must restart the app.
+                        </p>
+                        <div style={{ background: 'rgba(239, 68, 68, 0.2)', color: '#fca5a5', padding: '1rem', borderRadius: '8px', border: '1px solid #ef4444' }}>
+                            <strong>Action Required:</strong><br />
+                            Please completely quit the application (Cmd+Q on Mac) and open it again.
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <SettingsIcon size={32} />
@@ -259,34 +302,79 @@ const Settings = () => {
             <section className="card">
                 <h3>Data Management</h3>
                 <div style={{ marginTop: '1rem' }}>
+
+                    <div style={{ marginBottom: '1.5rem', padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                            <label style={{ fontWeight: 500, fontSize: '0.95rem' }}>Active Database</label>
+                            {activeDb !== 'migraine_log.db' && (
+                                <span className="badge" style={{ background: 'var(--accent-color)', color: '#000', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 'bold' }}>CUSTOM</span>
+                            )}
+                        </div>
+                        <select
+                            value={activeDb}
+                            onChange={(e) => {
+                                const val = e.target.value;
+                                localStorage.setItem('active_db', val);
+                                setActiveDb(val);
+                                setShowRestartPrompt(true);
+                            }}
+                            style={{
+                                width: '100%', padding: '0.8rem', borderRadius: '6px',
+                                background: '#111', color: 'white', border: '1px solid #333',
+                                fontSize: '1rem'
+                            }}
+                        >
+                            <option value="migraine_log.db">{formatDbName('migraine_log.db')}</option>
+                            {databases.filter(db => db !== 'migraine_log.db').map(db => (
+                                <option key={db} value={db}>{formatDbName(db)}</option>
+                            ))}
+                        </select>
+                        <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                            {isEditingDbName ? (
+                                <>
+                                    <input
+                                        value={editingDbNameVal}
+                                        onChange={(e) => setEditingDbNameVal(e.target.value)}
+                                        placeholder="Custom Display Name"
+                                        style={{ padding: '0.4rem', borderRadius: '4px', background: '#222', color: 'white', border: '1px solid #444', flex: 1 }}
+                                    />
+                                    <button
+                                        onClick={() => {
+                                            const newNames = { ...dbDisplayNames };
+                                            if (editingDbNameVal.trim() === '') {
+                                                delete newNames[activeDb];
+                                            } else {
+                                                newNames[activeDb] = editingDbNameVal.trim();
+                                            }
+                                            setDbDisplayNames(newNames);
+                                            localStorage.setItem('db_display_names', JSON.stringify(newNames));
+                                            setIsEditingDbName(false);
+                                        }}
+                                        style={{ background: '#3b82f6', color: 'white', border: 'none', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer' }}
+                                    >Save</button>
+                                    <button
+                                        onClick={() => setIsEditingDbName(false)}
+                                        style={{ background: 'transparent', color: '#94a3b8', border: '1px solid #444', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer' }}
+                                    >Cancel</button>
+                                </>
+                            ) : (
+                                <button
+                                    onClick={() => {
+                                        setEditingDbNameVal(dbDisplayNames[activeDb] || '');
+                                        setIsEditingDbName(true);
+                                    }}
+                                    style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: 'none', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' }}
+                                >✎ Edit Display Name</button>
+                            )}
+                        </div>
+                        <p className="text-muted" style={{ fontSize: '0.8rem', marginTop: '10px' }}>
+                            Switching databases isolates your data entirely. Your default data is never overwritten or merged.
+                        </p>
+                    </div>
+
                     <Link to="/import" className="btn-option" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '1rem', justifyContent: 'center' }}>
                         <Database size={20} /> Import / Restore Data
                     </Link>
-
-                    {localStorage.getItem('tester_mode') === 'true' ? (
-                        <button
-                            className="btn-option"
-                            style={{ width: '100%', marginTop: '1rem', background: 'rgba(239, 68, 68, 0.2)', color: '#fca5a5', border: '1px solid #ef4444' }}
-                            onClick={() => {
-                                localStorage.removeItem('tester_mode');
-                                window.location.reload();
-                            }}
-                        >
-                            Exit Tester Mode
-                        </button>
-                    ) : (
-                        <button
-                            className="btn-option"
-                            style={{ width: '100%', marginTop: '1rem', background: 'rgba(59, 130, 246, 0.2)', color: '#93c5fd', border: '1px solid #3b82f6' }}
-                            onClick={() => {
-                                localStorage.setItem('tester_mode', 'true');
-                                localStorage.setItem('onboarding_completed', 'true');
-                                window.location.href = '/';
-                            }}
-                        >
-                            Explore as Tester (Demo Data)
-                        </button>
-                    )}
                 </div>
             </section>
         </div>
