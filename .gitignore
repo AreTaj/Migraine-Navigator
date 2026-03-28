@@ -49,6 +49,7 @@ models/
 !models/tester_model_clf.pkl
 !models/tester_model_reg.pkl
 graphics/
+legal/
 
 # Ignore everything in data/
 data/*

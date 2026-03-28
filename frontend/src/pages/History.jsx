@@ -4,9 +4,8 @@ import { Loader2, Trash2, Edit } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import MigraineTrends from '../components/MigraineTrends';
 // import { useMigraineStats } from '../utils/useMigraineStats'; // No longer needed here
+import { formatDateLocal } from '../utils/dateUtils';
 import './History.css';
-
-
 
 function HistoryPage() {
     const [entries, setEntries] = useState([]);
@@ -59,8 +58,8 @@ function HistoryPage() {
         }
 
         return {
-            startStr: start.toISOString().split('T')[0],
-            endStr: end.toISOString().split('T')[0]
+            startStr: formatDateLocal(start),
+            endStr: formatDateLocal(end)
         };
     };
 

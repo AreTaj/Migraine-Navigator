@@ -56,18 +56,35 @@ npm run build # Vite build
 # Build only the .app first to guarantee success
 npm run tauri build -- --bundles app
 
-# Now try the DMG, but don't fail the whole script if it dies on aesthetics
-echo "Attempting to build DMG (may fail on aesthetics, continuing anyway)..."
-npm run tauri build -- --bundles dmg || echo "DMG build failed, but .app is ready."
+# Skipping DMG creation entirely to enforce ZIP distribution instead.
 
 # Build finished. Copying artifacts to 'releases/'...
 mkdir -p "$PROJECT_ROOT/releases"
+
 # Copy .app (if it exists)
-if [ -d "$TAURI_DIR/target/release/bundle/macos/Migraine Navigator.app" ]; then
-    cp -R "$TAURI_DIR/target/release/bundle/macos/Migraine Navigator.app" "$PROJECT_ROOT/releases/"
+APP_PATH="$TAURI_DIR/target/release/bundle/macos/Migraine Navigator.app"
+if [ -d "$APP_PATH" ]; then
+    echo "Copying .app to releases..."
+    cp -R "$APP_PATH" "$PROJECT_ROOT/releases/"
+    
+    # To address MacOS quarantine/damaged issues:
+    echo "Stripping quarantine metadata and applying ad-hoc deep signature..."
+    xattr -cr "$PROJECT_ROOT/releases/Migraine Navigator.app"
+    codesign --force --deep --sign - "$PROJECT_ROOT/releases/Migraine Navigator.app"
+    echo "Done applying deep signature to the .app bundle."
+
+    # Create the macOS ZIP distribution package instead of DMG
+    echo "Creating zip distribution..."
+    # Running in a subshell (..) to avoid changing directory state of the main script
+    (
+        cd "$PROJECT_ROOT/releases"
+        # Using ditto -c -k preserves all Apple extended attributes and signatures
+        ditto -c -k --sequesterRsrc --keepParent "Migraine Navigator.app" "Migraine Navigator.zip"
+    )
+    echo "ZIP distribution created at 'releases/Migraine Navigator.zip'"
+else
+    echo "ERROR: Migraine Navigator.app not found. Build may have failed."
+    exit 1
 fi
-# Copy .dmg
-cp "$TAURI_DIR/target/release/bundle/dmg/"*.dmg "$PROJECT_ROOT/releases/" || true
 
 echo "Packaging Complete!"
-echo "Artifacts are in the 'releases/' folder."

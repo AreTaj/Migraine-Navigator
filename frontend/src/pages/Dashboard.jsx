@@ -6,6 +6,7 @@ import axios from '../services/apiClient';
 import HourlyForecastGraph from '../components/HourlyForecastGraph';
 import AllCaughtUpCard from '../components/AllCaughtUpCard';
 import { useMigraineStats } from '../utils/useMigraineStats';
+import { formatDateLocal } from '../utils/dateUtils';
 import './Dashboard.css';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#aaa'];
@@ -82,7 +83,7 @@ function Dashboard() {
 
                 // --- SMART LOGIC (Synchronous) ---
                 const now = new Date();
-                const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+                const todayStr = formatDateLocal(now);
                 const dailyMedList = allMeds.filter(m => m.frequency === 'daily');
                 setDailyMeds(dailyMedList);
 
@@ -104,10 +105,7 @@ function Dashboard() {
                     while (curr > lastDate && missing.length < 5) {
                         // FIX: Use LOCAL time string matching (YYYY-MM-DD) instead of UTC toISOPString()
                         // This prevents "Today (Late Night)" becoming "Tomorrow (UTC)" and shifting the whole window
-                        const year = curr.getFullYear();
-                        const month = String(curr.getMonth() + 1).padStart(2, '0');
-                        const day = String(curr.getDate()).padStart(2, '0');
-                        const dStr = `${year}-${month}-${day}`;
+                        const dStr = formatDateLocal(curr);
 
                         if (!entriesData.some(e => e.Date === dStr)) {
                             missing.push(dStr);
@@ -212,8 +210,7 @@ function Dashboard() {
     const handleConfirmDailyCheckin = async () => {
         try {
             // Use local date for "today"
-            const now = new Date();
-            const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+            const todayStr = formatDateLocal();
             const payload = {
                 Date: todayStr,
                 Time: "12:00",
@@ -322,13 +319,13 @@ function Dashboard() {
         let streak = 0;
         let checkDate = new Date();
         // Allow streak to continue if today is not logged yet
-        const todayStr = checkDate.toISOString().split('T')[0];
+        const todayStr = formatDateLocal(checkDate);
         if (!sorted.find(e => e.Date === todayStr)) {
             checkDate.setDate(checkDate.getDate() - 1);
         }
 
         while (true) {
-            const dateStr = checkDate.toISOString().split('T')[0];
+            const dateStr = formatDateLocal(checkDate);
             if (sorted.find(e => e.Date === dateStr)) {
                 streak++;
                 checkDate.setDate(checkDate.getDate() - 1);
@@ -562,8 +559,7 @@ function Dashboard() {
                             cards.sort((a, b) => a.priority - b.priority);
 
                             if (cards.length === 0) {
-                                const now = new Date();
-                                const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+                                const todayStr = formatDateLocal();
                                 const todayEntry = entries.find(e => e.Date === todayStr);
                                 return <AllCaughtUpCard weather={hourlyData[0]} todayEntry={todayEntry} tempUnit={priors?.temp_unit} />;
                             }
@@ -591,8 +587,7 @@ function Dashboard() {
                     // --- ALL CAUGHT UP STATE ---
                     (() => {
                         // FIX: Logic to retrieve today's entry for the card
-                        const now = new Date();
-                        const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+                        const todayStr = formatDateLocal();
                         const todayEntry = entries.find(e => e.Date === todayStr);
 
                         return (

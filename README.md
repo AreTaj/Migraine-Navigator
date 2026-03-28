@@ -42,6 +42,26 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
     - Dashboard alerts you when enough new data exists to improve your personal ML model.
     - One-tap "Retrain Now" triggers asynchronous model training without blocking the UI.
 
+### Log Lifecycle: Request Flow
+```mermaid
+sequenceDiagram
+    participant UI as React UI (frontend/src/pages/LogEntry.jsx)
+    participant JS as JS Service (frontend/src/services/entryService.js)
+    participant API as Python Route (api/routes/entries.py)
+    participant DB as DB Service (services/entry_service.py)
+    participant SQL as SQLite (data/migraine_log.db)
+
+    UI->>JS: Submit Form Data
+    JS->>API: POST /api/v1/entries
+    API->>DB: EntryService.add_entry(data)
+    Note over DB: Sanitize & Validate
+    DB->>SQL: INSERT INTO migraine_log
+    SQL-->>DB: Success
+    DB-->>API: Success
+    API-->>JS: 201 Created
+    JS-->>UI: Update Dashboard Cache
+```
+
 ## Screenshots
 
 ![Dashboard View](screenshots/dashboard.png)
@@ -62,7 +82,31 @@ Migraine Navigator is a comprehensive tool designed to help users **track**, **a
 ![Settings View](screenshots/settings.png)
 *Customize prediction sensitivity, theme preferences, and data management.*
 
-## Technical Highlights
+### System Map
+```mermaid
+graph TD
+    subgraph "Frontend (Tauri Shell)"
+        TR["React UI (src/)"]
+        TM["Tauri Manager (src-tauri/src/lib.rs)"]
+    end
+
+    subgraph "Sidecar Backend (Python)"
+        API["FastAPI (api/main.py)"]
+        ML["ML Logic (models/, forecasting/)"]
+        SRV["Data Services (services/)"]
+    end
+
+    subgraph "Data Storage"
+        SQL[("SQLite (data/migraine_log.db)")]
+    end
+
+    TR <--> TM
+    TM -- "Spawns & Monitors" --> API
+    TR -- "REST API" --> API
+    API --> ML
+    API --> SRV
+    SRV --> SQL
+```
 
 Migraine Navigator runs a personalized Machine Learning model **locally on your device**.
 

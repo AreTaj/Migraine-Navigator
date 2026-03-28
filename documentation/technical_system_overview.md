@@ -7,6 +7,32 @@
 ## 1. System Architecture
 The application follows a modern **Service-Oriented Architecture (SOA)** tailored for a desktop environment via Tauri.
 
+```mermaid
+graph LR
+    subgraph "Frontend Layer (React/Vite/Tauri)"
+        UI["UI Components (frontend/src/components/)"]
+        SV["Data Services (frontend/src/services/)"]
+        TM["Tauri Process (frontend/src-tauri/src/lib.rs)"]
+    end
+
+    subgraph "Backend Layer (FastAPI/Python)"
+        API["REST API (api/main.py)"]
+        ENG["ML Engine (models/, forecasting/)"]
+        DB_SRV["DB Models (services/entry_service.py)"]
+    end
+
+    subgraph "Data Storage"
+        SQL[("SQLite3 Database")]
+    end
+
+    UI <--> SV
+    SV <--> API
+    TM -- "Spawns/Monitors" --> API
+    API <--> ENG
+    API <--> DB_SRV
+    DB_SRV <--> SQL
+```
+
 *   **Frontend (Presentation Layer)**:
     *   **Framework**: React 18 (Vite)
     *   **Visualization**: Recharts (D3-based) for high-performance time-series rendering.
@@ -19,6 +45,47 @@ The application follows a modern **Service-Oriented Architecture (SOA)** tailore
     *   **Database**: SQLite3 (Embedded). Ideal for single-user desktop privacy and zero-config deployment.
     *   **ORM/DAO**: Custom Data Access Objects (`EntryService`) using raw SQL with **Schema-Aware Persistence**. The service layer dynamically inspects the SQLite schema (via `PRAGMA table_info`) to sanitize and filter incoming data keys before execution.
     *   **Data Import**: Supports bulk import from `.csv` files and legacy SQLite `.db` backups. Deduplicates on `(Date, Time)` pairs rather than row IDs for safe cross-database merges.
+
+### 1.1 Database Map (ER Diagram)
+```mermaid
+classDiagram
+    class migraine_log {
+        +int id
+        +text Date
+        +text Time
+        +int Pain Level
+        +text Medication (Legacy)
+        +text Dosage (Legacy)
+        +text Medications (JSON)
+        +text Sleep
+        +text Physical Activity
+        +text Triggers
+        +text Notes
+        +text Location
+        +text Timezone
+        +real Latitude
+        +real Longitude
+    }
+    class medications {
+        +int id
+        +text name
+        +text display_name
+        +text default_dosage
+        +text frequency
+        +int period_days
+        +int usage_count
+    }
+    class triggers {
+        +int id
+        +text name
+        +int usage_count
+        +boolean is_system_default
+        +text category
+    }
+
+    migraine_log -- medications : "usage_count sync"
+    migraine_log -- triggers : "usage_count sync"
+```
 
 ---
 
@@ -90,6 +157,27 @@ To ensure robustness across both **Development** and **Production** environments
 
 ### 5.1 Automated Sidecar Management
 The Tauri frontend (`src-tauri/src/lib.rs`) effectively operates as a process manager for the Python backend. It utilizes Rust's conditional compilation features (`#[cfg(not(debug_assertions))]`) to determine the environment:
+
+```mermaid
+sequenceDiagram
+    participant T as Tauri (Rust)
+    participant B as Backend (Python)
+
+    T->>B: Spawn process ("migraine-navigator-api")
+    Note over B: FastAPI finds open port & initializes
+    B-->>T: print("PORT:[port]") via stdout
+    Note over T: Parses stdout for "PORT:"
+    T->>T: Emit "backend-started" event to UI
+    Note over T: UI connects to http://localhost:[port]
+    loop Stdin Monitoring (Heartbeat)
+        T->>B: Keep stdin pipe open (rx/child alive)
+        Note over B: Listens for EOF on stdin
+    end
+    Note over T: App Closes
+    T-x B: Drop child process (closes stdin)
+    Note over B: Backend detects EOF
+    B->>B: Self-terminate
+```
 
 *   **Development Profile (Debug)**:
     *   **Sidecar**: DISABLED. The Rust shell command to spawn the backend is compiled out.

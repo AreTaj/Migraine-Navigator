@@ -17,9 +17,61 @@ Before training, a **Correlation Matrix Filter** removes redundant features to i
 *   **Small-dataset guard**: Automatically skipped when $N < 30$ to avoid spurious correlations for new users.
 *   Applied *inside* each cross-validation fold to prevent data leakage into the test set.
 
+### Feature Engineering Pipeline
+```mermaid
+graph TD
+    RAW["Raw Log Data (migraine_log)"]
+    TEM["Temporal Encoding (Sin/Cos Day/Month)"]
+    WEA["Weather Merge (Open-Meteo Integration)"]
+    LAG["Autoregressive Lags (t-1, t-2, t-3, t-7)"]
+    ROLL["Rolling Stats (3d/7d/30d Pain Means)"]
+    VEC["Dense Feature Vector (~24 dims)"]
+    CORR["Correlation Filter (|r| > 0.90)"]
+    ML["ML-Ready Data (X)"]
+
+    RAW --> TEM
+    RAW --> WEA
+    TEM --> LAG
+    WEA --> LAG
+    LAG --> ROLL
+    ROLL --> VEC
+    VEC --> CORR
+    CORR --> ML
+```
+
 ## 24-Hour Risk Engine (Truth Propagation)
 
 Training a pure ML model for hourly predictions requires unrealistic, massive labeled datasets with hourly log entries. We solve this with a 3-step hybrid approach:
+
+```mermaid
+graph TD
+    subgraph "Step 1: The Anchor"
+        ML["Daily ML Model (GBDT)"]
+        DR["Daily Risk Intensity (%)"]
+    end
+
+    subgraph "Step 2: The Curve"
+        HE["Heuristic Engine"]
+        WEA["Weather (Open-Meteo)"]
+        BIO["Circadian Rhythms"]
+        MED["Medication Half-lives"]
+        HR["Raw Hourly Risk Curve"]
+    end
+
+    subgraph "Step 3: Calibration"
+        SC["Scaling & Normalization"]
+        OUT["Final 24-Hour Risk Profile"]
+    end
+
+    ML --> DR
+    WEA --> HE
+    BIO --> HE
+    MED --> HE
+    HE --> HR
+    DR --> SC
+    HR --> SC
+    SC --> OUT
+```
 
 *   **Step 1 (The Anchor)**: The powerful and proven Daily ML Model predicts the overall risk intensity for the day (e.g., "69% Risk") based on deep historical patterns.
 *   **Step 2 (The Curve)**: A granular Heuristic Engine calculates the relative risk for every hour based on circadian rhythms, weather shifts (Open-Meteo), and medication half-lives.
@@ -36,6 +88,36 @@ The engine now accounts for detailed meteorological factors:
 ## Model Lifecycle
 
 The prediction system evolves with the user across three distinct phases:
+
+```mermaid
+graph LR
+    subgraph "Phase 1: Cold Start (Days 1-60)"
+        H1["Heuristic Engine"]
+        S["User Sensitivity Sliders"]
+    end
+
+    subgraph "Phase 2: ML Active (Log 60+)"
+        G1["GBDT Classifier (Occurrence)"]
+        G2["GBDT Regressor (Severity)"]
+        H2["Hybrid Hurdle Model"]
+    end
+
+    subgraph "Phase 3: Adaptive (Ongoing)"
+        AR["Staleness Detection (>=5 logs)"]
+        RT["Background Retraining"]
+        VU["Validated Update"]
+    end
+
+    S --> H1
+    H1 -- "Accumulate Data" --> G1
+    H1 -- "Accumulate Data" --> G2
+    G1 --> H2
+    G2 --> H2
+    H2 -- "New Logs" --> AR
+    AR -- "User Trigger" --> RT
+    RT --> VU
+    VU -- "Swaps In" --> H2
+```
 
 ```
 Day 1–60 (Cold Start)     Log 60+ (ML Active)     Ongoing (Adaptive)

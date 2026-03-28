@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import medicationService from '../services/medicationService';
 import triggerService from '../services/triggerService';
 import entryService from '../services/entryService';
+import { formatDateLocal } from '../utils/dateUtils';
 import './LogEntry.css';
 
 function LogEntry() {
@@ -20,7 +21,7 @@ function LogEntry() {
 
     // Form Data
     const [formData, setFormData] = useState({
-        Date: new Date().toISOString().split('T')[0],
+        Date: formatDateLocal(),
         Time: new Date().toTimeString().slice(0, 5),
         Pain_Level: 5,
         Medications: [], // List of {name, dosage} objects
@@ -106,7 +107,7 @@ function LogEntry() {
 
             setFormData({
                 ...editingEntry,
-                Date: editingEntry.Date || new Date().toISOString().split('T')[0],
+                Date: editingEntry.Date || formatDateLocal(),
                 Pain_Level: Number(editingEntry.Pain_Level),
                 Sleep: String(editingEntry.Sleep), // Ensure string for comparison
                 Physical_Activity: String(editingEntry.Physical_Activity),
